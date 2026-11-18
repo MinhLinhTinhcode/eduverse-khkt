@@ -1590,3 +1590,65 @@ body[data-role="teacher"] .sw--stu { display: none; }
 .codeblk__pre { margin: 0; padding: 10px 14px; overflow-x: auto; font: 500 .92rem/1.55 ui-monospace, "Cascadia Mono", Consolas, "Courier New", monospace; color: #14224a; white-space: pre; tab-size: 4; }
 .codeblk__pre:focus-visible { outline: 3px solid #1f46d0; outline-offset: -3px; }
 .codeblk__cap { margin: 0; padding: 6px 12px 8px; border-top: 1px dashed #9aa8c7; font-size: .85rem; }
+
+/* ---------- Tài khoản cục bộ (auth.js) ---------- */
+.acct { display: inline-flex; align-items: center; gap: .55em; flex: none; max-width: 15rem; padding: 3px .8em 3px 3px; border: 2px solid var(--line); border-radius: 999px; background: #fff; color: var(--ink); font: inherit; cursor: pointer; text-align: left; }
+.acct:hover { background: var(--pen-xl); border-color: var(--pen); }
+.acct:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+.acct__av { display: inline-grid; place-items: center; flex: none; width: 2rem; height: 2rem; border-radius: 50%; background: var(--pen); color: #fff; font-weight: 800; font-size: .95rem; }
+.acct__av--lg { width: 3.4rem; height: 3.4rem; font-size: 1.5rem; }
+.acct__t { display: grid; min-width: 0; line-height: 1.15; }
+.acct__t b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .88rem; }
+.acct__t small { font-size: .74rem; color: var(--ink-2); font-weight: 700; }
+.acct--compact { max-width: 11rem; }
+.acct__login { flex: none; white-space: nowrap; }
+@media (max-width: 1320px) { .acct__lt { font-size: .85em; } }
+@media (max-width: 760px) { .acct__t small { display: none; } .acct { max-width: 8.5rem; } .acct__login .acct__lt { display: none; } }
+
+.auth { width: min(94vw, 30rem); max-height: 92vh; padding: 0; border: 0; border-radius: 18px; background: #fff; color: var(--ink); box-shadow: 0 18px 60px rgba(20, 34, 74, .35); overflow: hidden; }
+.auth::backdrop { background: rgba(20, 34, 74, .5); }
+.auth__box { position: relative; max-height: 92vh; padding: 1.3rem 1.4rem 1.2rem; overflow-y: auto; }
+.auth__x { position: absolute; top: .55rem; right: .7rem; width: 2.2rem; height: 2.2rem; border: 0; border-radius: 50%; background: transparent; font-size: 1.6rem; line-height: 1; color: var(--ink-2); cursor: pointer; }
+.auth__x:hover { background: var(--pen-xl); }
+.auth__title { margin: 0 2rem .2rem 0; font-size: 1.3rem; }
+.auth__lead, .auth__hint { margin: 0 0 .8rem; font-size: .9rem; color: var(--ink-2); line-height: 1.45; }
+.auth__tabs { display: flex; gap: 4px; padding: 3px; margin-bottom: .9rem; border: 2px solid var(--line); border-radius: 999px; background: #fff; }
+.auth__tab { flex: 1; padding: .45em .5em; border: 0; border-radius: 999px; background: transparent; color: var(--ink-2); font: inherit; font-weight: 700; font-size: .84rem; cursor: pointer; }
+.auth__tab.is-on { background: var(--pen); color: #fff; box-shadow: 0 2px 0 var(--pen-d); }
+.auth__tab:focus-visible, .auth__link:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+.auth__form { display: grid; gap: .8rem; }
+.auth__f { display: grid; gap: 4px; font-weight: 700; font-size: .9rem; }
+.auth__f small { font-weight: 500; color: var(--ink-2); font-size: .78rem; }
+.auth__f input, .auth__f textarea { padding: .55em .8em; font: inherit; font-weight: 500; border: 2px solid var(--line); border-radius: 10px; }
+.auth__f input:focus, .auth__f textarea:focus { outline: 3px solid var(--sun); border-color: var(--pen); }
+.auth__f textarea, .auth__code { font-family: ui-monospace, Consolas, monospace; font-size: .78rem; word-break: break-all; resize: vertical; }
+.auth__code { width: 100%; padding: .55em .8em; border: 2px solid var(--line); border-radius: 10px; background: var(--pen-xl); }
+.auth__roles { display: flex; flex-wrap: wrap; gap: .6rem; margin: 0; padding: 0; border: 0; }
+.auth__roles legend { padding: 0; margin-bottom: 4px; font-weight: 700; font-size: .9rem; }
+.auth__roles label { flex: 1; display: flex; align-items: center; gap: .4em; padding: .55em .8em; border: 2px solid var(--line); border-radius: 12px; cursor: pointer; font-weight: 700; }
+.auth__roles label:has(input:checked) { border-color: var(--pen); background: var(--pen-xl); }
+.auth__chk { display: flex; gap: .5em; align-items: flex-start; font-size: .85rem; }
+.auth__msg { min-height: 1.2em; margin: 0; color: #b3261e; font-weight: 700; font-size: .86rem; }
+.auth__act { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .2rem; }
+.auth__act--end { justify-content: flex-end; margin-top: 1rem; }
+.auth__list { display: grid; gap: .5rem; max-height: 14rem; overflow-y: auto; }
+.auth__acct { display: flex; align-items: center; gap: .7em; padding: .5em .7em; border: 2px solid var(--line); border-radius: 12px; cursor: pointer; }
+.auth__acct:has(input:checked) { border-color: var(--pen); background: var(--pen-xl); }
+.auth__acct input { accent-color: var(--pen); }
+.auth__who { display: grid; line-height: 1.2; }
+.auth__who small { color: var(--ink-2); font-size: .78rem; }
+.auth__link { padding: 0; border: 0; background: none; color: var(--pen); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
+.auth__me { display: flex; align-items: center; gap: .9rem; margin-right: 2rem; }
+.auth__name { margin: 0; font-size: 1.25rem; }
+.auth__sub { margin: .1rem 0 0; color: var(--ink-2); font-size: .88rem; }
+.auth__role { padding: .05em .55em; border-radius: 999px; background: var(--pen); color: #fff; font-weight: 700; font-size: .78rem; }
+.auth__role--teacher { background: var(--violet); }
+.auth__stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin: .9rem 0; }
+.auth__stats > div { padding: .5em .4em; border: 2px solid var(--line); border-radius: 12px; text-align: center; }
+.auth__stats dt { font-size: .74rem; color: var(--ink-2); font-weight: 700; }
+.auth__stats dd { margin: 0; font-weight: 800; font-size: 1.05rem; }
+.auth__sec { margin-top: .9rem; padding-top: .8rem; border-top: 1px dashed var(--line); }
+.auth__sec h3 { margin: 0 0 .4rem; font-size: 1rem; }
+@media (prefers-reduced-motion: no-preference) { .auth[open] { animation: authIn .18s ease-out; } @keyframes authIn { from { opacity: 0; transform: translateY(8px); } } }
+@media (max-width: 1560px) { .bar--top > .btn:not(.acct__login) span:last-child { display: none; } }   /* nhường chỗ cho nút đăng nhập: "Cách dùng" chỉ còn biểu tượng */
+@media (max-width: 1000px) { .acct__login .acct__lt { display: none; } .acct__login { padding-inline: .7em; } .acct__t small { display: none; } .acct { max-width: 9.5rem; } }

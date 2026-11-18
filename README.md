@@ -162,3 +162,9 @@ Thiếu một mô-đun thì app vẫn chạy, chỉ mất tính năng của mô-
 - **Giáo viên:** tab Quản lý giáo viên đứng đầu và mở thẳng khi vừa chuyển vai. Bảng này có 4 ngăn (Giao bài, Chấm điểm, Trợ lí AI, Giao tiếp), mỗi lần hiện một ngăn. Thanh bên ẩn các khối dành cho học sinh.
 - Thêm khối chỉ dành cho học sinh: gắn class `sw--stu`. Muốn ẩn/hiện theo vai trò ở nơi khác: dùng CSS `body[data-role="teacher"] …`.
 - Đây là công tắc giao diện, không phải đăng nhập.
+
+
+## Tài khoản cục bộ (js/auth.js)
+Đăng ký / đăng nhập ngay trên trình duyệt, **không cần máy chủ**. Mỗi tài khoản (Học sinh hoặc Giáo viên, PIN 4 số) có XP, cấp độ, thẻ ôn từ, nhiệm vụ và bài tập đã giao riêng. Khách vẫn dùng bình thường. Có "Xuất mã tài khoản" / "Khôi phục từ mã" để chuyển sang thiết bị khác.
+Cơ chế: `auth.js` (nạp đầu tiên) đổi khoá `sgk.*` thành `u.<username>.sgk.*` khi đang đăng nhập, nên các mô-đun cũ không phải sửa.
+**Giới hạn:** đây không phải bảo mật thật. Dữ liệu nằm trong localStorage, PIN chỉ chống dùng nhầm; ai cũng đăng ký được "Giáo viên"; mã tài khoản cần giữ kín. Muốn tài khoản dùng chung nhiều máy thì cần máy chủ (Firebase/Supabase).

@@ -23,7 +23,10 @@
   const ROLES = ['student', 'teacher'];
   const C = () => window.Classroom;
 
+  /* Đang đăng nhập tài khoản: vai trò do tài khoản quyết định, không đổi bằng nút (xem auth.js). */
+  const acct = () => (window.Auth && window.Auth.user ? window.Auth.user() : null);
   function stored() {
+    if (acct()) return acct().role === 'teacher' ? 'teacher' : 'student';
     try { const v = window.localStorage.getItem(K); if (ROLES.indexOf(v) >= 0) return v; } catch (e) { /* bỏ qua */ }
     return C() && C().teacherOn() ? 'teacher' : 'student';           // di chuyển từ công tắc giáo viên cũ
   }
@@ -52,6 +55,10 @@
 
   function set(next, opts) {
     if (ROLES.indexOf(next) < 0) return;
+    if (acct() && next !== role) {                                   // tài khoản khoá vai trò
+      if (window.Auth.notice) window.Auth.notice('Tài khoản ' + (role === 'teacher' ? 'Giáo viên' : 'Học sinh') + ' không đổi được chế độ. Hãy đăng xuất để dùng tài khoản hoặc chế độ khác.');
+      return;
+    }
     const changed = next !== role;
     role = next;
     try { window.localStorage.setItem(K, role); } catch (e) { /* trình duyệt chặn lưu: vẫn đổi trong phiên */ }
@@ -61,9 +68,11 @@
 
   /* variant 'compact': bỏ chữ "Chế độ" để vừa thanh công cụ của trang đọc sách. */
   function switcher(variant) {
+    if (acct()) return window.Auth.chip(variant);                     // đã đăng nhập: thẻ tài khoản thay cho nút chuyển vai trò
     const b = (id, ico, pre, name) => '<button type="button" class="role__b' + (role === id ? ' is-on' : '') + '" role="radio" aria-checked="' + (role === id) + '" tabindex="' + (role === id ? 0 : -1) + '" data-role-set="' + id + '">' +
       '<span class="role__i" aria-hidden="true">' + ico + '</span><span class="role__t"><span class="role__p">' + pre + '</span>' + name + '</span></button>';
-    return '<div class="role' + (variant === 'compact' ? ' role--compact' : '') + '" role="radiogroup" aria-label="Chế độ sử dụng">' + b('student', '👨‍🎓', 'Chế độ ', 'Học sinh') + b('teacher', '👩‍🏫', 'Chế độ ', 'Giáo viên') + '</div>';
+    const login = window.Auth && window.Auth.loginButton ? window.Auth.loginButton(variant) : '';
+    return '<div class="role' + (variant === 'compact' ? ' role--compact' : '') + '" role="radiogroup" aria-label="Chế độ sử dụng">' + b('student', '👨‍🎓', 'Chế độ ', 'Học sinh') + b('teacher', '👩‍🏫', 'Chế độ ', 'Giáo viên') + '</div>' + login;
   }
 
   /* Bấm nút chuyển, nút "Bật chế độ giáo viên" trong trang quản lý, hoặc phím mũi tên trong nhóm. */
