@@ -1730,3 +1730,17 @@ body[data-role="teacher"] .sw--stu { display: none; }
 .olab__road { fill: #555; }
 .olab__gl { stroke: var(--pen); stroke-width: 2; } .olab__gl--tir { stroke: var(--violet); stroke-dasharray: 4 3; } .olab__gp { fill: var(--teal-d); } .olab__gc { fill: none; stroke: var(--red); stroke-width: 2; } .olab__ax { stroke: var(--ink); stroke-width: 1.2; }
 @media (prefers-reduced-motion: no-preference) { .olab__hd { transition: none; } }
+
+/* ===== Đợt 3: thấu kính, giá quang học, lăng kính ===== */
+.olab__axis { stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 2 0; opacity: .75; }
+.olab__lens { stroke-width: 2.4; stroke-linejoin: round; } .olab__lens--conv, .olab__lens--div { fill: color-mix(in srgb, var(--pen) 16%, var(--paper)); stroke: var(--pen); }
+.olab__prismfill { fill: color-mix(in srgb, var(--pen) 14%, var(--paper)); stroke: var(--pen); stroke-width: 2.6; stroke-linejoin: round; }
+.olab__obj { stroke: var(--pen); stroke-width: 3.4; stroke-linecap: round; } .olab__head--obj { fill: var(--pen); }
+.olab__img { stroke: var(--teal-d); stroke-width: 3.4; stroke-linecap: round; } .olab__img--virt { stroke-dasharray: 6 4; } .olab__head--img { fill: var(--teal-d); } .olab__head--imgv { fill: var(--teal-d); opacity: .6; }
+.olab__img-dot { fill: var(--teal-d); stroke: #fff; stroke-width: 2; } .olab__img-dot--virt { fill: none; stroke: var(--teal-d); stroke-dasharray: 3 2; }
+.olab__miniprism { fill: color-mix(in srgb, var(--violet) 18%, var(--paper)); stroke: var(--violet); stroke-width: 1.4; }
+.olab__rail { fill: var(--line); stroke: var(--ink); stroke-width: 1.4; } .olab__ticks { stroke: var(--ink); stroke-width: 1; }
+.olab__screen { fill: var(--paper); stroke: var(--ink); stroke-width: 2; } .olab__slide { fill: color-mix(in srgb, var(--sun) 30%, var(--paper)); stroke: var(--ink); stroke-width: 1.4; }
+.olab__glyph { fill: none; stroke: var(--pen); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; } .olab__glyph--img { stroke: var(--teal-d); } .olab__glyph--virt { stroke: var(--teal-d); stroke-dasharray: 3 2; }
+.olab__rep { display: flex; gap: 12px; flex-wrap: wrap; } .olab__avg th, .olab__avg td { font-weight: 700; background: color-mix(in srgb, var(--sun) 22%, transparent); }
+.olab__status--warn { color: var(--red); font-weight: 600; }

@@ -185,7 +185,10 @@ window.TEXTBOOK.grades = [
         en: 'Chapter II. Light',
         lessons: [
           { slug: 'bai-5', number: '5', vi: 'Khúc xạ ánh sáng', en: 'Refraction of light', content: 'khtn9-bai5' },
-          { slug: 'bai-6', number: '6', vi: 'Phản xạ toàn phần', en: 'Total internal reflection', content: 'khtn9-bai6' }
+          { slug: 'bai-6', number: '6', vi: 'Phản xạ toàn phần', en: 'Total internal reflection', content: 'khtn9-bai6' },
+          { slug: 'bai-7', number: '7', vi: 'Lăng kính', en: 'Prisms', content: 'khtn9-bai7' },
+          { slug: 'bai-8', number: '8', vi: 'Thấu kính', en: 'Lenses', content: 'khtn9-bai8' },
+          { slug: 'bai-9', number: '9', vi: 'Thực hành đo tiêu cự của thấu kính hội tụ', en: 'Practical: measuring the focal length of a converging lens', content: 'khtn9-bai9' }
         ]
       }
     ]

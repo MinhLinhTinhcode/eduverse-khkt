@@ -547,7 +547,23 @@
     { lesson: 'khtn9-bai6', page: 30, after: 'fig', id: 'olab-tir' },
     { lesson: 'khtn9-bai6', page: 32, after: 'ex', id: 'olab-water' },
     { lesson: 'khtn9-bai6', page: 33, after: 'ask', id: 'olab-mirage' },
-    { lesson: 'khtn9-bai6', page: 33, after: 'fig', nth: 2, id: 'olab-fiber' }
+    { lesson: 'khtn9-bai6', page: 33, after: 'fig', nth: 2, id: 'olab-fiber' },
+    { lesson: 'khtn9-bai7', page: 35, after: 'fig', id: 'oprism-disp' },
+    { lesson: 'khtn9-bai7', page: 36, after: 'fig', nth: 2, id: 'oprism-trace' },
+    { lesson: 'khtn9-bai7', page: 37, after: 'ex', id: 'oprism-task' },
+    { lesson: 'khtn9-bai7', page: 38, after: 'fig', id: 'oprism-colour' },
+    { lesson: 'khtn9-bai7', page: 38, after: 'ask', nth: 2, id: 'oprism-scene' },
+    { lesson: 'khtn9-bai7', page: 39, after: 'key', nth: 2, id: 'oprism-disc' },
+    { lesson: 'khtn9-bai7', page: 39, after: 'fig', nth: 2, id: 'oprism-rainbow' },
+    { lesson: 'khtn9-bai8', page: 41, after: 'fig', id: 'olens-class' },
+    { lesson: 'khtn9-bai8', page: 42, after: 'activity', id: 'olens-rays' },
+    { lesson: 'khtn9-bai8', page: 43, after: 'fig', id: 'olens-point' },
+    { lesson: 'khtn9-bai8', page: 43, after: 'ask', id: 'olens-point-task' },
+    { lesson: 'khtn9-bai8', page: 44, after: 'ex', id: 'olens-object-task' },
+    { lesson: 'khtn9-bai8', page: 45, after: 'activity', id: 'olens-object' },
+    { lesson: 'khtn9-bai8', page: 45, after: 'ask', nth: 1, id: 'obench-demo' },
+    { lesson: 'khtn9-bai9', page: 48, after: 'ask', nth: 2, id: 'obench-silberman' },
+    { lesson: 'khtn9-bai9', page: 49, after: 'fig', id: 'obench-bessel' }
   ];
   function inject() {
     PLACE.forEach((p) => {

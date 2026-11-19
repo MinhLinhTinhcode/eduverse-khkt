@@ -2,7 +2,7 @@
 <html lang="vi"><head><meta charset="utf-8"><title>Kiểm thử optics-lab</title>
 <style>body{font:16px/1.5 system-ui,sans-serif;margin:24px;max-width:760px}.ok{color:#17a05d}.no{color:#e0393e;font-weight:700}td,th{border:1px solid #ccc;padding:4px 8px;text-align:left}table{border-collapse:collapse}</style></head>
 <body><h1>Kiểm thử engine quang học và công – công suất</h1><p>Mở trực tiếp bằng <code>file://</code>. Bảng dưới in kết quả <code>OpticsLab.engine.selfTest()</code> và <code>workSelfTest()</code>.</p><div id="out"></div>
-<script src="optics-lab.js"></script><script src="work-lab.js"></script>
+<script src="optics-lab.js"></script><script src="optics-lens.js"></script><script src="optics-prism.js"></script><script src="work-lab.js"></script>
 <script>
 (function(){
   var rows=OpticsLab.engine.selfTest().concat(window.workSelfTest()), bad=rows.filter(function(r){return !r.ok}).length;

@@ -197,3 +197,22 @@ Bài 4 (Công và công suất, Chương I), Bài 5 (Khúc xạ ánh sáng) và 
 1. Viết hàm thuần dữ liệu trong `engine` (ví dụ `prism(n, A, i)` trả về góc lệch, `thinLens(f, d)` trả về vị trí ảnh) và thêm phép thử vào `selfTest()`.
 2. Viết hàm dựng giao diện `fn(body, options)` theo mẫu `halfdisk()`: dựng SVG một lần, mỗi khung hình chỉ `setAttribute`; dùng `makeDrag(svg, { tên: { move(x, y), key(d, shift, axis) } })` cho kéo thả chuột/cảm ứng + bàn phím (đặt `data-h="tên"` và `tabindex="0"` cho tay nắm, thêm vòng `olab__hit` r ≥ 30 để chạm dễ).
 3. Đăng ký vào `window.LabSims['olab-…'] = { fn, vi, en, intro }` rồi thêm một dòng vào `PLACE` của `interactive.js`.
+
+## Khoa học tự nhiên 9 — Đợt 3 (Bài 7–9): lăng kính, thấu kính, thực hành đo tiêu cự
+
+| Tệp | Nội dung |
+|---|---|
+| `js/data/lesson-khtn9-bai7.js` | Bài 7 Lăng kính (tr. 34–39): cấu tạo, tán sắc, đường truyền tia đơn sắc, màu sắc của vật, em có biết (chiết suất theo màu, cầu vồng). 12 câu hỏi |
+| `js/data/lesson-khtn9-bai8.js` | Bài 8 Thấu kính (tr. 40–46): phân loại, trục chính – quang tâm – tiêu điểm, đường truyền tia, mô hình lăng kính nhỏ, ảnh thật/ảo, Bảng 8.1/8.2. 12 câu hỏi |
+| `js/data/lesson-khtn9-bai9.js` | Bài 9 Thực hành đo tiêu cự (tr. 47–49): phương pháp đối xứng (Silbermann), Bảng 9.1, báo cáo, phương pháp Bessel. 10 câu hỏi |
+| `js/optics-lens.js` | Mở rộng `OpticsLab.engine`: `thinLens`, `lensRay`, `imageRays`, `benchBlur`, `silberman`, `bessel`, `besselPositions`; thành phần `lensLab` (class/rays/point/object) và `bench` (demo/silberman/bessel) |
+| `js/optics-prism.js` | Mở rộng engine: `prismTrace`, `nDisp` (tán sắc kiểu Cauchy, minh hoạ), `rainbowAngle/rainbowMax`, `colourMix`; thành phần lăng kính, tán sắc, màu sắc, đĩa Newton, cầu vồng |
+| `js/illustrations-khtn.js` | 16 hình mới `khtn7a–h`, `khtn8a–f`, `khtn9a–b` |
+
+Hai tệp `optics-lens.js`, `optics-prism.js` nạp **sau** `optics-lab.js` (xem `index.html`). Mô phỏng đăng ký trong `window.LabSims` với id `olens-*`, `obench-*`, `oprism-*`; gắn vào trang bằng một dòng trong `PLACE` của `js/interactive.js` (`nth` chọn khối thứ n cùng loại).
+
+**Thêm một linh kiện quang mới (ví dụ Bài 10 – kính lúp):**
+1. Viết hàm thuần dữ liệu trong `OpticsLab.engine` (vd. `magnifier({f, d})` dùng lại `thinLens`) và thêm phép thử vào một hàm `selfTestXxx()`, nối vào `E.selfTest`.
+2. Dùng lại `lensLab(body, {mode:'object', f, d, h})` hoặc `bench(...)`; nếu cần chế độ mới, thêm một nhánh `mode` trong `lensLab`.
+3. Đăng ký `window.LabSims['olens-kinh-lup'] = {fn, vi, en, intro}` rồi thêm dòng `PLACE`.
+4. Mọi nhãn bên trong `<svg>` dùng chuỗi thường (hoặc `<tspan class="vi/en">`), **không** dùng `pr()` vì thẻ `<span>` làm hỏng ngữ cảnh SVG.

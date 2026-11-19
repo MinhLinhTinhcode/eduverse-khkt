@@ -392,5 +392,169 @@
     t(100, 86, 'I₁', { s: 12, b: 1 }) + t(186, 168, 'I₂', { s: 12, b: 1 }) + t(266, 86, 'I₃', { s: 12, b: 1 }) + line(40, 56, 40, 184, C.ink, 1.6, 1) + t(46, 54, 'M', { s: 12, b: 1 }) + t(46, 198, 'N', { s: 12, b: 1 }) +
     bil(240, 214, 'Phản xạ toàn phần lặp lại nhiều lần', 'Total internal reflection repeated many times', { a: 'middle', s: 11, c: C.red }));
 
+  /* ---------------------------------------------------------------- ĐỢT 3: BÀI 7 – 9 */
+  const SPEC = [['đỏ', 'red', '#e0393e'], ['da cam', 'orange', '#f08a24'], ['vàng', 'yellow', '#f2c500'], ['lục', 'green', '#2fbf7a'], ['lam', 'blue', '#2aa7e0'], ['chàm', 'indigo', '#3b4fd0'], ['tím', 'violet', '#7b3fe4']];
+  const lensPath = (cx, cy, h, conv, w) => { w = w || 14; return conv ? 'M' + cx + ' ' + (cy - h) + ' Q ' + (cx + w * 2) + ' ' + cy + ' ' + cx + ' ' + (cy + h) + ' Q ' + (cx - w * 2) + ' ' + cy + ' ' + cx + ' ' + (cy - h) + ' Z' : 'M' + (cx - w) + ' ' + (cy - h) + ' L ' + (cx + w) + ' ' + (cy - h) + ' Q ' + cx + ' ' + cy + ' ' + (cx + w) + ' ' + (cy + h) + ' L ' + (cx - w) + ' ' + (cy + h) + ' Q ' + cx + ' ' + cy + ' ' + (cx - w) + ' ' + (cy - h) + ' Z'; };
+  const lensG = (cx, cy, h, conv, w) => '<path d="' + lensPath(cx, cy, h, conv, w) + '" fill="' + C.penL + '" stroke="' + C.pen + '" stroke-width="2.4" opacity=".9"/>';
+  const dot = (x, y, s, c) => circ(x, y, 3.4, c || C.ink, { w: 0 }) + (s ? t(x, y + 17, s, { a: 'middle', s: 12, b: 1 }) : '');
+  const dashed = (x1, y1, x2, y2, c, w) => line(x1, y1, x2, y2, c, w || 2, 1);
+  const prismTri = (A, B, Cc, fill) => poly(A + ' ' + B + ' ' + Cc, fill || C.penL, { c: C.pen, w: 2.4 });
+
+  const khtn7a = () => svg('0 0 480 230', 'Cấu tạo của lăng kính và mặt phẳng tiết diện chính',
+    t(110, 20, 'Lăng kính (khối lăng trụ tam giác)', { a: 'middle', s: 11, b: 1 }) +
+    poly('50,170 120,170 160,150 90,150', C.sunL, { c: C.pen, w: 2 }) + poly('50,170 90,70 160,60 160,150 90,150', '#cfdcff', { c: C.pen, w: 2 }) + poly('90,150 160,150 160,60 90,70', C.penL, { c: C.pen, w: 2 }) +
+    '<polygon points="50,170 120,170 90,150" fill="none"/>' + poly('50,170 120,170 160,150 90,150', C.sunL, { c: C.pen, w: 2 }) + poly('50,170 120,170 90,70', '#bfd0ff', { c: C.pen, w: 2 }) + poly('120,170 160,150 130,60 90,70', C.penL, { c: C.pen, w: 2 }) +
+    bil(40, 198, 'Mặt bên', 'Lateral face', { s: 10 }) + bil(150, 198, 'Đáy', 'Base', { s: 10 }) + t(100, 60, 'Cạnh', { a: 'middle', s: 11, b: 1, c: C.red }) +
+    t(350, 20, 'Mặt phẳng tiết diện chính', { a: 'middle', s: 11, b: 1 }) +
+    poly('270,180 430,180 350,52', C.penL, { c: C.pen, w: 2.6 }) + arc(350, 52, 30, 238, 302, C.red, 3) + t(350, 86, 'A', { a: 'middle', s: 16, b: 1, c: C.red }) + t(350, 44, 'A', { a: 'middle', s: 12, b: 1 }) + t(262, 196, 'B', { s: 12, b: 1 }) + t(436, 196, 'C', { s: 12, b: 1 }) +
+    bil(300, 120, 'Mặt bên', 'Lateral face', { a: 'end', s: 10 }) + bil(350, 214, 'Đáy BC', 'Base BC', { a: 'middle', s: 10 }) + bil(470, 120, 'Góc chiết quang A', 'Refracting angle A', { a: 'end', s: 10, c: C.red }));
+
+  const khtn7b = () => svg('0 0 480 230', 'Bố trí thí nghiệm tán sắc ánh sáng trắng qua lăng kính',
+    rect(14, 92, 56, 44, C.sunL) + circ(42, 114, 12, C.sun) + rect(70, 82, 10, 64, C.greyL, { r: 2 }) + '<rect x="70" y="110" width="10" height="7" fill="#fff"/>' +
+    line(80, 114, 200, 114, '#fff', 5) + line(80, 114, 200, 114, C.grey, 1.4) + poly('200,150 250,150 225,66', C.penL, { c: C.pen, w: 2.4 }) +
+    SPEC.map((s, i) => line(236, 100, 400, 124 + (6 - i) * -6 + 36 + 0 * i - (i - 3) * 0, s[2], 2.4).replace('y2="' + (124 + (6 - i) * -6 + 36) + '"', 'y2="' + (118 + i * 9) + '"')).join('') +
+    rect(396, 80, 12, 110, '#fff', { r: 3, w: 2 }) + SPEC.map((s, i) => '<rect x="397" y="' + (112 + i * 8) + '" width="10" height="8" fill="' + s[2] + '"/>').join('') +
+    bil(42, 160, 'Đèn trắng + khe', 'White lamp + slit', { a: 'middle', s: 10 }) + bil(225, 176, 'Lăng kính', 'Prism', { a: 'middle', s: 11 }) + bil(402, 206, 'Màn', 'Screen', { a: 'middle', s: 11 }) + bil(150, 58, 'Chùm sáng trắng hẹp', 'Narrow white beam', { a: 'middle', s: 10 }) +
+    rect(110, 190, 54, 14, C.redL, { r: 4, w: 1.4 }) + rect(168, 190, 54, 14, C.violetL, { r: 4, w: 1.4 }) + t(137, 201, 'lọc đỏ', { a: 'middle', s: 9, b: 1 }) + t(195, 201, 'lọc tím', { a: 'middle', s: 9, b: 1 }));
+
+  const khtn7c = () => {
+    let s = poly('90,140 160,140 125,70', C.penL, { c: C.pen, w: 2.4 }) + line(10, 120, 112, 100, '#e9ecf5', 5) + line(10, 120, 112, 100, C.grey, 1.4);
+    SPEC.forEach((c, i) => { s += line(138, 100, 330, 76 + i * 22, c[2], 3); s += rect(340, 62 + i * 22, 60, 20, c[2], { r: 2, w: 0 }) + t(408, 77 + i * 22, c[0] + ' / ' + c[1], { s: 11, b: 1 }); });
+    return svg('0 0 480 230', 'Quang phổ của ánh sáng trắng: bảy màu', s + bil(60, 190, 'Ánh sáng trắng', 'White light', { a: 'middle', s: 10 }) + bil(125, 164, 'Lăng kính', 'Prism', { a: 'middle', s: 10 }) + bil(190, 214, 'Màu đỏ lệch ít nhất, màu tím lệch nhiều nhất', 'Red is deviated least, violet most', { a: 'middle', s: 10, c: C.red }));
+  };
+
+  const khtn7d = () => {
+    const rad = Math.PI / 180, A = 60, n = 1.5, i1 = 50, r1 = Math.asin(Math.sin(i1 * rad) / n) / rad, r2 = A - r1, i2 = Math.asin(n * Math.sin(r2 * rad)) / rad, D = i1 + i2 - A;
+    const ax = 240, ay = 40, L = 160, bx = ax - L * Math.sin(30 * rad), by = ay + L * Math.cos(30 * rad), cx = ax + L * Math.sin(30 * rad);
+    const I = [ax + (bx - ax) * 0.5, ay + (by - ay) * 0.5], nAB = [-Math.cos(30 * rad), -Math.sin(30 * rad)], nAC = [Math.cos(30 * rad), -Math.sin(30 * rad)];
+    const rot = (v, a) => [v[0] * Math.cos(a) - v[1] * Math.sin(a), v[0] * Math.sin(a) + v[1] * Math.cos(a)];
+    const inn = [-nAB[0], -nAB[1]];
+    const sgn = 1;
+    const dir1 = rot(inn, -i1 * rad * sgn), dirR1 = rot(inn, -r1 * rad * sgn);
+    // tìm J: giao của tia IJ với AC
+    const tt = ((ax - I[0]) * nAC[0] + (ay - I[1]) * nAC[1]) / (dirR1[0] * nAC[0] + dirR1[1] * nAC[1]), J = [I[0] + dirR1[0] * tt, I[1] + dirR1[1] * tt];
+    const ang = (v) => Math.atan2(v[1], v[0]), d2 = ang(dirR1) - ang(nAC), outAng = ang(nAC) + Math.sign(d2 || 1) * i2 * rad * (Math.abs(d2) > 1e-9 ? 1 : 1);
+    const dirO = [Math.cos(outAng), Math.sin(outAng)], R = [J[0] + dirO[0] * 120, J[1] + dirO[1] * 120], S0 = [I[0] - dir1[0] * 110, I[1] - dir1[1] * 110];
+    const nl = (P, nv, len, col) => dashed(P[0] - nv[0] * len, P[1] - nv[1] * len, P[0] + nv[0] * len, P[1] + nv[1] * len, col, 1.4);
+    const Dpt = [J[0] + dir1[0] * 0, J[1]];
+    return svg('0 0 480 260', 'Đường truyền của tia sáng đơn sắc qua lăng kính',
+      poly(ax + ',' + ay + ' ' + bx + ',' + by + ' ' + cx + ',' + by, C.penL, { c: C.pen, w: 2.6 }) + nl(I, nAB, 42, C.grey) + nl(J, nAC, 42, C.grey) +
+      arrow(S0[0], S0[1], I[0], I[1], C.red, 2.6) + line(I[0], I[1], J[0], J[1], C.red, 2.6) + arrow(J[0], J[1], R[0], R[1], C.red, 2.6) +
+      dashed(I[0], I[1], I[0] + dir1[0] * 150, I[1] + dir1[1] * 150, C.grey, 1.4) + dashed(J[0], J[1], J[0] - dirO[0] * 90, J[1] - dirO[1] * 90, C.grey, 1.4) +
+      t(S0[0] - 6, S0[1] + 4, 'S', { a: 'end', s: 14, b: 1 }) + t(I[0] - 16, I[1] - 6, 'I', { s: 14, b: 1 }) + t(J[0] - 4, J[1] - 10, 'J', { s: 14, b: 1 }) + t(R[0] + 6, R[1] + 4, 'R', { s: 14, b: 1 }) +
+      t(ax, ay - 8, 'A', { a: 'middle', s: 13, b: 1 }) + t(bx - 14, by + 14, 'B', { s: 13, b: 1 }) + t(cx + 8, by + 14, 'C', { s: 13, b: 1 }) +
+      t(I[0] - 70, I[1] - 20, 'i₁', { s: 13, b: 1, c: C.teal }) + t(I[0] + 12, I[1] + 24, 'r₁', { s: 13, b: 1, c: C.teal }) + t(J[0] - 40, J[1] + 22, 'r₂', { s: 13, b: 1, c: C.teal }) + t(J[0] + 30, J[1] + 36, 'i₂', { s: 13, b: 1, c: C.teal }) +
+      bil(470, 100, 'D: góc lệch giữa SI và JR', 'D: angle between SI and JR', { a: 'end', s: 10, c: C.red }) + bil(240, 244, 'n = 1,5; A = 60°; i₁ = 50° ⇒ D ≈ ' + fmt1(D) + '°', 'n = 1.5; A = 60°; i₁ = 50° ⇒ D ≈ ' + fmt1(D) + '°', { a: 'middle', s: 10 }));
+  };
+
+  const fmt1 = (v) => (Math.round(v * 10) / 10).toString().replace('.', ',');
+
+  const khtn7e = () => {
+    const surf = [['trắng', 'white', '#fff', ['#e0393e', '#2fbf7a', '#3b4fd0']], ['đỏ', 'red', '#e0393e', ['#e0393e']], ['lam', 'blue', '#2a7be0', ['#2a7be0']], ['đen', 'black', '#222', []]];
+    let s = '';
+    surf.forEach((q, i) => { const x = 20 + i * 115; s += rect(x, 150, 90, 26, q[2], { r: 3, w: 2 }); s += arrow(x + 20, 40, x + 38, 146, '#d9a900', 2.4); (q[3].length ? q[3] : []).forEach((c, k) => { s += arrow(x + 44 + k * 4, 146, x + 72 + k * 6, 70 - 0, c, 2.2); }); s += bil(x + 45, 196, q[0], q[1], { a: 'middle', s: 11 }); s += circ(x + 80, 64, 7, '#fff', { w: 1.5 }) + circ(x + 80, 64, 3, C.ink, { w: 0 }); if (!q[3].length) s += t(x + 45, 114, '✕', { a: 'middle', s: 18, b: 1, c: C.red }); });
+    return svg('0 0 480 230', 'Minh hoạ sự nhìn thấy màu sắc của các bề mặt dưới ánh sáng trắng', s + bil(240, 18, 'Ánh sáng trắng chiếu tới; mũi tên màu là ánh sáng phản xạ vào mắt', 'White light comes in; coloured arrows are the light reflected to the eye', { a: 'middle', s: 10 }));
+  };
+
+  const khtn7f = () => svg('0 0 480 200', 'Ánh sáng trắng truyền qua tấm lọc màu lục',
+    SPEC.map((c, i) => line(30, 60 + i * 12, 190, 60 + i * 12, c[2], 3)).join('') + rect(190, 40, 22, 120, '#bff0cf', { r: 3, w: 2.4, c: C.green }) + line(212, 114, 400, 114, SPEC[3][2], 4) +
+    bil(110, 30, 'Ánh sáng trắng', 'White light', { a: 'middle', s: 11 }) + bil(201, 180, 'Tấm lọc lục', 'Green filter', { a: 'middle', s: 11 }) + bil(330, 90, 'Chỉ còn ánh sáng lục', 'Only green light remains', { a: 'middle', s: 11, c: C.green }) +
+    SPEC.filter((c, i) => i !== 3).map((c, i) => '<text x="' + (214 + i * 0) + '" y="' + (60 + i * 0) + '" style="font-size:0"></text>').join('') );
+
+  const khtn7g = () => {
+    let s = '', cx = 140, cy = 112, r = 78, a0 = -90;
+    SPEC.forEach((c, i) => { const a1 = a0 + 360 / 7, p = (a) => [cx + r * Math.cos(a * Math.PI / 180), cy + r * Math.sin(a * Math.PI / 180)]; s += '<path d="M' + cx + ' ' + cy + ' L' + p(a0)[0].toFixed(1) + ' ' + p(a0)[1].toFixed(1) + ' A' + r + ' ' + r + ' 0 0 1 ' + p(a1)[0].toFixed(1) + ' ' + p(a1)[1].toFixed(1) + ' Z" fill="' + c[2] + '" stroke="#fff" stroke-width="1.5"/>'; a0 = a1; });
+    s += circ(cx, cy, 5, C.ink, { w: 0 }) + circ(cx - 14, cy - 8, 3, '#fff', { c: C.ink, w: 1 }) + circ(cx + 14, cy - 8, 3, '#fff', { c: C.ink, w: 1 });
+    s += path('M126 104 Q 90 40 40 36', 'none', { c: C.ink, w: 1.6 }) + path('M154 104 Q 190 40 240 36', 'none', { c: C.ink, w: 1.6 });
+    s += arrow(300, 112, 360, 112, C.pen, 2.6) + circ(420, 112, 44, '#fff', { c: C.grey, w: 2.4 }) + bil(420, 96, 'Quay nhanh', 'Spin fast', { a: 'middle', s: 10 }) + bil(420, 128, '→ trắng', '→ white', { a: 'middle', s: 10, c: C.pen });
+    return svg('0 0 480 220', 'Đĩa Newton bảy màu quay nhanh cho màu trắng', s + bil(140, 206, 'Đĩa bảy màu, treo bằng sợi dây', 'A seven-colour disc on a string', { a: 'middle', s: 10 }));
+  };
+
+  const khtn7h = () => {
+    const cx = 250, cy = 95, r = 76, rad = Math.PI / 180, i = 59.4, n = 1.333, rr = Math.asin(Math.sin(i * rad) / n) / rad, ph = (a) => [cx + r * Math.sin(a * rad), cy - r * Math.cos(a * rad)];
+    // tia vào từ trái, nằm ngang, ở độ cao hợp góc i với pháp tuyến: điểm tới P1 trên cung trái-trên
+    const P1 = [cx - r * Math.cos(i * rad), cy - r * Math.sin(i * rad)];
+    const t1 = i * rad - rr * rad, ang1 = Math.PI - 0;       // hướng tia tới: sang phải
+    const dir = [Math.cos(-(i - rr) * rad * -1), Math.sin(-(i - rr) * rad * -1)];
+    const Q = (a) => [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+    const a1 = Math.atan2(P1[1] - cy, P1[0] - cx), a2 = a1 + Math.PI - 2 * rr * rad, a3 = a2 + Math.PI - 2 * rr * rad, B = Q(a2), E = Q(a3);
+    return svg('0 0 480 275', 'Đường truyền ánh sáng qua giọt nước mưa tạo cầu vồng',
+      circ(cx, cy, r, 'rgba(120,180,255,.28)', { c: C.pen, w: 2.4 }) + arrow(30, P1[1], P1[0], P1[1], '#d9a900', 3) +
+      line(P1[0], P1[1], B[0], B[1], C.red, 2.6) + line(B[0], B[1], E[0], E[1], C.red, 2.6) +
+      arrow(E[0], E[1], E[0] + 90 * Math.cos(137.6 * rad), E[1] + 90 * Math.sin(137.6 * rad), C.red, 2.6) + dashed(E[0], E[1], E[0] + 120, E[1], C.grey, 1.4) + t(E[0] + 30, E[1] - 8, '≈ 42°', { s: 11, b: 1, c: C.violet }) +
+      t(30, P1[1] - 8, 'Tia Mặt Trời / Sun ray', { s: 10, b: 1 }) + bil(250, 252, 'Khúc xạ → phản xạ toàn phần → khúc xạ + tán sắc', 'Refraction → total reflection → refraction + dispersion', { a: 'middle', s: 10 }) +
+      bil(470, 30, 'Mắt nhìn: 40°–42° so với tia Mặt Trời', 'Eye: 40°–42° from the Sun’s rays', { a: 'end', s: 10, c: C.violet }));
+  };
+
+  const khtn8a = () => svg('0 0 480 250', 'Thấu kính hội tụ và thấu kính phân kì: hình dạng, kí hiệu và chùm tia song song',
+    t(120, 18, 'a) Thấu kính rìa mỏng (hội tụ)', { a: 'middle', s: 11, b: 1 }) + t(360, 18, 'b) Thấu kính rìa dày (phân kì)', { a: 'middle', s: 11, b: 1 }) +
+    lensG(120, 110, 60, true) + lensG(360, 110, 60, false) + line(10, 110, 230, 110, C.grey, 1.4, 1) + line(250, 110, 470, 110, C.grey, 1.4, 1) +
+    [-36, -18, 18, 36].map((y) => arrow(20, 110 + y, 118, 110 + y, C.red, 2) + line(120, 110 + y, 210, 110, C.red, 2)).join('') + arrow(120, 110, 120, 110, C.red, 0.1) +
+    [-36, -18, 18, 36].map((y) => arrow(260, 110 + y, 358, 110 + y, C.red, 2) + line(360, 110 + y, 450, 110 + y * 2.1, C.red, 2)).join('') +
+    [-36, -18, 18, 36].map((y) => dashed(360, 110 + y, 318, 110 + y * 0.3 + 0 * y, C.grey, 1.2)).join('') +
+    bil(120, 196, 'Chùm ló hội tụ', 'Emergent beam converges', { a: 'middle', s: 11 }) + bil(360, 196, 'Chùm ló phân kì', 'Emergent beam diverges', { a: 'middle', s: 11 }));
+
+  const khtn8b = () => {
+    const f = 90, cy = 100, mk = (cx, conv, y0) => lensG(cx, cy, 60, conv) + line(cx - 190, cy, cx + 190, cy, C.ink, 1.6) + dot(cx, cy, 'O') + dot(cx + f, cy, conv ? "F′" : 'F') + dot(cx - f, cy, conv ? 'F' : "F′") + dashed(cx, cy + 40, cx + f, cy + 40, C.teal, 1.6);
+    return svg('0 0 480 250', 'Trục chính, quang tâm, tiêu điểm chính và tiêu cự',
+      mk(120, true) + [-30, 30].map((y) => arrow(0, cy + y, 118, cy + y, C.red, 2) + line(120, cy + y, 210, cy, C.red, 2)).join('') + t(165, cy + 60, 'f = OF′', { a: 'middle', s: 12, b: 1, c: C.teal }) +
+      '' + t(120, 16, 'a) Hội tụ', { a: 'middle', s: 11, b: 1 }) +
+      lensG(360, cy, 60, false) + line(250, cy, 470, cy, C.ink, 1.6) + dot(360, cy, 'O') + dot(450, cy, "F′") + dot(270, cy, 'F') + t(360, 16, 'b) Phân kì', { a: 'middle', s: 11, b: 1 }) +
+      [-30, 30].map((y) => arrow(262, cy + y, 358, cy + y, C.red, 2) + line(360, cy + y, 440, cy + y * 1.9, C.red, 2) + dashed(360, cy + y, 270, cy, C.red, 1.4)).join('') + t(315, cy + 60, 'f = OF', { a: 'middle', s: 12, b: 1, c: C.teal }) +
+      bil(240, 214, 'Trục chính đi qua quang tâm O, vuông góc với thấu kính', 'The principal axis passes through O, perpendicular to the lens', { a: 'middle', s: 10 }));
+  };
+
+  const khtn8c = () => {
+    const prism = (x, y, up, c) => poly(up ? (x - 16) + ',' + (y + 12) + ' ' + (x + 16) + ',' + (y + 12) + ' ' + x + ',' + (y - 12) : (x - 16) + ',' + (y - 12) + ' ' + (x + 16) + ',' + (y - 12) + ' ' + x + ',' + (y + 12), c || C.penL, { c: C.pen, w: 1.6 });
+    let s = t(120, 16, 'Hội tụ: các đáy lăng kính hướng về trục', { a: 'middle', s: 10.5, b: 1 }) + t(360, 16, 'Phân kì: các đáy hướng ra rìa', { a: 'middle', s: 10.5, b: 1 }) + line(10, 112, 230, 112, C.grey, 1.4, 1) + line(250, 112, 470, 112, C.grey, 1.4, 1);
+    [-72, -36, 0, 36, 72].forEach((y) => { const mid = y === 0; s += mid ? rect(112, 100, 16, 24, C.penL, { r: 2, w: 1.6 }) : prism(120, 112 + y, y > 0, C.penL).replace(/<polygon/, '<polygon'); });
+    [-72, -36, 0, 36, 72].forEach((y) => { const mid = y === 0; s += mid ? rect(352, 100, 16, 24, C.penL, { r: 2, w: 1.6 }) : prism(360, 112 + y, y < 0, C.penL); });
+    [-60, -30, 30, 60].forEach((y) => { s += arrow(14, 112 + y, 112, 112 + y, C.red, 2) + line(120, 112 + y, 200, 112 + y * 0.28, C.red, 2); s += arrow(254, 112 + y, 352, 112 + y, C.red, 2) + line(360, 112 + y, 440, 112 + y * 1.7, C.red, 2); });
+    return svg('0 0 480 230', 'Mô hình thấu kính gồm nhiều lăng kính nhỏ', s + bil(240, 206, 'Tia càng xa trục càng gặp lăng kính có góc lệch càng lớn', 'The farther a ray from the axis, the larger the deviation', { a: 'middle', s: 10 }));
+  };
+
+  const khtn8d = () => {
+    const cy = 110, f = 70, cx = 170, S = [50, 56], mk = (c, conv) => lensG(c, cy, 70, conv) + line(c - 150, cy, c + 280, cy, C.ink, 1.4) + dot(c, cy, 'O') + dot(c + f, cy, conv ? "F′" : 'F') + dot(c - f, cy, conv ? 'F' : "F′");
+    const dy = cy - S[1], dx = cx - S[0], k = dx * f / (dx - f), ipx = cx + k, ipy = cy + dy * (k / dx);
+    let s = mk(cx, true) + circ(S[0], S[1], 5, C.pen) + t(S[0] - 8, S[1] - 8, 'S', { a: 'end', s: 13, b: 1 });
+    s += arrow(S[0], S[1], cx, cy, C.red, 2) + line(cx, cy, ipx, ipy, C.red, 2) + line(S[0], S[1], cx, S[1], C.teal, 2) + line(cx, S[1], ipx, ipy, C.teal, 2) + circ(ipx, ipy, 5, C.green) + t(ipx + 8, ipy + 6, "S′", { s: 13, b: 1, c: C.green });
+    return svg('0 0 480 230', 'Dựng ảnh S′ của điểm sáng S qua thấu kính hội tụ bằng hai tia đặc biệt', s + bil(236, 30, 'Tia qua O: truyền thẳng', 'Ray through O: straight', { a: 'start', s: 10, c: C.red }) + bil(236, 62, 'Tia song song trục: ló qua F′', 'Ray parallel to axis: through F′', { a: 'start', s: 10, c: C.teal }) + bil(236, 94, 'S′ là giao điểm hai tia ló', 'S′ is where the emergent rays meet', { a: 'start', s: 10, c: C.green }));
+  };
+
+  const khtn8e = () => {
+    const f = 60, cy = 110, rr = (cx, d, h, conv, ox) => {
+      let s = lensG(cx, cy, 78, conv) + line(cx - 128, cy, cx + 128, cy, C.ink, 1.4) + dot(cx, cy, 'O') + dot(cx + f, cy, "F′") + dot(cx - f, cy, 'F');
+      const A = [cx - d, cy], B = [cx - d, cy - h]; s += arrow(A[0], A[1], B[0], B[1], C.pen, 3) + t(A[0], A[1] + 16, 'A', { a: 'middle', s: 12, b: 1 }) + t(B[0] - 4, B[1] - 6, 'B', { a: 'end', s: 12, b: 1 });
+      const dp = d * f / (d - f), k = -dp / d, hp = k * h, Bp = [cx + dp, cy - hp];
+      if (dp > 0) { s += line(B[0], B[1], cx, cy, C.red, 1.8) + line(cx, cy, Bp[0], Bp[1], C.red, 1.8) + line(B[0], B[1], cx, B[1], C.teal, 1.8) + line(cx, B[1], Bp[0], Bp[1], C.teal, 1.8) + arrow(Bp[0], cy, Bp[0], Bp[1], C.green, 3) + t(Bp[0] + 6, Bp[1] + (hp < 0 ? -4 : 12), "B′", { s: 12, b: 1, c: C.green }) + t(Bp[0], cy - 6 * Math.sign(-hp || 1) - 2, "A′", { a: 'middle', s: 12, b: 1, c: C.green }); }
+      else { const ex = cx + 120; s += line(B[0], B[1], cx, cy, C.red, 1.8) + line(cx, cy, ex, cy + (cy - Bp[1]) * -1 * 0 + (Bp[1] - cy) * (ex - cx) / (Bp[0] - cx) * -1 * -1 * 1, C.red, 1.8).replace(/.*/, '') + line(B[0], B[1], cx, B[1], C.teal, 1.8); const th = (Bp[1] - cy) / (Bp[0] - cx); s += line(cx, cy, cx + 120, cy + th * 120, C.red, 1.8) + line(cx, B[1], cx + 120, B[1] + (cy - B[1]) / f * -1 * 120 * -1 * 0 + ((cy - B[1]) / f) * 120 * -1 * -1 * 0 + (cy - B[1]) * 120 / f * -1 * -1 * 0, C.teal, 1.8).replace(/.*/, '') + line(cx, B[1], cx + 120, B[1] + (cy - B[1]) / f * 120, C.teal, 1.8) + dashed(cx, cy, Bp[0], Bp[1], C.red, 1.6) + dashed(cx, B[1], Bp[0], Bp[1], C.teal, 1.6) + arrow(Bp[0], cy, Bp[0], Bp[1], C.green, 2.6).replace(/stroke-dasharray="[^"]*"/, '') + t(Bp[0] - 6, Bp[1] - 6, "B′", { a: 'end', s: 12, b: 1, c: C.green }); }
+      return s;
+    };
+    return svg('0 0 480 460', 'Dựng ảnh của vật AB qua thấu kính hội tụ khi d > f và d < f',
+      '<g>' + t(8, 16, 'a) d > f: ảnh thật, ngược chiều (nét liền)', { s: 11, b: 1 }) + rr(260, 130, 40, true) + '</g><g transform="translate(0 230)">' + t(8, 16, 'b) d < f: ảnh ảo, cùng chiều, lớn hơn (nét đứt)', { s: 11, b: 1 }) + rr(260, 36, 30, true) + '</g>');
+  };
+
+  const khtn8f = () => svg('0 0 480 210', 'Bố trí thí nghiệm tạo ảnh qua thấu kính trên giá quang học',
+    rect(20, 150, 440, 12, C.greyL, { r: 3 }) + rect(24, 100, 46, 50, C.sunL) + circ(47, 120, 11, C.sun) + rect(90, 82, 8, 68, C.greyL, { r: 2 }) + path('M92 95 L108 95 M92 95 L92 125 M92 110 L104 110', 'none', { c: C.pen, w: 3 }) +
+    lensG(220, 118, 40, true) + rect(216, 150, 8, 8, C.ink) + rect(360, 70, 8, 80, '#fff', { r: 2, w: 2 }) + path('M366 100 L350 100 M366 100 L366 132 M366 114 L354 114', 'none', { c: C.teal, w: 2.6 }) + rect(300, 188, 130, 14, 'none', { w: 0 }) +
+    bil(47, 176, '1 Nguồn sáng', '1 Light source', { a: 'middle', s: 9 }) + bil(94, 66, '2 Vật chữ F', '2 F object', { a: 'middle', s: 9 }) + bil(220, 66, '3 Thấu kính', '3 Lens', { a: 'middle', s: 9 }) + bil(364, 54, '4 Màn', '4 Screen', { a: 'middle', s: 9 }) + bil(300, 176, '5 Giá quang học', '5 Optical bench', { a: 'middle', s: 9 }) + bil(430, 176, '6 Nguồn điện', '6 Power supply', { a: 'middle', s: 9 }));
+
+  const khtn9a = () => svg('0 0 480 230', 'Bố trí thí nghiệm đo tiêu cự của thấu kính hội tụ bằng phương pháp đối xứng',
+    rect(20, 170, 440, 12, C.greyL, { r: 3 }) + Array.from({ length: 23 }, (_, i) => line(30 + i * 19, 182, 30 + i * 19, i % 5 ? 188 : 194, C.ink, 1)).join('') +
+    rect(24, 118, 40, 50, C.sunL) + circ(44, 138, 10, C.sun) + rect(80, 100, 8, 70, C.greyL, { r: 2 }) + path('M82 112 L98 112 M82 112 L82 142 M82 127 L94 127', 'none', { c: C.pen, w: 3 }) +
+    lensG(240, 136, 44, true) + rect(360, 86, 8, 84, '#fff', { r: 2, w: 2 }) + path('M366 118 L350 118 M366 118 L366 150 M366 134 L354 134', 'none', { c: C.teal, w: 2.6 }) +
+    line(84, 70, 240, 70, C.ink, 1.4).replace(/.*/, '') + arrow(84, 80, 238, 80, C.red, 1.8) + arrow(238, 80, 84, 80, C.red, 1.8) + t(162, 74, 'd', { a: 'middle', s: 13, b: 1, c: C.red }) + arrow(242, 80, 362, 80, C.teal, 1.8) + arrow(362, 80, 242, 80, C.teal, 1.8) + t(302, 74, "d′", { a: 'middle', s: 13, b: 1, c: C.teal }) +
+    bil(240, 214, 'Đặt d = d′ = 2f: ảnh rõ nét, bằng vật, ngược chiều', 'Place d = d′ = 2f: a sharp image, same size, inverted', { a: 'middle', s: 10 }));
+
+  const khtn9b = () => {
+    const y = 60, mk = (x, lx, label) => rect(x, y + 24, 6, 14, 'none', { w: 0 });
+    let s = '';
+    [['Vị trí 1 / Position 1', 150, 0], ['Vị trí 2 / Position 2', 330, 110]].forEach((q) => { const oy = q[2]; s += line(20, 40 + oy, 460, 40 + oy, C.ink, 1.4, 1) + path('M40 ' + (40 + oy) + ' l0 -22', 'none', { c: C.pen, w: 3 }) + path('M440 ' + (40 + oy) + ' l0 22', 'none', { c: C.teal, w: 3 }) + lensG(q[1], 40 + oy, 34, true, 10) + t(40, 66 + oy, 'Vật', { a: 'middle', s: 10 }) + t(440, 66 + oy, 'Màn', { a: 'middle', s: 10 }) + t(q[1], 90 + oy, q[0], { a: 'middle', s: 10, b: 1 }); });
+    s += arrow(40, 98, 440, 98, C.red, 1.6) + arrow(440, 98, 40, 98, C.red, 1.6) + t(240, 94, 'L', { a: 'middle', s: 13, b: 1, c: C.red }) + arrow(150, 138, 330, 138, C.violet, 1.6) + arrow(330, 138, 150, 138, C.violet, 1.6) + t(240, 134, 'l', { a: 'middle', s: 13, b: 1, c: C.violet });
+    return svg('0 0 480 240', 'Phương pháp Bessel: hai vị trí của thấu kính cho ảnh rõ nét trên màn', s + bil(240, 216, 'f = (L² − l²) / (4L), điều kiện L > 4f', 'f = (L² − l²) / (4L), requires L > 4f', { a: 'middle', s: 12, c: C.red }));
+  };
+
+  Object.assign(T.art, { khtn7a, khtn7b, khtn7c, khtn7d, khtn7e, khtn7f, khtn7g, khtn7h, khtn8a, khtn8b, khtn8c, khtn8d, khtn8e, khtn8f, khtn9a, khtn9b });
+
   Object.assign(T.art, { khtn4a, khtn4b, khtn4c, khtn4d, khtn5a, khtn5b, khtn5c, khtn5d, khtn5e, khtn5f, khtn5g, khtn6a, khtn6b, khtn6c, khtn6d });
 })();
