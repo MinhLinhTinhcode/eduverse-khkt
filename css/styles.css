@@ -1662,3 +1662,71 @@ body[data-role="teacher"] .sw--stu { display: none; }
 
 /* Nhiều môn trong Lớp 9: hàng nút khối lớp được phép xuống dòng, không làm trang tràn ngang */
 .gradenav { flex-wrap: wrap; min-width: 0; }
+
+/* ==========================================================================
+   OPTICS LAB / WORK LAB (js/optics-lab.js, js/work-lab.js) — KHTN 9, Bài 4–6
+   ========================================================================== */
+.olab { display: grid; gap: 10px; font-size: calc(15px * var(--scale, 1)); }
+.olab__hint { margin: 0; color: var(--muted); font-size: .92em; }
+.olab__cols { display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr); }
+/* Luôn xếp một cột: sim nằm trong cột trang sách hẹp, hình cần đủ rộng để kéo thả (tay nắm ≥ 44 px). */
+.olab__stage { max-width: 620px; width: 100%; justify-self: center; background: var(--paper); border: 1.5px solid var(--line); border-radius: 12px; padding: 6px; touch-action: none; }
+.olab__svg { display: block; width: 100%; height: auto; max-height: 70vh; touch-action: none; user-select: none; -webkit-user-select: none; }
+.olab__svg.is-dragging { cursor: grabbing; }
+.olab__panel { display: grid; gap: 8px; min-width: 0; }
+.olab__rowc, .olab__media { display: grid; gap: 8px; }
+.olab__ctl { display: grid; gap: 4px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.olab__ctl > span, .olab__ctl legend { font-weight: 600; color: var(--ink-2); font-size: .92em; }
+.olab__ctl input[type="range"] { width: 100%; min-height: 32px; accent-color: var(--pen); }
+.olab__pair { display: grid; grid-template-columns: 1fr 5.2em; gap: 8px; align-items: center; }
+.olab__in, .olab__sel { min-height: 40px; padding: 4px 8px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); font: inherit; min-width: 0; max-width: 100%; }
+.olab__side label, .olab__opts label { display: inline-flex; align-items: center; gap: 6px; margin-right: 12px; min-height: 36px; }
+.olab__opts { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px; }
+.olab__btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.olab__btns .btn { min-height: 44px; }
+.olab__read { min-width: 0; overflow-x: auto; }
+.olab__tbl { border-collapse: collapse; width: 100%; font-size: .9em; }
+.olab__tbl caption { text-align: left; font-weight: 700; padding: 4px 0; color: var(--pen-d); }
+.olab__tbl th, .olab__tbl td { border: 1px solid var(--line); padding: 4px 8px; text-align: left; vertical-align: top; }
+.olab__tbl thead th { background: var(--pen-xl); }
+.olab__tbl--read th { width: 48%; font-weight: 600; background: var(--pen-xl); }
+.olab__empty { color: var(--muted); text-align: center !important; }
+.olab__status { margin: 8px 0 0; padding: 8px 10px; background: var(--sun-l); border-left: 4px solid var(--sun-d); border-radius: 6px; color: var(--ink); }
+.olab__note, .olab__gcap { margin: 4px 0 0; color: var(--muted); font-size: .85em; }
+.olab__msg { margin: 0; min-height: 1.2em; color: var(--ink-2); }
+.olab__task { padding: 8px 10px; background: var(--teal-l); border-radius: 8px; }
+.olab__taskq { margin: 0 0 6px; }
+.olab__taskrow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.olab__taskrow .olab__in { width: 6em; }
+.olab__fb.is-ok { color: var(--green); font-weight: 700; } .olab__fb.is-no { color: var(--red); font-weight: 600; }
+.olab__graph { width: 100%; max-width: 260px; height: auto; display: block; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; }
+.olab__graphwrap { margin-top: 4px; }
+/* nét vẽ SVG */
+.olab__medA { fill: var(--pen); } .olab__medB { fill: var(--pen); stroke: var(--ink); stroke-width: 1.5; }
+.olab__ticks { stroke: var(--ink); stroke-width: 1; fill: none; }
+.olab__tick { fill: var(--muted); font-size: 10px; }
+.olab__interface { stroke: var(--ink); stroke-width: 2.5; }
+.olab__normal { stroke: var(--muted); stroke-width: 1.4; stroke-dasharray: 5 4; }
+.olab__arc { fill: none; stroke-width: 2; } .olab__arc--i, .olab__arc--r { stroke: var(--pen); } .olab__arc--l { stroke: var(--teal-d); }
+.olab__lab { fill: var(--ink); font-size: 13px; font-weight: 700; } .olab__lab--i, .olab__lab--r { fill: var(--pen); } .olab__lab--ith { fill: var(--red); } .olab__lab--s { font-size: 14px; }
+.olab__lab.is-ok { fill: var(--green); font-size: 20px; } .olab__lab.is-no { fill: var(--red); font-size: 20px; }
+.olab__ray { stroke-width: 3; stroke-linecap: round; fill: none; }
+.olab__ray--inc { stroke: var(--red); } .olab__ray--refl { stroke: var(--violet); } .olab__ray--refr { stroke: var(--teal-d); } .olab__ray--virt { stroke: var(--muted); stroke-dasharray: 6 4; } .olab__ray--blk { stroke: var(--red); stroke-dasharray: 4 4; opacity: .6; }
+.olab__head--inc { fill: var(--red); } .olab__head--refl { fill: var(--violet); } .olab__head--refr { fill: var(--teal-d); }
+.olab__ith { stroke: var(--red); stroke-width: 2; stroke-dasharray: 3 3; }
+.olab__I { fill: var(--ink); }
+.olab__hd { cursor: grab; outline: none; } .olab__hd:focus-visible .olab__dot, .olab__hd:focus-visible .olab__sq, .olab__hd:focus-visible .olab__pin { stroke: var(--sun-d); stroke-width: 4; }
+.olab__hit { fill: transparent; }
+.olab__dot { fill: var(--red); stroke: #fff; stroke-width: 2; } .olab__sq { fill: var(--pen); stroke: #fff; stroke-width: 2; }
+.olab__hd.is-drag .olab__dot, .olab__hd.is-drag .olab__sq { stroke: var(--sun); stroke-width: 4; }
+.olab__arrowbtn:focus-visible .olab__head, .olab__arrowbtn:hover .olab__head { stroke: var(--sun-d); stroke-width: 3; }
+.olab__pin { fill: var(--teal); stroke: var(--ink); stroke-width: 2; } .olab__pin--c { fill: var(--sun); } .olab__pin--virt { fill: none; stroke: var(--muted); stroke-dasharray: 3 3; }
+.olab__water { fill: var(--teal); fill-opacity: .28; } .olab__surf { stroke: var(--pen); stroke-width: 2; }
+.olab__cup { fill: none; stroke: var(--ink); stroke-width: 3; } .olab__table { stroke: var(--ink); stroke-width: 3; }
+.olab__coin { fill: var(--sun); stroke: var(--ink); stroke-width: 1.8; } .olab__coin--virt { fill: none; stroke: var(--muted); stroke-dasharray: 4 3; }
+.olab__eye { fill: var(--paper); stroke: var(--ink); stroke-width: 2; } .olab__pupil { fill: var(--ink); }
+.olab__x { fill: var(--red); font-size: 20px; font-weight: 700; }
+.olab__core { fill: var(--pen); fill-opacity: .25; } .olab__clad { fill: var(--muted); fill-opacity: .25; stroke: var(--ink); stroke-width: 1.5; }
+.olab__road { fill: #555; }
+.olab__gl { stroke: var(--pen); stroke-width: 2; } .olab__gl--tir { stroke: var(--violet); stroke-dasharray: 4 3; } .olab__gp { fill: var(--teal-d); } .olab__gc { fill: none; stroke: var(--red); stroke-width: 2; } .olab__ax { stroke: var(--ink); stroke-width: 1.2; }
+@media (prefers-reduced-motion: no-preference) { .olab__hd { transition: none; } }

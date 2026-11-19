@@ -522,7 +522,9 @@
     sumif: { fn: (b) => simSheet(b, { kind: 'sumif' }), vi: 'Thử hàm SUMIF', en: 'Try the SUMIF function', intro: 'Sửa điều kiện, vùng điều kiện hoặc vùng tính tổng và xem tổng thay đổi.' }
   };
 
-  /* Chèn sau khối đầu tiên có loại `after` của trang `page` (không có thì chèn cuối trang). */
+  Object.assign(SIMS, window.LabSims || {}, window.WorkSims || {});
+
+  /* Chèn sau khối thứ `nth` (mặc định 1) có loại `after` của trang `page` (không có thì chèn cuối trang). */
   const PLACE = [
     { lesson: 'toan9-bai1', page: 5, after: 'activity', id: 'linear' },
     { lesson: 'toan9-bai2', page: 11, after: 'activity', id: 'system' },
@@ -533,14 +535,27 @@
     { lesson: 'tin9-bai10a', page: 44, after: 'fig', id: 'countif' },
     { lesson: 'tin9-bai11a', page: 46, after: 'tip', id: 'sumif' },
     { lesson: 'khtn9-bai2', page: 17, after: 'key', id: 'energy' },
-    { lesson: 'khtn9-bai3', page: 19, after: 'ex', id: 'fall' }
+    { lesson: 'khtn9-bai3', page: 19, after: 'ex', id: 'fall' },
+    { lesson: 'khtn9-bai4', page: 22, after: 'fig', id: 'work-force' },
+    { lesson: 'khtn9-bai4', page: 23, after: 'key', id: 'work-forklift' },
+    { lesson: 'khtn9-bai5', page: 25, after: 'fig', id: 'olab-coin' },
+    { lesson: 'khtn9-bai5', page: 26, after: 'key', id: 'olab-arrows' },
+    { lesson: 'khtn9-bai5', page: 26, after: 'activity', id: 'olab-halfdisk' },
+    { lesson: 'khtn9-bai5', page: 27, after: 'fig', id: 'olab-pins' },
+    { lesson: 'khtn9-bai5', page: 28, after: 'fig', id: 'olab-media' },
+    { lesson: 'khtn9-bai5', page: 29, after: 'ex', id: 'olab-task5' },
+    { lesson: 'khtn9-bai6', page: 30, after: 'fig', id: 'olab-tir' },
+    { lesson: 'khtn9-bai6', page: 32, after: 'ex', id: 'olab-water' },
+    { lesson: 'khtn9-bai6', page: 33, after: 'ask', id: 'olab-mirage' },
+    { lesson: 'khtn9-bai6', page: 33, after: 'fig', nth: 2, id: 'olab-fiber' }
   ];
   function inject() {
     PLACE.forEach((p) => {
       const L = D.lessons && D.lessons[p.lesson];
       const page = L && L.pages.find((x) => x.number === p.page);
       if (!page || page.blocks.some((b) => b.t === 'sim' && b.id === p.id)) return;
-      const i = page.blocks.findIndex((b) => b.t === p.after);
+      let i = -1, seen = 0;
+      page.blocks.forEach((b, k) => { if (b.t === p.after && ++seen === (p.nth || 1)) i = k; });
       page.blocks.splice(i < 0 ? page.blocks.length : i + 1, 0, { t: 'sim', id: p.id });
     });
   }

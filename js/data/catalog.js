@@ -176,7 +176,16 @@ window.TEXTBOOK.grades = [
         en: 'Chapter I. Mechanical energy',
         lessons: [
           { slug: 'bai-2', number: '2', vi: 'Động năng. Thế năng', en: 'Kinetic energy. Potential energy', content: 'khtn9-bai2' },
-          { slug: 'bai-3', number: '3', vi: 'Cơ năng', en: 'Mechanical energy', content: 'khtn9-bai3' }
+          { slug: 'bai-3', number: '3', vi: 'Cơ năng', en: 'Mechanical energy', content: 'khtn9-bai3' },
+          { slug: 'bai-4', number: '4', vi: 'Công và công suất', en: 'Work and power', content: 'khtn9-bai4' }
+        ]
+      },
+      {
+        vi: 'Chương II. Ánh sáng',
+        en: 'Chapter II. Light',
+        lessons: [
+          { slug: 'bai-5', number: '5', vi: 'Khúc xạ ánh sáng', en: 'Refraction of light', content: 'khtn9-bai5' },
+          { slug: 'bai-6', number: '6', vi: 'Phản xạ toàn phần', en: 'Total internal reflection', content: 'khtn9-bai6' }
         ]
       }
     ]

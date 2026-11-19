@@ -19,6 +19,7 @@
      khtn3c  Hình 3.3   cột năng lượng của vật rơi (cơ năng không đổi)
      khtn3d  Hình 3.4   xe thế năng
      khtn3e  Hình 3.5   búa máy đóng cọc
+   — Đợt 2 —  khtn4a–d (Hình 4.1–4.4), khtn5a–g (5.1, 5.2, 5.5, 5.6, mở bài, 5.3, 5.4), khtn6a–d (6.1–6.4)
    ========================================================================== */
 (function () {
   'use strict';
@@ -296,4 +297,100 @@
     sb(10, 204, 5, 'Thảo luận', 'Discussion') + sb(180, 204, 6, 'Kết luận', 'Conclusion') + sb(10, 302, 7, 'Câu hỏi và trả lời', 'Questions and answers') +
     bil(180, 330, 'Ít chữ, nhiều hình', 'Few words, more visuals', { s: 13, c: C.pen }));
   Object.assign(T.art, { khtn1b: khtn1b2, khtn1d: khtn1d2, khtn1e: khtn1e2, khtn1g: khtn1g2, khtn1h: khtn1h2, khtn1i: khtn1i2 });
+
+  /* ---------------------------------------------------------------- BÀI 4 – 6 (Đợt 2) */
+  const man = (x, y, o) => { o = o || {}; const lean = o.lean || 0; return circ(x, y - 46, 9, '#fff') + line(x, y - 37, x + lean, y - 12, C.ink, 3) + line(x + lean, y - 12, x - 8, y + 14, C.ink, 3) + line(x + lean, y - 12, x + 8 + lean, y + 14, C.ink, 3) + (o.arms === false ? '' : line(x + lean * .3, y - 30, x + (o.ax == null ? 22 : o.ax), y - (o.ay == null ? 24 : o.ay), C.ink, 3)); };
+  const arc = (cx, cy, r, a1, a2, c, w) => { const p = (a) => [cx + r * Math.cos(a * Math.PI / 180), cy - r * Math.sin(a * Math.PI / 180)]; const s = p(a1), e = p(a2); return '<path d="M' + s[0].toFixed(1) + ' ' + s[1].toFixed(1) + ' A' + r + ' ' + r + ' 0 0 ' + (a2 > a1 ? 0 : 1) + ' ' + e[0].toFixed(1) + ' ' + e[1].toFixed(1) + '" fill="none" stroke="' + (c || C.ink) + '" stroke-width="' + (w || 1.8) + '"/>'; };
+  const khtn4a = () => svg('0 0 480 200', 'Người đẩy xe hàng chuyển động trên sàn nằm ngang',
+    ground(20, 460, 168) + man(110, 150, { lean: 16, ax: 40, ay: 26 }) + rect(158, 96, 110, 58, C.sunL, { r: 5 }) + circ(182, 160, 10, '#fff') + circ(246, 160, 10, '#fff') +
+    t(213, 130, 'xe hàng', { a: 'middle', s: 12, b: 1 }) + arrow(60, 112, 156, 112, C.red, 3) + bil(106, 74, 'Lực đẩy F', 'Pushing force F', { a: 'middle', s: 12, c: C.red }) +
+    line(158, 184, 158, 192, C.ink, 2) + line(330, 184, 330, 192, C.ink, 2) + arrow(158, 188, 330, 188, C.pen, 2.5) + t(244, 182, 's', { a: 'middle', s: 14, b: 1, c: C.pen }) +
+    '<rect x="158" y="96" width="110" height="58" rx="5" fill="none" stroke="' + C.ink + '" stroke-width="2" stroke-dasharray="5 4" transform="translate(172 0)" opacity=".45"/>' + arrow(280, 126, 330, 126, C.pen, 2.5) + t(366, 130, 'v', { s: 14, b: 1, c: C.pen }) + bil(390, 70, 'Sau quãng đường s', 'After a distance s', { a: 'middle', s: 11 }));
+  const khtn4b = () => {
+    const cell = (x, y, label, vi, en, ok, inner) => '<rect x="' + x + '" y="' + y + '" width="226" height="138" rx="10" fill="#fff" stroke="' + C.grey + '" stroke-width="1.5"/>' + inner + t(x + 10, y + 18, label, { s: 13, b: 1, c: C.pen }) + bil(x + 113, y + 106, vi, en, { a: 'middle', s: 11, c: ok ? C.green : C.red });
+    return svg('0 0 480 300', 'Bốn ví dụ: đẩy xe, ném lao, ngồi học và giữ tạ',
+      cell(4, 4, 'a)', 'Đẩy xe: có công', 'Pushing a cart: work done', 1, ground(18, 214, 94) + man(60, 86, { lean: 10, ax: 32, ay: 22 }) + rect(96, 50, 70, 32, C.sunL, { r: 4 }) + circ(110, 88, 6, '#fff') + circ(152, 88, 6, '#fff') + arrow(60, 56, 94, 56, C.red, 2.5) + arrow(174, 66, 206, 66, C.pen, 2)) +
+      cell(242, 4, 'b)', 'Ném lao: có công', 'Throwing a javelin: work done', 1, ground(256, 452, 94) + man(300, 86, { lean: 14, ax: 40, ay: 50 }) + arrow(318, 52, 400, 34, C.red, 3) + line(326, 56, 380, 44, C.ink, 3) + t(420, 40, 's', { s: 13, b: 1, c: C.pen })) +
+      cell(4, 154, 'c)', 'Ngồi học: không có công', 'Sitting and studying: no work', 0, ground(18, 214, 244) + rect(78, 214, 90, 8, C.greyL, { r: 2 }) + line(86, 222, 86, 244, C.ink, 3) + line(160, 222, 160, 244, C.ink, 3) + circ(60, 188, 9, '#fff') + line(60, 197, 60, 222, C.ink, 3) + line(60, 222, 90, 222, C.ink, 3) + line(90, 222, 90, 244, C.ink, 3) + rect(104, 200, 44, 14, C.penL, { r: 2 })) +
+      cell(242, 154, 'd)', 'Giữ tạ đứng yên: không có công', 'Holding a weight still: no work', 0, ground(256, 452, 244) + man(350, 236, { arms: false }) + line(318, 190, 382, 190, C.ink, 4) + circ(314, 190, 12, C.greyL) + circ(386, 190, 12, C.greyL) + line(336, 200, 322, 190, C.ink, 3) + line(364, 200, 378, 190, C.ink, 3)));
+  };
+  const khtn4c = () => svg('0 0 480 200', 'Lực F hợp với hướng dịch chuyển một góc α',
+    ground(20, 460, 150) + rect(130, 108, 90, 40, C.sunL, { r: 5 }) + circ(150, 150, 8, '#fff') + circ(200, 150, 8, '#fff') + circ(175, 128, 3, C.red) +
+    arrow(175, 128, 305, 60, C.red, 3) + t(312, 62, 'F', { s: 15, b: 1, c: C.red }) + line(175, 128, 330, 128, C.grey, 1.6, 1) + arc(175, 128, 56, 0, 28, C.ink, 2) + t(246, 120, 'α', { s: 16, b: 1 }) +
+    arrow(175, 176, 400, 176, C.pen, 2.5) + t(290, 170, 's  (hướng dịch chuyển)', { a: 'middle', s: 12, b: 1, c: C.pen }) + line(305, 60, 305, 128, C.grey, 1.3, 1) + arrow(175, 128, 305, 128, C.green, 2.2) + t(240, 146, 'F·cosα', { a: 'middle', s: 12, b: 1, c: C.green }) +
+    bil(20, 30, 'Công của F: A = F·s·cosα', 'Work of F: A = F·s·cosα', { s: 12, c: C.pen }));
+  const forklift = (x, y, load, up) => '<g>' + rect(x, y + 50, 78, 26, C.sun, { r: 4 }) + rect(x + 6, y + 22, 40, 30, C.penL, { r: 3 }) + circ(x + 18, y + 80, 11, '#fff') + circ(x + 60, y + 80, 11, '#fff') + line(x + 80, y + 70 - up, x + 80, y - 6 - up * .0 + 10, C.ink, 5) + line(x + 80, y + 66 - up, x + 112, y + 66 - up, C.ink, 5) + rect(x + 84, y + 40 - up, 28, 26, C.sunL, { r: 3 }) + t(x + 98, y + 58 - up, load, { a: 'middle', s: 10, b: 1 }) + '</g>';
+  const khtn4d = () => svg('0 0 480 240', 'Hai xe nâng đưa thùng hàng từ mặt đất lên sàn xe tải cao 1 m',
+    ground(10, 470, 190) + rect(360, 108, 100, 12, C.greyL, { r: 2 }) + rect(374, 120, 80, 42, C.greyL, { r: 2 }) + circ(396, 172, 14, '#fff') + circ(436, 172, 14, '#fff') + line(360, 108, 360, 190, C.grey, 1.5, 1) +
+    forklift(20, 50, '500 N', 0) + forklift(190, 50, '700 N', 0) + arrow(124, 150, 124, 100, C.red, 2) + arrow(294, 150, 294, 100, C.red, 2) +
+    t(20, 22, 'Xe thứ nhất: 500 N, 10 s', { s: 12, b: 1, c: C.pen }) + t(190, 22, 'Xe thứ hai: 700 N, 15 s', { s: 12, b: 1, c: C.teal }) + t(364, 98, 'B', { s: 14, b: 1 }) + t(14, 186, 'A', { s: 14, b: 1 }) +
+    t(468, 154, '1 m', { a: 'end', s: 12, b: 1, c: C.red }) + line(476, 108, 476, 190, C.red, 1.6) + t(240, 222, 'Xe nâng thùng hàng từ A lên B (Hình 4.4) / Lifting a crate from A to B', { a: 'middle', s: 11, c: C.grey }));
+  /* ---- ÁNH SÁNG ---- */
+  const P0 = (cx, cy, L, th) => [cx + L * Math.sin(th * Math.PI / 180), cy - L * Math.cos(th * Math.PI / 180)];
+  const khtn5a = () => svg('0 0 480 250', 'Bố trí thí nghiệm khúc xạ: đèn có khe, bản bán trụ trên bảng chia độ',
+    rect(20, 90, 100, 70, C.greyL, { r: 6 }) + circ(52, 125, 14, C.sun) + t(52, 129, '12 V', { a: 'middle', s: 9, b: 1 }) + rect(110, 108, 14, 34, C.grey, { r: 2 }) +
+    circ(330, 130, 100, '#fff', { c: C.grey, w: 1.5 }) + path('M242 130 A88 88 0 0 0 418 130 Z', C.penL) + line(230, 130, 430, 130, C.ink, 1.6) + line(330, 40, 330, 220, C.ink, 1.2, 1) +
+    '<line x1="124" y1="125" x2="330" y2="130" stroke="' + C.red + '" stroke-width="3"/>' + line(330, 130, 392, 186, C.red, 3) + t(338, 123, 'I', { s: 13, b: 1 }) +
+    rect(30, 190, 70, 30, C.tealL, { r: 5 }) + t(65, 209, 'Nguồn điện', { a: 'middle', s: 10, b: 1 }) + line(65, 190, 52, 140, C.ink, 1.5) + bil(330, 12, 'Bản bán trụ trên vòng chia độ', 'Half-disc on a protractor board', { a: 'middle', s: 11 }) + t(150, 100, 'Đèn có khe', { s: 11, b: 1 }) + t(150, 114, 'Lamp with slit', { s: 10, i: 1 }));
+  const khtn5b = () => {
+    const I = [240, 140], S = P0(I[0], I[1], 120, -40), K = P0(I[0], I[1], 120, 180 - 26);
+    return svg('0 0 480 280', 'Đường truyền của tia sáng qua mặt phân cách không khí – thuỷ tinh',
+      rect(20, 140, 440, 130, C.penL, { r: 0, c: 'none', w: 0 }) + line(20, 140, 460, 140, C.ink, 2.5) + line(240, 20, 240, 262, C.ink, 1.5, 1) + t(250, 28, 'N', { s: 14, b: 1 }) + t(250, 258, "N′", { s: 14, b: 1 }) +
+      arrow(S[0], S[1], 240, 140, C.red, 3) + arrow(240, 140, K[0], K[1], C.red, 3) + t(S[0] - 22, S[1] + 4, 'S', { s: 15, b: 1 }) + t(K[0] + 8, K[1] + 4, 'K', { s: 15, b: 1 }) + t(226, 132, 'I', { s: 15, b: 1 }) +
+      arc(240, 140, 64, 90, 130, C.ink, 2) + t(206, 92, 'i', { s: 16, b: 1, c: C.pen }) + arc(240, 140, 64, 270, 296, C.ink, 2) + t(262, 214, 'r', { s: 16, b: 1, c: C.pen }) +
+      bil(36, 70, 'Không khí', 'Air', { s: 13 }) + bil(36, 190, 'Thuỷ tinh', 'Glass', { s: 13 }) + bil(330, 72, 'Tia tới SI', 'Incident ray SI', { s: 11 }) + bil(330, 204, 'Tia khúc xạ IK', 'Refracted ray IK', { s: 11 }));
+  };
+  const khtn5c = () => {
+    const I = [240, 140], S = P0(I[0], I[1], 120, 180 + 25), K = P0(I[0], I[1], 120, 35.2);
+    return svg('0 0 480 280', 'Tia sáng truyền từ nước ra không khí',
+      rect(20, 140, 440, 130, C.tealL, { r: 0, c: 'none', w: 0 }) + line(20, 140, 460, 140, C.ink, 2.5) + line(240, 20, 240, 262, C.ink, 1.5, 1) + t(250, 28, 'N', { s: 14, b: 1 }) + t(250, 258, "N′", { s: 14, b: 1 }) +
+      arrow(S[0], S[1], 240, 140, C.red, 3) + arrow(240, 140, K[0], K[1], C.red, 3) + t(S[0] + 6, S[1] + 6, 'S', { s: 15, b: 1 }) + t(K[0] + 8, K[1] + 4, 'K', { s: 15, b: 1 }) + t(226, 132, 'I', { s: 15, b: 1 }) +
+      bil(36, 70, 'Không khí', 'Air', { s: 13 }) + bil(36, 190, 'Nước', 'Water', { s: 13 }) + t(352, 112, 'r', { s: 16, b: 1, c: C.pen }) + t(204, 196, 'i', { s: 16, b: 1, c: C.pen }) + bil(250, 238, 'r > i: lệch xa pháp tuyến', 'r > i: bends away from the normal', { s: 11, c: C.red }));
+  };
+  const khtn5d = () => svg('0 0 480 280', 'Đường truyền của tia sáng từ đồng xu qua mặt nước tới mắt',
+    rect(150, 120, 170, 130, C.tealL, { r: 0, c: 'none', w: 0 }) + '<path d="M150 70 V250 H320 V70" fill="none" stroke="' + C.ink + '" stroke-width="3"/>' + line(150, 120, 320, 120, C.pen, 2) + line(20, 250, 460, 250, C.ink, 3) + '<ellipse cx="270" cy="244" rx="22" ry="6" fill="' + C.sun + '" stroke="' + C.ink + '" stroke-width="1.8"/>' +
+    arrow(270, 240, 214, 120, C.red, 3) + arrow(214, 120, 60, 60, C.red, 3) + line(214, 120, 260, 214, C.grey, 1.8, 1) + '<ellipse cx="262" cy="206" rx="20" ry="5" fill="none" stroke="' + C.grey + '" stroke-width="1.8" stroke-dasharray="4 3"/>' +
+    line(214, 80, 214, 190, C.ink, 1.2, 1) + '<ellipse cx="52" cy="58" rx="18" ry="11" fill="#fff" stroke="' + C.ink + '" stroke-width="2"/><circle cx="52" cy="58" r="5" fill="' + C.ink + '"/>' +
+    bil(14, 90, 'Mắt', 'Eye', { s: 12 }) + bil(330, 190, 'Đồng xu thật', 'Real coin', { s: 11 }) + bil(330, 140, 'Vị trí nhìn thấy', 'Seen position', { s: 11, c: C.grey }) + bil(228, 100, 'Nước', 'Water', { a: 'middle', s: 11, c: C.pen }));
+  const khtn5e = () => {
+    const cup = (x, ok) => '<path d="M' + (x + 20) + ' 60 V190 H' + (x + 160) + ' V60" fill="none" stroke="' + C.ink + '" stroke-width="3"/>' + (ok ? rect(x + 20, 110, 140, 80, C.tealL, { r: 0, c: 'none', w: 0 }) : '') + '<ellipse cx="' + (x + 110) + '" cy="184" rx="20" ry="5" fill="' + C.sun + '" stroke="' + C.ink + '" stroke-width="1.8"/>' + '<ellipse cx="' + (x - 14) + '" cy="40" rx="16" ry="10" fill="#fff" stroke="' + C.ink + '" stroke-width="2"/><circle cx="' + (x - 14) + '" cy="40" r="4" fill="' + C.ink + '"/>';
+    return svg('0 0 480 230', 'Cốc không có nước và cốc có nước',
+      cup(44, 0) + line(10, 190, 250, 190, C.ink, 2) + line(34, 46, 110, 190, C.red, 2.4, 1) + t(80, 130, '✕', { s: 22, b: 1, c: C.red }) + t(124, 222, 'a)  Không có nước', { a: 'middle', s: 12, b: 1 }) +
+      cup(274, 1) + line(260, 190, 470, 190, C.ink, 2) + arrow(374, 184, 330, 110, C.red, 2.4) + arrow(330, 110, 262, 46, C.red, 2.4) + t(354, 222, 'b)  Có nước', { a: 'middle', s: 12, b: 1 }));
+  };
+  const khtn5f = () => {
+    const I = [240, 140], a = P0(I[0], I[1], 120, -45), b = P0(I[0], I[1], 120, 45), c = P0(I[0], I[1], 120, 180 - 32);
+    return svg('0 0 480 280', 'Mặt nước với ba tia sáng chưa có mũi tên',
+      rect(20, 140, 440, 130, C.tealL, { r: 0, c: 'none', w: 0 }) + line(20, 140, 460, 140, C.ink, 2.5) + line(240, 20, 240, 262, C.ink, 1.5, 1) + t(250, 28, 'N', { s: 14, b: 1 }) + t(250, 258, "N′", { s: 14, b: 1 }) +
+      line(a[0], a[1], 240, 140, C.red, 3) + line(240, 140, b[0], b[1], C.red, 3) + line(240, 140, c[0], c[1], C.red, 3) + t(a[0] - 10, a[1] - 6, '1', { s: 15, b: 1 }) + t(b[0] + 6, b[1] - 6, '2', { s: 15, b: 1 }) + t(c[0] + 8, c[1] + 6, '3', { s: 15, b: 1 }) +
+      bil(36, 70, 'Không khí', 'Air', { s: 13 }) + bil(36, 190, 'Nước', 'Water', { s: 13 }) + t(240, 276, 'Hãy bổ sung mũi tên cho tia 1, 2, 3 / Add arrows to rays 1, 2, 3', { a: 'middle', s: 10.5, c: C.grey }));
+  };
+  const khtn5g = () => svg('0 0 480 260', 'Thí nghiệm tìm phương của tia khúc xạ bằng bốn đinh ghim',
+    rect(20, 20, 440, 220, '#fff7e0', { r: 6 }) + path('M150 130 A90 90 0 0 0 330 130 Z', C.penL) + line(150, 130, 330, 130, C.ink, 2) + line(240, 36, 240, 224, C.ink, 1.2, 1) +
+    circ(240, 130, 6, C.red) + t(250, 124, 'O', { s: 14, b: 1 }) + circ(240, 56, 6, C.teal) + t(250, 60, 'A', { s: 14, b: 1 }) + circ(180, 56, 6, C.teal) + t(160, 52, 'B', { s: 14, b: 1 }) + circ(296, 204, 6, C.teal) + t(306, 212, 'C', { s: 14, b: 1 }) +
+    line(180, 56, 240, 130, C.red, 2.4) + line(240, 130, 296, 204, C.red, 2.4) + '<ellipse cx="320" cy="238" rx="16" ry="9" fill="#fff" stroke="' + C.ink + '" stroke-width="2"/><circle cx="320" cy="238" r="4" fill="' + C.ink + '"/>' + line(296, 204, 320, 232, C.grey, 1.6, 1) +
+    bil(30, 104, 'Tia tới BO', 'Incident ray BO', { s: 11 }) + bil(330, 160, 'Tia khúc xạ OC', 'Refracted ray OC', { s: 11 }) + t(20, 14, 'Tấm xốp có gắn bảng chia độ / Foam board with a protractor', { s: 10.5, c: C.grey }));
+  const khtn6a = () => svg('0 0 480 250', 'Bố trí thí nghiệm phản xạ toàn phần: chùm sáng đi từ bản bán trụ ra không khí',
+    circ(330, 130, 100, '#fff', { c: C.grey, w: 1.5 }) + path('M242 130 A88 88 0 0 1 418 130 Z', C.penL) + line(230, 130, 430, 130, C.ink, 1.6) + line(330, 40, 330, 220, C.ink, 1.2, 1) +
+    rect(20, 80, 100, 70, C.greyL, { r: 6 }) + circ(52, 115, 14, C.sun) + rect(110, 98, 14, 34, C.grey, { r: 2 }) +
+    '<polyline points="124,115 280,60 330,130" fill="none" stroke="' + C.red + '" stroke-width="3"/>' + line(330, 130, 392, 78, C.red, 2.4) + line(330, 130, 420, 130, C.red, 1.2, 1) + t(338, 150, 'I', { s: 13, b: 1 }) +
+    bil(330, 12, 'Ánh sáng đi từ thuỷ tinh ra không khí', 'Light from glass into air', { a: 'middle', s: 11 }) + bil(60, 196, 'Đèn có khe', 'Lamp with slit', { a: 'middle', s: 11 }));
+  const khtn6b = () => svg('0 0 480 240', 'Ảo ảnh trên đường nhựa nóng: dường như có lớp nước phản chiếu',
+    rect(0, 0, 480, 118, '#cfe0ff', { r: 0, c: 'none', w: 0 }) + rect(0, 118, 480, 122, '#666', { r: 0, c: 'none', w: 0 }) + '<polygon points="170,118 310,118 480,240 0,240" fill="#444"/>' + line(240, 122, 240, 240, '#fff', 2.5, 1) +
+    '<ellipse cx="240" cy="132" rx="150" ry="8" fill="#9bc0ff" opacity=".75"/><ellipse cx="240" cy="150" rx="90" ry="5" fill="#b7d3ff" opacity=".6"/>' + rect(214, 96, 52, 22, C.red, { r: 4, w: 1.5 }) + rect(220, 100, 40, 8, '#fff', { r: 2, w: 0 }) +
+    '<g opacity=".4"><rect x="214" y="120" width="52" height="22" rx="4" fill="' + C.red + '"/></g>' + bil(240, 28, 'Phía xa có vẻ như có vũng nước', 'Far ahead it looks like a puddle', { a: 'middle', s: 13 }) + bil(110, 200, 'Mặt đường nóng', 'Hot road', { a: 'middle', s: 12, c: '#fff' }));
+  const khtn6c = () => {
+    const hue = ['#e8f0ff', '#f1f0ff', '#fff2dc', '#ffe4c8', '#ffd0b0'];
+    let s = ''; hue.forEach((h, k) => { s += rect(20, k * 44 + 10, 440, 44, h, { r: 0, c: C.grey, w: 1 }) + t(34, k * 44 + 38, 'n' + '₁₂₃₄₅'[k], { s: 15, b: 1 }); });
+    return svg('0 0 480 270', 'Đường đi của tia sáng qua các lớp không khí trên đường nhựa',
+      s + '<path d="M70 20 Q 140 170 240 218 Q 340 170 420 40" fill="none" stroke="' + C.red + '" stroke-width="3.2"/>' + arrow(414, 52, 421, 38, C.red, 3) + circ(70, 20, 6, C.pen) + t(82, 26, 'A', { s: 14, b: 1 }) + circ(421, 38, 6, C.teal) + t(432, 44, 'O', { s: 14, b: 1 }) +
+      bil(240, 246, 'Phản xạ toàn phần ở lớp sát mặt đường', 'Total internal reflection next to the road', { a: 'middle', s: 11, c: C.red }) + line(20, 232, 460, 232, C.ink, 3));
+  };
+  const khtn6d = () => svg('0 0 480 240', 'Đường truyền của chùm tia sáng trong sợi quang',
+    rect(40, 64, 400, 112, C.greyL, { r: 6 }) + rect(40, 92, 400, 56, C.penL, { r: 0 }) + t(436, 84, 'Vỏ n₂', { a: 'end', s: 12, b: 1 }) + t(436, 168, 'Vỏ n₂', { a: 'end', s: 12, b: 1 }) + t(436, 124, 'Lõi n₁ > n₂', { a: 'end', s: 12, b: 1, c: C.pen }) +
+    '<polyline points="40,128 110,92 190,148 270,92 350,148 430,100" fill="none" stroke="' + C.red + '" stroke-width="3"/>' + arrow(40, 150, 40, 128, C.red, 0.1) + line(0, 170, 40, 128, C.red, 3) + t(2, 160, 'S', { s: 14, b: 1 }) + t(22, 124, 'I', { s: 14, b: 1 }) +
+    t(100, 86, 'I₁', { s: 12, b: 1 }) + t(186, 168, 'I₂', { s: 12, b: 1 }) + t(266, 86, 'I₃', { s: 12, b: 1 }) + line(40, 56, 40, 184, C.ink, 1.6, 1) + t(46, 54, 'M', { s: 12, b: 1 }) + t(46, 198, 'N', { s: 12, b: 1 }) +
+    bil(240, 214, 'Phản xạ toàn phần lặp lại nhiều lần', 'Total internal reflection repeated many times', { a: 'middle', s: 11, c: C.red }));
+
+  Object.assign(T.art, { khtn4a, khtn4b, khtn4c, khtn4d, khtn5a, khtn5b, khtn5c, khtn5d, khtn5e, khtn5f, khtn5g, khtn6a, khtn6b, khtn6c, khtn6d });
 })();

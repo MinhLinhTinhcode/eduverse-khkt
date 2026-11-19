@@ -169,7 +169,7 @@ Thiếu một mô-đun thì app vẫn chạy, chỉ mất tính năng của mô-
 Cơ chế: `auth.js` (nạp đầu tiên) đổi khoá `sgk.*` thành `u.<username>.sgk.*` khi đang đăng nhập, nên các mô-đun cũ không phải sửa.
 **Giới hạn:** đây không phải bảo mật thật. Dữ liệu nằm trong localStorage, PIN chỉ chống dùng nhầm; ai cũng đăng ký được "Giáo viên"; mã tài khoản cần giữ kín. Muốn tài khoản dùng chung nhiều máy thì cần máy chủ (Firebase/Supabase).
 
-## Khoa học tự nhiên 9 (Bài 1–3) và cách thêm bài KHTN
+## Khoa học tự nhiên 9 (Bài 1–6) và cách thêm bài KHTN
 
 Môn nằm ở `#/khtn-9`, mã bài tập tự sinh `KHTN9-B1`, `KHTN9-B2`, `KHTN9-B3`. Nội dung do nhóm dự án soạn lại theo cấu trúc sách, **không** chép nguyên văn; hãy đối chiếu với sách in.
 
@@ -180,3 +180,20 @@ Thêm bài mới (ví dụ Bài 4):
 4. `index.html`: thêm thẻ `<script>` của file bài, đặt cùng nhóm với `lesson-khtn9-bai*.js`.
 5. Mô phỏng (tuỳ chọn): thêm vào `SIMS` và `PLACE` trong `js/interactive.js`.
 6. Công thức: `$W_{\text{đ}} = \frac{1}{2}mv^{2}$`; `{từ|khoá}` chỉ dùng trong chuỗi tiếng Anh.
+
+## Khoa học tự nhiên 9 — Đợt 2 (Bài 4–6) và phòng thí nghiệm quang học
+
+Bài 4 (Công và công suất, Chương I), Bài 5 (Khúc xạ ánh sáng) và Bài 6 (Phản xạ toàn phần) thuộc Chương II. Ánh sáng (`#/khtn-9/bai-5/25`…). Nội dung là bản **soạn lại nguyên bản** theo cấu trúc, số hiệu hình/bảng và số liệu của sách; hãy đối chiếu với sách in.
+
+| Tệp | Vai trò |
+|---|---|
+| `js/optics-lab.js` | Engine quang học thuần dữ liệu (`OpticsLab.engine`: `refract`, `criticalAngle`, `reflect`, `fresnel`, `refractVec`, `reflectVec`, `fiber`, `mirage`, `selfTest`) + các thành phần SVG kéo thả (bản bán trụ trên vòng chia độ, đồng xu trong cốc, bài tập mũi tên, sợi quang, ảo ảnh). Đăng ký mô phỏng vào `window.LabSims` |
+| `js/work-lab.js` | Mô phỏng công (Hình 4.3) và so sánh hai xe nâng (Hình 4.4), đăng ký vào `window.WorkSims` |
+| `js/optics-lab.test.html` | Mở bằng `file://` để xem bảng kiểm thử engine (Snell, góc tới hạn, phản xạ toàn phần, i = 0°, i = i_th, i = 90°…) |
+| `js/interactive.js` | Gộp `LabSims`, `WorkSims` vào `SIMS`; `PLACE` có thêm trường `nth` (chèn sau khối thứ n cùng loại) |
+| `css/styles.css` | Phần cuối: lớp `.olab*` |
+
+**Thêm bề mặt / thành phần mới (lăng kính, thấu kính — Bài 7–10):**
+1. Viết hàm thuần dữ liệu trong `engine` (ví dụ `prism(n, A, i)` trả về góc lệch, `thinLens(f, d)` trả về vị trí ảnh) và thêm phép thử vào `selfTest()`.
+2. Viết hàm dựng giao diện `fn(body, options)` theo mẫu `halfdisk()`: dựng SVG một lần, mỗi khung hình chỉ `setAttribute`; dùng `makeDrag(svg, { tên: { move(x, y), key(d, shift, axis) } })` cho kéo thả chuột/cảm ứng + bàn phím (đặt `data-h="tên"` và `tabindex="0"` cho tay nắm, thêm vòng `olab__hit` r ≥ 30 để chạm dễ).
+3. Đăng ký vào `window.LabSims['olab-…'] = { fn, vi, en, intro }` rồi thêm một dòng vào `PLACE` của `interactive.js`.
