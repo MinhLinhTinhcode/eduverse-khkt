@@ -893,7 +893,7 @@
       '<h1 class="hero__title"><span class="vi">Đọc Tin học bằng hai ngôn ngữ</span><span class="en" lang="en">Read Informatics in two languages</span></h1>' +
       '<p class="hero__lead">Sách giáo khoa song ngữ tương tác: tiếng Việt ở trên, tiếng Anh ở dưới. Bấm vào từ gạch chân để xem phiên âm, nghĩa trong Tin học và nghe phát âm.</p>' +
       '<div class="hero__cta"><a class="btn btn--primary btn--lg" href="#/lop-9"><span>Vào học Tin học 9</span>' + ICON.right + '</a> <a class="btn btn--lg btn--ghost" href="#/toan-9"><span>Vào học Toán 9</span></a>' +
-      '<p class="hero__note">Lớp 9 hiện có Toán 9 và Tin học 9. Các bài, môn và khối lớp khác đang được cập nhật.</p></div></div>' +
+      '<p class="hero__note">Lớp 9 hiện có Toán 9, Khoa học tự nhiên 9 và Tin học 9. Các bài, môn và khối lớp khác đang được cập nhật.</p></div></div>' +
       '<div class="demo"><article class="demo__page" aria-label="Một đoạn mẫu trong sách">' +
       '<p class="demo__head"><b>Bài 1</b> Thế giới kĩ thuật số</p>' +
       pair('Thiết bị số nhận, lưu trữ và xử lí thông tin.', 'A {digital} {device|device} can receive, store and {process|process-v} {information}.') +

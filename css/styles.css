@@ -1652,3 +1652,13 @@ body[data-role="teacher"] .sw--stu { display: none; }
 @media (prefers-reduced-motion: no-preference) { .auth[open] { animation: authIn .18s ease-out; } @keyframes authIn { from { opacity: 0; transform: translateY(8px); } } }
 @media (max-width: 1560px) { .bar--top > .btn:not(.acct__login) span:last-child { display: none; } }   /* nhường chỗ cho nút đăng nhập: "Cách dùng" chỉ còn biểu tượng */
 @media (max-width: 1000px) { .acct__login .acct__lt { display: none; } .acct__login { padding-inline: .7em; } .acct__t small { display: none; } .acct { max-width: 9.5rem; } }
+
+/* ---- Khoa học tự nhiên 9: cột năng lượng trong mô phỏng ---- */
+.sim__bar { stroke: var(--ink); stroke-width: 1.5; }
+.sim__bar--k { fill: #ffb3b6; }
+.sim__bar--p { fill: #aebfff; }
+.sim__bar--m { fill: #9fe0b8; }
+.lvl__card--sci { border-color: var(--violet, #6c4be8); box-shadow: 0 4px 0 #4b32b8; }
+
+/* Nhiều môn trong Lớp 9: hàng nút khối lớp được phép xuống dòng, không làm trang tràn ngang */
+.gradenav { flex-wrap: wrap; min-width: 0; }

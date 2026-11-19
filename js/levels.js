@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NHÓM KHỐI LỚP: "Lớp 9" gồm hai môn "Toán 9" và "Tin học 9"
+   NHÓM KHỐI LỚP: "Lớp 9" gồm các môn "Toán 9", "Khoa học tự nhiên 9" và "Tin học 9"
    --------------------------------------------------------------------------
    Đường dẫn của từng môn (#/toan-9, #/lop-9 …) và mã bài tập không đổi, nên
    liên kết cũ vẫn dùng được. File này chỉ thêm tầng "Lớp 9" ở phía trên:
@@ -19,7 +19,7 @@
   const $ = (s, r) => (r || document).querySelector(s);
 
   const GROUPS = [
-    { slug: 'khoi-9', id: 9, label: 'Lớp 9', en: 'Grade 9', subjects: ['toan-9', 'lop-9'] }
+    { slug: 'khoi-9', id: 9, label: 'Lớp 9', en: 'Grade 9', subjects: ['toan-9', 'khtn-9', 'lop-9'] }
   ];
   const gradeBySlug = (slug) => D.grades.find((g) => g.slug === slug);
   const groupOf = (slug) => GROUPS.find((x) => x.slug === slug || x.subjects.indexOf(slug) >= 0) || null;
@@ -81,7 +81,7 @@
         const ok = l.content && D.lessons[l.content];
         return '<li>' + (ok ? '<a href="#/' + g.slug + '/' + l.slug + '"><b>' + esc(l.number) + '</b> ' + esc(l.vi) + '</a>' : '<span class="lvl__soon"><b>' + esc(l.number) + '</b> ' + esc(l.vi) + ' <small>(đang cập nhật)</small></span>') + '</li>';
       }).join('') + '</ul></li>').join('');
-    return '<article class="lvl__card lvl__card--' + (g.short === 'Toán' ? 'math' : 'info') + '"><header class="lvl__head"><h3 class="lvl__name"><span class="vi">' + esc(g.subject) + '</span><span class="en" lang="en">' + esc(g.subjectEn || '') + '</span></h3>' +
+    return '<article class="lvl__card lvl__card--' + (g.short === 'Toán' ? 'math' : g.short === 'KHTN' ? 'sci' : 'info') + '"><header class="lvl__head"><h3 class="lvl__name"><span class="vi">' + esc(g.subject) + '</span><span class="en" lang="en">' + esc(g.subjectEn || '') + '</span></h3>' +
       '<p class="lvl__meta">' + s.topics + ' ' + (g.short === 'Toán' ? 'chương' : 'chủ đề') + ', ' + s.ready + '/' + s.lessons + ' bài đã sẵn sàng</p></header>' +
       '<div class="lvl__act"><a class="btn btn--primary btn--sm" href="#/' + g.slug + '">Mở danh sách bài</a></div>' +
       '<details class="lvl__det"><summary>Xem các ' + (g.short === 'Toán' ? 'chương' : 'chủ đề') + ' và bài học</summary><ol class="lvl__topics">' + topics + '</ol></details></article>';

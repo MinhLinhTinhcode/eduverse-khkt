@@ -154,4 +154,31 @@ window.TEXTBOOK.grades = [
       }
     ]
   }
+  ,
+  {
+    id: 9,
+    slug: 'khtn-9',
+    subject: 'Khoa học tự nhiên 9',
+    subjectEn: 'Natural Science 9',
+    label: 'KHTN 9',
+    short: 'KHTN',
+    available: true,
+    topics: [
+      {
+        vi: 'Bài mở đầu',
+        en: 'Opening lesson',
+        lessons: [
+          { slug: 'bai-1', number: '1', vi: 'Nhận biết một số dụng cụ, hoá chất. Thuyết trình một vấn đề khoa học', en: 'Recognising some laboratory equipment and chemicals. Presenting a scientific topic', content: 'khtn9-bai1' }
+        ]
+      },
+      {
+        vi: 'Chương I. Năng lượng cơ học',
+        en: 'Chapter I. Mechanical energy',
+        lessons: [
+          { slug: 'bai-2', number: '2', vi: 'Động năng. Thế năng', en: 'Kinetic energy. Potential energy', content: 'khtn9-bai2' },
+          { slug: 'bai-3', number: '3', vi: 'Cơ năng', en: 'Mechanical energy', content: 'khtn9-bai3' }
+        ]
+      }
+    ]
+  }
 ];

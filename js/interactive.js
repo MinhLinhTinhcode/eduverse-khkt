@@ -441,6 +441,71 @@
     run();
   }
 
+  /* ---------- Khoa học tự nhiên 9: động năng, thế năng, cơ năng (g = 10) ---------- */
+  const G = 10;
+  const bars = (items, W, H, top) => {
+    /* items: [{label, val, cls}] vẽ cột theo thang chung 0..top */
+    const bw = 56, gap = (W - items.length * bw) / (items.length + 1);
+    let o = '<line class="sim__g sim__g--axis" x1="10" y1="' + (H - 28) + '" x2="' + (W - 10) + '" y2="' + (H - 28) + '"/>';
+    items.forEach((it, i) => {
+      const x = gap + i * (bw + gap), h = Math.max(0, it.val / top * (H - 70));
+      o += '<rect class="sim__bar sim__bar--' + it.cls + '" x="' + x + '" y="' + (H - 28 - h) + '" width="' + bw + '" height="' + h + '" rx="4"/>' +
+        '<text class="sim__lab" x="' + (x + bw / 2) + '" y="' + (H - 32 - h) + '" text-anchor="middle">' + num(it.val, 1) + ' J</text>' +
+        '<text class="sim__side" x="' + (x + bw / 2) + '" y="' + (H - 10) + '" text-anchor="middle">' + it.label + '</text>';
+    });
+    return o;
+  };
+
+  function simEnergy(body) {
+    const W = 380, H = 270, st = { m: 2, v: 5, h: 3 };
+    body.innerHTML = '<div class="sim__cols"><div class="sim__panel">' + slider('m', 'Khối lượng m (kg)', 0.1, 10, 0.1, st.m) + slider('v', 'Tốc độ v (m/s)', 0, 20, 0.5, st.v) + slider('h', 'Độ cao h (m)', 0, 20, 0.5, st.h) +
+      '<div class="tablewrap"><table class="sim__tbl sim__tbl--l" data-tbl></table></div></div>' +
+      '<div class="sim__panel"><svg class="sim__svg" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Cột động năng, thế năng và cơ năng" data-svg></svg></div></div>' +
+      '<div class="sim__read" data-read></div>';
+    function update() {
+      const P = G * st.m, wd = 0.5 * st.m * st.v * st.v, wt = P * st.h, wc = wd + wt, top = Math.max(wc, 1);
+      $('[data-svg]', body).innerHTML = bars([{ label: 'Wđ', val: wd, cls: 'k' }, { label: 'Wt', val: wt, cls: 'p' }, { label: 'W = Wđ + Wt', val: wc, cls: 'm' }], W, H, top);
+      $('[data-tbl]', body).innerHTML = '<tbody><tr><th scope="row">Trọng lượng P = 10m</th><td>' + num(P, 1) + ' N</td></tr>' +
+        '<tr><th scope="row">Động năng Wđ = ½mv²</th><td>' + num(wd, 2) + ' J</td></tr>' +
+        '<tr><th scope="row">Thế năng Wt = P·h</th><td>' + num(wt, 2) + ' J</td></tr>' +
+        '<tr><th scope="row">Cơ năng W = Wđ + Wt</th><td>' + num(wc, 2) + ' J</td></tr></tbody>';
+      $('[data-read]', body).innerHTML = '<p class="vi">Gấp đôi tốc độ thì động năng tăng 4 lần; gấp đôi độ cao thì thế năng tăng 2 lần. Hãy thử để kiểm tra.</p>' +
+        '<p class="en" lang="en">Doubling the speed makes the kinetic energy 4 times larger; doubling the height doubles the potential energy. Try it and see.</p>';
+    }
+    body.addEventListener('input', (e) => {
+      const k = e.target.dataset && e.target.dataset.k;
+      if (!k || !(k in st)) return;
+      st[k] = Number(e.target.value); $('[data-out="' + k + '"]', body).textContent = num(st[k]); update();
+    });
+    update();
+  }
+
+  function simFall(body) {
+    const W = 380, H = 270, st = { m: 1.5, h0: 4, h: 4 };
+    body.innerHTML = '<div class="sim__cols"><div class="sim__panel">' + slider('m', 'Khối lượng m (kg)', 0.5, 5, 0.5, st.m) + slider('h0', 'Độ cao thả h₀ (m)', 1, 10, 0.5, st.h0) + slider('h', 'Độ cao hiện tại h (m)', 0, 10, 0.5, st.h) +
+      '<div class="tablewrap"><table class="sim__tbl sim__tbl--l" data-tbl></table></div></div>' +
+      '<div class="sim__panel"><svg class="sim__svg" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Cột thế năng, động năng và cơ năng của vật rơi" data-svg></svg></div></div>' +
+      '<div class="sim__read" data-read></div>';
+    function update() {
+      st.h = Math.min(st.h, st.h0);
+      const hs = $('[data-k="h"]', body); hs.max = st.h0; hs.value = st.h; $('[data-out="h"]', body).textContent = num(st.h);
+      const P = G * st.m, wc = P * st.h0, wt = P * st.h, wd = wc - wt, v = Math.sqrt(2 * wd / st.m);
+      $('[data-svg]', body).innerHTML = bars([{ label: 'Wt', val: wt, cls: 'p' }, { label: 'Wđ', val: wd, cls: 'k' }, { label: 'W (không đổi)', val: wc, cls: 'm' }], W, H, Math.max(wc, 1));
+      $('[data-tbl]', body).innerHTML = '<tbody><tr><th scope="row">Thế năng Wt = P·h</th><td>' + num(wt, 2) + ' J</td></tr>' +
+        '<tr><th scope="row">Động năng Wđ = W − Wt</th><td>' + num(wd, 2) + ' J</td></tr>' +
+        '<tr><th scope="row">Cơ năng W = P·h₀</th><td>' + num(wc, 2) + ' J</td></tr>' +
+        '<tr><th scope="row">Tốc độ v = √(2Wđ/m)</th><td>' + num(v, 2) + ' m/s</td></tr></tbody>';
+      $('[data-read]', body).innerHTML = '<p class="vi">Kéo h từ h₀ về 0: Wt giảm bao nhiêu thì Wđ tăng bấy nhiêu, còn W giữ nguyên. Khi h = 0, v = √(2·g·h₀).</p>' +
+        '<p class="en" lang="en">Slide h from h₀ down to 0: the potential energy lost equals the kinetic energy gained, and W stays the same. At h = 0, v = √(2·g·h₀).</p>';
+    }
+    body.addEventListener('input', (e) => {
+      const k = e.target.dataset && e.target.dataset.k;
+      if (!k || !(k in st)) return;
+      st[k] = Number(e.target.value); $('[data-out="' + k + '"]', body).textContent = num(st[k]); update();
+    });
+    update();
+  }
+
   /* ======================================================================
      ĐĂNG KÝ, VỊ TRÍ CHÈN VÀ LỐI VÀO CHO app.js
      ====================================================================== */
@@ -452,6 +517,8 @@
     circle: { fn: simCircle, vi: 'Điểm và đường tròn', en: 'A point and a circle', intro: 'Kéo điểm M và so sánh OM với bán kính R.' },
     fntable: { fn: simFnTable, vi: 'Bảng giá trị căn bậc hai', en: 'A table of square roots', intro: 'Nhập một số, hoặc đổi điểm bắt đầu của bảng để tìm các số chính phương.' },
     countif: { fn: (b) => simSheet(b, { kind: 'countif' }), vi: 'Thử hàm COUNTIF', en: 'Try the COUNTIF function', intro: 'Sửa công thức hoặc dữ liệu trong bảng, kết quả thay đổi ngay. Ô thoả điều kiện được tô vàng.' },
+    energy: { fn: simEnergy, vi: 'Động năng, thế năng, cơ năng', en: 'Kinetic, potential and mechanical energy', intro: 'Đổi khối lượng m, tốc độ v và độ cao h (g = 10) rồi xem Wđ, Wt và W thay đổi thế nào.' },
+    fall: { fn: simFall, vi: 'Cơ năng của vật rơi', en: 'Mechanical energy of a falling object', intro: 'Thả vật từ độ cao h₀ rồi kéo thanh h để xem cơ năng không đổi.' },
     sumif: { fn: (b) => simSheet(b, { kind: 'sumif' }), vi: 'Thử hàm SUMIF', en: 'Try the SUMIF function', intro: 'Sửa điều kiện, vùng điều kiện hoặc vùng tính tổng và xem tổng thay đổi.' }
   };
 
@@ -464,7 +531,9 @@
     { lesson: 'toan9-bai11', page: 68, after: 'key', id: 'trig' },
     { lesson: 'toan9-bai13', page: 85, after: 'key', id: 'circle' },
     { lesson: 'tin9-bai10a', page: 44, after: 'fig', id: 'countif' },
-    { lesson: 'tin9-bai11a', page: 46, after: 'tip', id: 'sumif' }
+    { lesson: 'tin9-bai11a', page: 46, after: 'tip', id: 'sumif' },
+    { lesson: 'khtn9-bai2', page: 17, after: 'key', id: 'energy' },
+    { lesson: 'khtn9-bai3', page: 19, after: 'ex', id: 'fall' }
   ];
   function inject() {
     PLACE.forEach((p) => {

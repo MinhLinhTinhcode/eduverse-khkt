@@ -168,3 +168,15 @@ Thiếu một mô-đun thì app vẫn chạy, chỉ mất tính năng của mô-
 Đăng ký / đăng nhập ngay trên trình duyệt, **không cần máy chủ**. Mỗi tài khoản (Học sinh hoặc Giáo viên, PIN 4 số) có XP, cấp độ, thẻ ôn từ, nhiệm vụ và bài tập đã giao riêng. Khách vẫn dùng bình thường. Có "Xuất mã tài khoản" / "Khôi phục từ mã" để chuyển sang thiết bị khác.
 Cơ chế: `auth.js` (nạp đầu tiên) đổi khoá `sgk.*` thành `u.<username>.sgk.*` khi đang đăng nhập, nên các mô-đun cũ không phải sửa.
 **Giới hạn:** đây không phải bảo mật thật. Dữ liệu nằm trong localStorage, PIN chỉ chống dùng nhầm; ai cũng đăng ký được "Giáo viên"; mã tài khoản cần giữ kín. Muốn tài khoản dùng chung nhiều máy thì cần máy chủ (Firebase/Supabase).
+
+## Khoa học tự nhiên 9 (Bài 1–3) và cách thêm bài KHTN
+
+Môn nằm ở `#/khtn-9`, mã bài tập tự sinh `KHTN9-B1`, `KHTN9-B2`, `KHTN9-B3`. Nội dung do nhóm dự án soạn lại theo cấu trúc sách, **không** chép nguyên văn; hãy đối chiếu với sách in.
+
+Thêm bài mới (ví dụ Bài 4):
+1. `js/data/catalog.js`: thêm `{ slug: 'bai-4', number: '4', vi, en, content: 'khtn9-bai4' }` vào chương tương ứng của `khtn-9` (hoặc thêm chủ đề mới).
+2. Tạo `js/data/lesson-khtn9-bai4.js` (copy `lesson-khtn9-bai2.js` làm khung): `D.glossary` (ctx bắt đầu bằng "Trong KHTN: ", không dùng `$…$`), rồi `D.lessons['khtn9-bai4']` với `pages` theo số trang sách (trang lẻ đầu bài đứng riêng).
+3. Hình SVG: thêm hàm vào `js/illustrations-khtn.js` và đăng ký vào `Object.assign(T.art, …)`.
+4. `index.html`: thêm thẻ `<script>` của file bài, đặt cùng nhóm với `lesson-khtn9-bai*.js`.
+5. Mô phỏng (tuỳ chọn): thêm vào `SIMS` và `PLACE` trong `js/interactive.js`.
+6. Công thức: `$W_{\text{đ}} = \frac{1}{2}mv^{2}$`; `{từ|khoá}` chỉ dùng trong chuỗi tiếng Anh.
