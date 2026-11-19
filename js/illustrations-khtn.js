@@ -557,4 +557,68 @@
   Object.assign(T.art, { khtn7a, khtn7b, khtn7c, khtn7d, khtn7e, khtn7f, khtn7g, khtn7h, khtn8a, khtn8b, khtn8c, khtn8d, khtn8e, khtn8f, khtn9a, khtn9b });
 
   Object.assign(T.art, { khtn4a, khtn4b, khtn4c, khtn4d, khtn5a, khtn5b, khtn5c, khtn5d, khtn5e, khtn5f, khtn5g, khtn6a, khtn6b, khtn6c, khtn6d });
+
+  /* ============ Đợt 4: Bài 10 (kính lúp), Bài 11 (điện trở), Bài 12 (mạch nối tiếp/song song) ============ */
+  const wr = (pts) => '<polyline points="' + pts + '" fill="none" stroke="' + C.ink + '" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>';
+  const symRes = (x, y, lab) => rect(x - 22, y - 8, 44, 16, '#fff', { r: 2, w: 2 }) + (lab ? t(x, y - 14, lab, { a: 'middle', s: 12, b: 1 }) : '');
+  const symLamp = (x, y, lab) => circ(x, y, 14, C.sunL) + line(x - 9, y - 9, x + 9, y + 9, C.ink, 1.6) + line(x + 9, y - 9, x - 9, y + 9, C.ink, 1.6) + (lab ? t(x, y - 20, lab, { a: 'middle', s: 12, b: 1 }) : '');
+  const symBatt = (x, y, lab) => rect(x - 12, y - 18, 24, 36, '#fff', { r: 0, w: 0 }) + line(x - 5, y - 16, x - 5, y + 16, C.ink, 3.4) + line(x + 6, y - 9, x + 6, y + 9, C.ink, 3.4) + t(x - 14, y - 8, '+', { a: 'end', s: 13, b: 1, c: C.red }) + t(x + 15, y - 8, '−', { s: 13, b: 1 }) + (lab ? t(x, y + 32, lab, { a: 'middle', s: 11, b: 1 }) : '');
+  const symSw = (x, y, lab) => rect(x - 22, y - 12, 44, 24, '#fff', { r: 0, w: 0 }) + circ(x - 16, y, 3.2, C.ink, { w: 0 }) + circ(x + 16, y, 3.2, C.ink, { w: 0 }) + line(x - 16, y, x + 12, y - 15, C.ink, 2.4) + (lab ? t(x, y - 22, lab, { a: 'middle', s: 12, b: 1 }) : '');
+  const symMeter = (x, y, ch, lab) => circ(x, y, 14, '#fff', { w: 2.2 }) + t(x, y + 5, ch, { a: 'middle', s: 14, b: 1, c: C.pen }) + (lab ? t(x, y - 20, lab, { a: 'middle', s: 12, b: 1 }) : '');
+  const symRheo = (x, y, lab) => rect(x - 28, y - 8, 56, 16, '#fff', { r: 2, w: 2 }) + arrow(x - 10, y - 30, x + 12, y - 9, C.red, 2) + (lab ? t(x, y + 24, lab, { a: 'middle', s: 12, b: 1 }) : '');
+  const nodeDot = (x, y) => circ(x, y, 3.6, C.ink, { w: 0 });
+
+  const khtn11a = () => svg('0 0 480 210', 'Sơ đồ mạch điện: nguồn 12 V, công tắc, bóng đèn 2,5 V và điện trở R',
+    wr('60,50 420,50 420,160 60,160 60,50') + symBatt(60, 105, '12 V') + symSw(150, 50, 'K') + symLamp(260, 50, 'Đ 2,5 V') + symRes(380, 50, 'R₁') +
+    t(240, 195, 'Hình 11.1: thay lần lượt R₁, R₂, R₃ / replace R₁ by R₂, R₃', { a: 'middle', s: 11, b: 1, c: C.teal }));
+  const khtn11b = () => svg('0 0 480 240', 'Sơ đồ mạch điện tìm hiểu sự phụ thuộc của cường độ dòng điện vào hiệu điện thế',
+    wr('60,50 420,50 420,150 60,150 60,50') + wr('320,150 320,205 410,205 410,150') + symBatt(60, 100, '12 V') + symSw(130, 50, 'K') + symRheo(230, 50, 'Rb') + symMeter(330, 50, 'A', 'A') + symRes(370, 150, 'R') + symMeter(365, 205, 'V', 'V') + nodeDot(320, 150) + nodeDot(420, 150) +
+    t(150, 126, 'A', { a: 'middle', s: 13, b: 1 }) + t(440, 126, 'B', { a: 'middle', s: 13, b: 1 }));
+  const khtn11c = () => { let g = ''; for (let i = 0; i <= 8; i++) g += line(70 + i * 40, 30, 70 + i * 40, 190, C.line || '#cdd5ee', 1) + (i < 5 ? line(70, 190 - i * 40, 390, 190 - i * 40, '#cdd5ee', 1) : ''); return svg('0 0 480 230', 'Hệ toạ độ để vẽ đồ thị I theo U', g + arrow(70, 190, 440, 190, C.ink, 2.2) + arrow(70, 190, 70, 14, C.ink, 2.2) + t(448, 194, 'U (V)', { s: 12, b: 1 }) + t(76, 14, 'I (A)', { s: 12, b: 1 }) + t(64, 205, 'O', { a: 'end', s: 12, b: 1 }) + [1, 2, 3].map((k) => t(70 + k * 120 - 40 + 40, 206, String(k * 4 - 1 + 1), { a: 'middle', s: 10, c: C.grey })).join('') + t(240, 224, 'Chưa có điểm nào: em hãy tự vẽ / Empty: plot your own points', { a: 'middle', s: 11, b: 1, c: C.teal })); };
+  const khtn11d = () => svg('0 0 480 200', 'Biểu tượng đơn vị điện trở ôm (Ω) và hệ thức I = U/R — khung thay cho chân dung nhà bác học Ohm',
+    rect(150, 20, 180, 150, C.penL, { r: 14, w: 2 }) + t(240, 100, 'Ω', { a: 'middle', s: 78, b: 1, c: C.pen }) + t(240, 128, 'I = U / R', { a: 'middle', s: 18, b: 1 }) + bil(240, 150, 'G. S. Ohm (1789 – 1854)', 'G. S. Ohm (1789 – 1854)', { a: 'middle', s: 10 }));
+  const khtn11e = () => svg('0 0 480 220', 'Điện trở bốn vòng màu: vàng, tím, đen, vàng ánh kim',
+    line(20, 100, 460, 100, C.ink, 3) + '<rect x="120" y="60" width="240" height="80" rx="34" fill="#e8c99a" stroke="' + C.ink + '" stroke-width="2"/>' +
+    [[166, '#f2c500', '1'], [206, '#7b3fe4', '2'], [246, '#1a1a1a', '3'], [310, '#c9a227', '4']].map((b) => '<rect x="' + b[0] + '" y="60" width="20" height="80" fill="' + b[1] + '" stroke="#0005"/>' + line(b[0] + 10, 142, b[0] + 10, 168, C.ink, 1.5) + t(b[0] + 10, 184, 'Vòng ' + b[2], { a: 'middle', s: 11, b: 1 })).join('') +
+    t(240, 30, '4 7 ×10⁰ ±5 %  ⇒  47 ± 2,35 Ω', { a: 'middle', s: 14, b: 1, c: C.pen }) + t(240, 208, 'Vòng 1, 2: hai chữ số · Vòng 3: số mũ · Vòng 4: sai số', { a: 'middle', s: 10.5, c: C.grey }));
+
+  const khtn12a = () => svg('0 0 480 230', 'Đoạn mạch nối tiếp: sơ đồ (a) và mạch điện hai bóng đèn nối tiếp (b)',
+    t(120, 16, 'a)', { a: 'middle', s: 12, b: 1 }) + wr('30,60 210,60 210,150 30,150 30,60') + symBatt(30, 105) + symRes(90, 60, 'R₁') + symRes(160, 60, 'R₂') + symSw(120, 150, 'K') +
+    t(360, 16, 'b)', { a: 'middle', s: 12, b: 1 }) + wr('270,60 450,60 450,150 270,150 270,60') + symBatt(270, 105) + symLamp(330, 60, 'Đ₁') + symLamp(400, 60, 'Đ₂') + symSw(360, 150, 'K') +
+    bil(240, 196, 'Một dòng điện duy nhất đi qua lần lượt các linh kiện', 'A single current passes through the parts one after another', { a: 'middle', s: 11, c: C.teal }));
+  const khtn12b = () => svg('0 0 480 200', 'Sơ đồ mạch điện thí nghiệm đặc điểm mạch nối tiếp: hai điện trở và hai ampe kế',
+    wr('50,50 430,50 430,150 50,150 50,50') + symBatt(50, 100, '12 V') + symSw(110, 50, 'K') + symMeter(175, 50, 'A', 'A₁') + symRes(250, 50, 'R₁') + symRes(330, 50, 'R₂') + symMeter(380, 50, 'A', 'A₂') + t(240, 186, 'Hình 12.2', { a: 'middle', s: 11, b: 1, c: C.teal }));
+  const khtn12c = () => svg('0 0 480 240', 'Đoạn mạch song song: sơ đồ (a) và mạch điện hai bóng đèn song song (b)',
+    t(120, 16, 'a)', { a: 'middle', s: 12, b: 1 }) + wr('30,50 210,50 210,190 30,190 30,50') + wr('90,50 90,190') + wr('160,50 160,190') + symBatt(30, 120) + symRes(90, 120, 'R₁') + symRes(160, 120, 'R₂') + symSw(60, 50, 'K') + nodeDot(90, 50) + nodeDot(160, 50) + nodeDot(90, 190) + nodeDot(160, 190) +
+    t(360, 16, 'b)', { a: 'middle', s: 12, b: 1 }) + wr('270,50 450,50 450,190 270,190 270,50') + wr('330,50 330,190') + wr('400,50 400,190') + symBatt(270, 120) + symLamp(330, 120, 'Đ₁') + symLamp(400, 120, 'Đ₂') + symSw(300, 50, 'K') + nodeDot(330, 50) + nodeDot(400, 50) + nodeDot(330, 190) + nodeDot(400, 190) +
+    bil(240, 222, 'Mỗi nhánh có dòng riêng; hiệu điện thế giữa hai nút chung', 'Each branch has its own current; the voltage between the nodes is shared', { a: 'middle', s: 10.5, c: C.teal }));
+  const khtn12d = () => svg('0 0 480 250', 'Sơ đồ mạch điện thí nghiệm đặc điểm mạch song song: hai điện trở và ba ampe kế',
+    wr('50,50 430,50') + wr('50,50 50,210 430,210 430,50') + wr('250,50 250,210') + wr('360,50 360,210') + symBatt(50, 130, '6 V') + symSw(110, 50, 'K') + symMeter(170, 50, 'A', 'A₁') + symMeter(250, 100, 'A', 'A₂') + symRes(250, 160, 'R₁') + symMeter(360, 100, 'A', 'A₃') + symRes(360, 160, 'R₂') +
+    nodeDot(250, 50) + nodeDot(360, 50) + nodeDot(250, 210) + nodeDot(360, 210) + t(236, 44, 'M', { a: 'end', s: 12, b: 1 }) + t(236, 226, 'N', { a: 'end', s: 12, b: 1 }) + t(240, 244, 'Hình 12.4', { a: 'middle', s: 10, b: 1, c: C.teal }));
+
+  /* ---- Bài 10 ---- */
+  const khtn10a = () => svg('0 0 480 230', 'Kính lúp có khung và tay cầm, dùng để đọc sách',
+    circ(150, 100, 58, C.penL, { c: C.pen, w: 3 }) + circ(150, 100, 46, 'rgba(255,255,255,.7)', { c: C.pen, w: 1.5 }) + path('M196 142 L250 196 L238 208 L184 154 Z', C.sunL) + '<g transform="translate(320,120)"><rect x="-60" y="-60" width="130" height="130" rx="6" fill="#fff" stroke="' + C.ink + '" stroke-width="2"/>' + [-34, -18, -2, 14, 30].map((y, i) => line(-44, y, 50 - i * 10, y, C.grey, 3)).join('') + '</g>' +
+    '<text x="150" y="108" text-anchor="middle" font-size="26" font-weight="800" fill="' + C.pen + '">5×</text>' + bil(150, 22, 'Kính lúp: thấu kính hội tụ tiêu cự ngắn', 'Magnifier: a short-focal-length converging lens', { a: 'middle', s: 11 }) + bil(320, 22, 'Dùng kính lúp đọc sách', 'Reading with a magnifier', { a: 'middle', s: 11 }));
+  const eye = (x, y) => '<ellipse cx="' + x + '" cy="' + y + '" rx="16" ry="22" fill="#fff" stroke="' + C.ink + '" stroke-width="2"/>' + circ(x - 4, y, 6, C.pen, { w: 0 }) + circ(x - 6, y, 2.4, C.ink, { w: 0 });
+  const khtn10b = () => svg('0 0 480 210', 'Góc trông vật α: góc tạo bởi hai tia từ hai đầu vật tới mắt',
+    arrow(70, 160, 70, 80, C.teal, 4) + t(52, 84, 'B', { a: 'end', s: 13, b: 1 }) + t(52, 168, 'A', { a: 'end', s: 13, b: 1 }) + eye(400, 120) + line(70, 80, 388, 120, C.red, 1.8) + line(70, 160, 388, 120, C.red, 1.8) + arc(388, 120, 58, 172, 188, C.violet, 2) + t(318, 124, 'α', { a: 'middle', s: 18, b: 1, c: C.violet }) +
+    bil(240, 28, 'α càng lớn, ảnh trên võng mạc càng lớn', 'The larger α, the larger the image on the retina', { a: 'middle', s: 11 }) + bil(240, 188, 'Mắt chỉ phân biệt A, B khi α ≥ ε ≈ 1′', 'The eye resolves A and B only if α ≥ ε ≈ 1′', { a: 'middle', s: 10.5, c: C.red }));
+  const khtn10c = () => svg('0 0 480 230', 'Kính lúp tạo ảnh ảo A′B′ cùng chiều, lớn hơn vật nên góc trông ảnh β lớn hơn góc trông vật α',
+    line(20, 150, 460, 150, C.grey, 1.4, 1) + lensG(190, 150, 62, true) + dot(190, 150, 'O') + dot(130, 150, 'F', C.ink) + dot(250, 150, "F′") + arrow(150, 150, 150, 125, C.teal, 4) + t(150, 172, 'A', { a: 'middle', s: 12, b: 1 }) + t(150, 118, 'B', { a: 'middle', s: 12, b: 1 }) +
+    dashed(60, 150, 60, 80, C.violet, 3) + t(60, 172, "A′", { a: 'middle', s: 12, b: 1, c: C.violet }) + t(60, 72, "B′", { a: 'middle', s: 12, b: 1, c: C.violet }) +
+    line(190, 125, 330, 125, C.red, 2) + dashed(190, 125, 60, 80, C.red, 1.4) + line(150, 125, 190, 150, C.red, 2) + line(190, 150, 330, 150, C.red, 0) + eye(390, 140) + line(190, 150, 380, 138, C.red, 2) + line(190, 125, 380, 134, C.red, 2) + t(335, 130, 'β', { a: 'middle', s: 17, b: 1, c: C.violet }) +
+    bil(240, 28, 'G = β / α', 'G = β / α', { a: 'middle', s: 13 }));
+  const khtn10d = () => svg('0 0 480 230', 'Vật đặt trong khoảng từ quang tâm đến tiêu điểm (d < f) cho ảnh ảo cùng chiều, lớn hơn vật',
+    line(10, 150, 470, 150, C.grey, 1.4, 1) + lensG(250, 150, 66, true) + dot(250, 150, 'O') + dot(170, 150, "F", C.ink) + dot(330, 150, "F′") + arrow(205, 150, 205, 118, C.teal, 4) + t(205, 170, 'A', { a: 'middle', s: 12, b: 1 }) + t(205, 110, 'B', { a: 'middle', s: 12, b: 1 }) +
+    line(205, 118, 250, 118, C.red, 2) + line(250, 118, 350, 150 + 0, C.red, 0) + line(250, 118, 400, 150 - 0 + 22, C.red, 2) + line(205, 118, 250, 150, C.red, 2) + line(250, 150, 400, 168, C.red, 0) +
+    dashed(250, 118, 80, 118 - 28 * 0, C.violet, 1.2) + arrow(100, 150, 100, 88, C.violet, 3) + t(100, 172, "A′", { a: 'middle', s: 12, b: 1, c: C.violet }) + t(100, 80, "B′", { a: 'middle', s: 12, b: 1, c: C.violet }) + dashed(250, 118, 100, 88, C.violet, 1.6) + dashed(250, 150, 100, 88, C.violet, 1.6) +
+    bil(240, 24, 'd < f: ảnh ảo, cùng chiều, lớn hơn vật', 'd < f: virtual, upright, magnified', { a: 'middle', s: 11 }));
+  const khtn10e = () => svg('0 0 480 230', 'Vật đặt tại tiêu điểm (d = f): chùm tia ló song song, ảnh ở vô cực — ngắm chừng ở vô cực',
+    line(10, 150, 470, 150, C.grey, 1.4, 1) + lensG(220, 150, 66, true) + dot(220, 150, 'O') + dot(140, 150, 'F ≡ A') + arrow(140, 150, 140, 112, C.teal, 4) + t(140, 104, 'B', { a: 'middle', s: 12, b: 1 }) +
+    line(140, 112, 220, 112, C.red, 2) + arrow(220, 112, 440, 150 + 34, C.red, 2) + line(140, 112, 220, 150, C.red, 2) + arrow(220, 150, 440, 150 + 34 * 0 + 34 - 34 + 34 * 0 + 34 - 34 + 34 + 0, C.red, 0.1) + line(220, 150, 440, 184, C.red, 2) +
+    eye(450, 172) + bil(300, 28, 'Mắt không phải điều tiết', 'The eye does not have to accommodate', { a: 'middle', s: 11, c: C.teal }) + t(300, 212, 'Hai tia ló song song nhau', { a: 'middle', s: 11, b: 1 }));
+  const khtn10f = () => { let g = ''; for (let i = 0; i <= 16; i++) g += line(40 + i * 25, 30, 40 + i * 25, 200, '#cdd5ee', 1); for (let j = 0; j <= 7; j++) g += line(40, 30 + j * 25 - 5 + 5, 440, 30 + j * 25 - 5 + 5, '#cdd5ee', 1);
+    return svg('0 0 480 240', 'Giấy kẻ ô với tỉ lệ 1 ô = 1 cm: vật AB cao 2 cm cách thấu kính 7,5 cm và tiêu cự 5 cm', g + line(40, 130, 440, 130, C.ink, 1.8) + lensG(240, 130, 90, true) + arrow(240 - 7.5 * 25 + 0, 130, 240 - 7.5 * 25, 80, C.teal, 4) + t(240 - 7.5 * 25, 150, 'A', { a: 'middle', s: 12, b: 1 }) + t(240 - 7.5 * 25, 72, 'B', { a: 'middle', s: 12, b: 1 }) + dot(240 - 125, 130, '', C.ink) + t(115, 150, 'F', { a: 'middle', s: 12, b: 1 }) + t(365, 150, "F′", { a: 'middle', s: 12, b: 1 }) + t(240, 150, 'O', { a: 'middle', s: 12, b: 1 }) + t(240, 226, '1 ô = 1 cm · h = 2 cm · d = 7,5 cm · f = 5 cm', { a: 'middle', s: 11, b: 1, c: C.teal })); };
+  Object.assign(T.art, { khtn10a, khtn10b, khtn10c, khtn10d, khtn10e, khtn10f, khtn11a, khtn11b, khtn11c, khtn11d, khtn11e, khtn12a, khtn12b, khtn12c, khtn12d });
 })();

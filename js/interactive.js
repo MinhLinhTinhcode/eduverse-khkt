@@ -563,7 +563,25 @@
     { lesson: 'khtn9-bai8', page: 45, after: 'activity', id: 'olens-object' },
     { lesson: 'khtn9-bai8', page: 45, after: 'ask', nth: 1, id: 'obench-demo' },
     { lesson: 'khtn9-bai9', page: 48, after: 'ask', nth: 2, id: 'obench-silberman' },
-    { lesson: 'khtn9-bai9', page: 49, after: 'fig', id: 'obench-bessel' }
+    { lesson: 'khtn9-bai9', page: 49, after: 'fig', id: 'obench-bessel' },
+    /* Đợt 4 — Bài 11 (điện trở, định luật Ohm) */
+    { lesson: 'khtn9-bai11', page: 53, after: 'activity', id: 'circ-h111' },
+    { lesson: 'khtn9-bai11', page: 54, after: 'activity', id: 'circ-ohm' },
+    { lesson: 'khtn9-bai11', page: 56, after: 'activity', id: 'circ-ohmlaw' },
+    { lesson: 'khtn9-bai11', page: 57, after: 'activity', id: 'circ-wire' },
+    { lesson: 'khtn9-bai11', page: 58, after: 'activity', id: 'circ-bands' },
+    /* Bài 12 (đoạn mạch nối tiếp, song song) */
+    { lesson: 'khtn9-bai12', page: 60, after: 'activity', id: 'circ-compare' },
+    { lesson: 'khtn9-bai12', page: 61, after: 'activity', nth: 1, id: 'circ-series' },
+    { lesson: 'khtn9-bai12', page: 61, after: 'ex', nth: 1, id: 'circ-ex1' },
+    { lesson: 'khtn9-bai12', page: 62, after: 'activity', nth: 1, id: 'circ-parallel' },
+    { lesson: 'khtn9-bai12', page: 62, after: 'ex', nth: 1, id: 'circ-ex2' },
+    { lesson: 'khtn9-bai12', page: 63, after: 'activity', nth: 1, id: 'circ-design' },
+    /* Bài 10 (kính lúp) */
+    { lesson: 'khtn9-bai10', page: 50, after: 'activity', id: 'omag-angle' },
+    { lesson: 'khtn9-bai10', page: 51, after: 'activity', id: 'omag-glass' },
+    { lesson: 'khtn9-bai10', page: 52, after: 'activity', nth: 1, id: 'omag-scale' },
+    { lesson: 'khtn9-bai10', page: 52, after: 'activity', nth: 2, id: 'omag-eye' }
   ];
   function inject() {
     PLACE.forEach((p) => {

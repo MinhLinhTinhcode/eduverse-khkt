@@ -585,5 +585,5 @@
     'olab-mirage': { fn: (b) => mirage(b), vi: 'Ảo ảnh trên đường nhựa (Hình 6.2, 6.3)', en: 'A mirage on a hot road (Figures 6.2, 6.3)', intro: 'Kéo vật A và người quan sát O, đổi nhiệt độ mặt đường để xem ảo ảnh A′ xuất hiện khi nào.' }
   });
   /* tay nắm kéo thả dùng chung cho work-lab.js */
-  root.OpticsLab = { engine: E, media: MEDIA, makeDrag, fmt, pr, raf, clamp, halfdisk, coin, arrows, fiber, mirage, version: '1.0' };
+  root.OpticsLab = { engine: E, media: MEDIA, makeDrag, fmt, pr, raf, clamp, copyText, toCSV, halfdisk, coin, arrows, fiber, mirage, version: '1.0' };
 })();

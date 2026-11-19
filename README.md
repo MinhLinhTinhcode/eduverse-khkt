@@ -216,3 +216,18 @@ Hai tệp `optics-lens.js`, `optics-prism.js` nạp **sau** `optics-lab.js` (xem
 2. Dùng lại `lensLab(body, {mode:'object', f, d, h})` hoặc `bench(...)`; nếu cần chế độ mới, thêm một nhánh `mode` trong `lensLab`.
 3. Đăng ký `window.LabSims['olens-kinh-lup'] = {fn, vi, en, intro}` rồi thêm dòng `PLACE`.
 4. Mọi nhãn bên trong `<svg>` dùng chuỗi thường (hoặc `<tspan class="vi/en">`), **không** dùng `pr()` vì thẻ `<span>` làm hỏng ngữ cảnh SVG.
+
+## Khoa học tự nhiên 9 — Đợt 4 (Bài 10–12): kính lúp, điện trở và định luật Ohm, mạch nối tiếp/song song
+
+**Tệp mới:** `js/data/lesson-khtn9-bai10.js`, `-bai11.js`, `-bai12.js`; `js/circuit-lab.js` (engine mạch, thuần dữ liệu); `js/circuit-ui.js` (bảng lắp mạch kéo-thả và các mô phỏng); `js/optics-mag.js` (kính lúp, góc trông, giấy kẻ ô, điều tiết); `js/circuit-lab.test.html` (trang tự kiểm tra, mở bằng trình duyệt).
+**Tệp sửa:** `index.html` (thẻ script), `js/data/catalog.js` (Bài 10; Chương III với Bài 11, 12), `js/interactive.js` (PLACE), `js/illustrations-khtn.js` (15 hình: 10.1–10.6, 11.1–11.5, 12.1–12.4), `js/optics-lab.js` (xuất thêm `copyText`, `toCSV`), `css/styles.css`.
+
+**Engine mạch (`CircuitLab.engine`)** giải mạch một chiều bằng phương pháp thế nút. Linh kiện: nguồn `src`, điện trở `res`, bóng đèn `lamp`, biến trở `rheo`, công tắc `sw`, ampe kế `amm`, vôn kế `vol`; dây nối là cặp chân `['id.a','id.b']`. Phát hiện mạch hở, chập nguồn, ampe kế mắc song song, vôn kế mắc nối tiếp; không bao giờ trả NaN/∞. `selfTest()` có 17 phép thử (Bảng 11.2, 12.1, 12.2, 2 Ω + 3 Ω, 20 Ω // 40 Ω, ρl/S, vòng màu…); cùng `OpticsLab.engine.selfTest()` tổng cộng 73 phép thử.
+
+**Thêm linh kiện mới (Bài 13, Chương IV):**
+1. `circuit-lab.js`: thêm kiểu vào `pinsOf` và nhánh xử lý trong `solve` (ghi chú điện trở/nguồn trong ma trận `G`/hàng nguồn).
+2. `circuit-ui.js`: thêm vào `PINS` (vị trí chân), `NAMES`, `DRAW` (hình vẽ) và một dòng trong `TRAY`.
+3. Muốn có mạch mẫu: thêm hàm vào `PRESETS`; muốn bài kiểm tra: thêm vào `T` và truyền `task` cho `board`.
+
+**Mô phỏng:** `circ-h111`, `circ-ohm`, `circ-ohmlaw`, `circ-wire`, `circ-bands` (Bài 11); `circ-compare`, `circ-series`, `circ-parallel`, `circ-ex1`, `circ-ex2`, `circ-design` (Bài 12); `omag-angle`, `omag-glass`, `omag-scale`, `omag-eye` (Bài 10).
+**Lưu ý:** số liệu Bảng 11.3, 11.4 đọc từ bản quét; Bảng 12.1 sách in 0,54 A cho cặp R₁, R₃ (tính ra 0,545 A). Hình 11.4 dùng khung biểu tượng Ω thay chân dung. Nội dung là bản soạn lại, cần đối chiếu sách in.

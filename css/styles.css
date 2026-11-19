@@ -1744,3 +1744,68 @@ body[data-role="teacher"] .sw--stu { display: none; }
 .olab__glyph { fill: none; stroke: var(--pen); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; } .olab__glyph--img { stroke: var(--teal-d); } .olab__glyph--virt { stroke: var(--teal-d); stroke-dasharray: 3 2; }
 .olab__rep { display: flex; gap: 12px; flex-wrap: wrap; } .olab__avg th, .olab__avg td { font-weight: 700; background: color-mix(in srgb, var(--sun) 22%, transparent); }
 .olab__status--warn { color: var(--red); font-weight: 600; }
+
+/* ===== Đợt 4: phòng mạch điện (circuit-lab / circuit-ui) ===== */
+.cl__bg { fill: var(--paper); stroke: var(--line); }
+.cl__svg { touch-action: none; user-select: none; }
+.cl__tray { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+.cl__tray .btn { min-height: 40px; }
+.cl__wire { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+.cl__wire.is-sel { stroke: var(--red); stroke-width: 4.5; }
+.cl__wire--tmp { stroke: var(--pen); stroke-dasharray: 6 5; pointer-events: none; }
+.cl__wirehit { fill: none; stroke: transparent; stroke-width: 22; cursor: pointer; }
+.cl__part { cursor: grab; outline: none; }
+.cl__part.is-sel .cl__partbg { stroke: var(--pen); stroke-dasharray: 5 4; stroke-width: 1.5; }
+.cl__part:focus-visible .cl__partbg { stroke: var(--pen); stroke-width: 2.5; }
+.cl__partbg { fill: transparent; stroke: transparent; rx: 8; }
+.cl__body { fill: color-mix(in srgb, var(--paper) 60%, var(--sun)); stroke: var(--ink); stroke-width: 2; }
+.cl__lead { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+.cl__zig { fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linejoin: round; }
+.cl__zig--thin { stroke-width: 1.6; opacity: .75; }
+.cl__sign { font: 800 18px var(--font-sans, system-ui); fill: var(--ink); }
+.cl__lab { font: 600 11px var(--font-sans, system-ui); fill: var(--ink); }
+.cl__num { font: 600 10px var(--font-sans, system-ui); fill: var(--muted); }
+.cl__mBig { font: 700 12px var(--font-sans, system-ui); fill: var(--ink); }
+.cl__meter { fill: var(--paper); stroke: var(--ink); stroke-width: 2.5; }
+.cl__meter.is-over { stroke: var(--red); }
+.cl__mL { font: 800 15px var(--font-sans, system-ui); fill: var(--pen); }
+.cl__needle { stroke: var(--red); stroke-width: 2.2; stroke-linecap: round; }
+.cl__bulb { fill: color-mix(in srgb, var(--paper) 70%, var(--sun)); stroke: var(--ink); stroke-width: 2; }
+.cl__bulb.is-burnt { fill: var(--grey); }
+.cl__glow { fill: var(--sun); pointer-events: none; }
+.cl__fil { stroke: var(--ink); stroke-width: 1.4; fill: none; }
+.cl__pt { fill: var(--ink); }
+.cl__blade { stroke: var(--ink); stroke-width: 3.5; stroke-linecap: round; transition: all .12s; }
+.cl__tri { fill: var(--pen); stroke: var(--paper); stroke-width: 1.5; }
+.cl__slider { cursor: ew-resize; outline: none; }
+.cl__slider:focus-visible .cl__tri { stroke: var(--red); stroke-width: 2.5; }
+.cl__hit { fill: transparent; }
+.cl__pin { cursor: crosshair; outline: none; }
+.cl__dot { fill: var(--paper); stroke: var(--ink); stroke-width: 2.4; }
+.cl__pin.is-plus .cl__dot { fill: var(--red); }
+.cl__pin.is-from .cl__dot, .cl__pin:hover .cl__dot, .cl__pin:focus-visible .cl__dot { fill: var(--sun); stroke: var(--pen); stroke-width: 3.5; }
+.cl__gauges { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+.cl__gfig { margin: 0; padding: 4px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); }
+.cl__gfig.is-sel { border-color: var(--pen); }
+.cl__gauge { width: 100%; height: auto; }
+.cl__arc { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.cl__tick { stroke: var(--ink); stroke-width: 1; }
+.cl__tick--big { stroke-width: 2; }
+.cl__hub { fill: var(--ink); }
+.cl__gread { font-size: .8em; margin: 2px 0 0; }
+.cl__warn { color: var(--red); }
+.cl__cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; align-items: start; }
+.cl__graph { max-width: 340px; }
+.cl__axis { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.cl__fit { stroke: var(--teal); stroke-width: 2.4; fill: none; }
+.cl__pt2 { fill: var(--red); stroke: var(--paper); stroke-width: 1.5; }
+.cl__quiz { margin-top: 10px; padding: 10px; border: 1px dashed var(--line); border-radius: 10px; }
+.cl__quiz input { min-height: 40px; }
+.cl__dim { stroke: var(--muted); stroke-width: 1; }
+.cl__cu { stroke: var(--ink); stroke-width: 1.2; }
+.cl__cu--cu { fill: #c8793a; } .cl__cu--al { fill: #b8c0cc; } .cl__cu--au { fill: #e0b52a; } .cl__cu--ag { fill: #d6dbe3; } .cl__cu--fe { fill: #7c8794; }
+.cl__rbody { fill: #e8c99a; stroke: var(--ink); stroke-width: 1.5; }
+.olab__status--ok { color: var(--teal-d); font-weight: 700; }
+@media (max-width: 560px) { .cl__gauges { grid-template-columns: 1fr; } }
+/* Đợt 4: kính lúp (optics-mag) */
+.olab__focus { fill: var(--ink); } .olab__gridline { stroke: color-mix(in srgb, var(--pen) 22%, var(--paper)); stroke-width: 1; }
