@@ -231,3 +231,19 @@ Hai tệp `optics-lens.js`, `optics-prism.js` nạp **sau** `optics-lab.js` (xem
 
 **Mô phỏng:** `circ-h111`, `circ-ohm`, `circ-ohmlaw`, `circ-wire`, `circ-bands` (Bài 11); `circ-compare`, `circ-series`, `circ-parallel`, `circ-ex1`, `circ-ex2`, `circ-design` (Bài 12); `omag-angle`, `omag-glass`, `omag-scale`, `omag-eye` (Bài 10).
 **Lưu ý:** số liệu Bảng 11.3, 11.4 đọc từ bản quét; Bảng 12.1 sách in 0,54 A cho cặp R₁, R₃ (tính ra 0,545 A). Hình 11.4 dùng khung biểu tượng Ω thay chân dung. Nội dung là bản soạn lại, cần đối chiếu sách in.
+
+## Khoa học tự nhiên 9 — Đợt 5 (Bài 13–15): năng lượng điện, cảm ứng điện từ, dòng điện xoay chiều
+
+**Tệp mới:** `js/data/lesson-khtn9-bai13.js` (tr. 64–66), `-bai14.js` (tr. 67–71), `-bai15.js` (tr. 72–74); `js/em-lab.js` (engine điện từ + 7 mô phỏng Bài 14); `js/em-effects.js` (4 mô phỏng Bài 15); `js/circuit-power.js` (engine năng lượng/công suất + 4 mô phỏng Bài 13).
+**Tệp sửa:** `index.html` (thẻ script), `js/data/catalog.js` (Bài 13 trong Chương III; Chương IV. Điện từ mới có Bài 14, 15), `js/interactive.js` (PLACE), `js/illustrations-khtn.js` (17 hình: 13.1, 13.2, 14.1–14.9, 15.1–15.6), `css/styles.css`, `js/circuit-lab.test.html`.
+
+**Engine (`EmLab.engine`):** `fluxMagnet`, `Induction` (e = −N·ΔΦ/Δt theo sai phân thời gian thực, đứng yên ⇒ 0, mạch hở ⇒ i = 0), `iAC`, `ledState`, `fx` (P = I²R, lực hút), `pow` (W = UIt, 𝒫 = UI, kWh, R = U²đm/𝒫đm, trạng thái dưới/đúng/quá định mức, tiền điện). `OpticsLab.engine.selfTest()` tổng cộng 97 phép thử, tất cả đạt.
+**Quy ước:** kim điện kế lệch phải khi i > 0; đưa cực Bắc lại gần cuộn dây ⇒ i > 0. Đây là MÔ HÌNH MINH HOẠ (lưỡng cực trên trục), không nhằm tính chính xác.
+
+**Thêm thành phần mới (Chương V trở đi):**
+- `em-lab.js`: thêm hàm engine vào `E`, viết một widget `(body)` trả về `{state}`, rồi đăng ký trong `window.LabSims`.
+- `circuit-power.js`: thêm một dòng vào `DEVICES` (id, vi, en, Ur, Pr, `ill:1` nếu là số minh hoạ); W13.2 và W13.4 tự nhận.
+- Gắn vào bài bằng một dòng PLACE trong `interactive.js`.
+
+**Mô phỏng:** `pow-wui`, `pow-rated`, `pow-label`, `pow-bill` (Bài 13); `em-magnet`, `em-electro`, `em-rotmagnet`, `em-squeeze`, `em-conditions`, `em-graph`, `em-generator` (Bài 14); `eff-sort`, `eff-heat`, `eff-magnet`, `eff-safety` (Bài 15).
+**Lưu ý:** công suất nồi cơm, quạt, tủ lạnh là số minh hoạ; giá điện do học sinh nhập (2 000 đồng/kWh chỉ là ví dụ, không phải giá hiện hành); Hình 14.7 đọc từ bản quét (biên độ 1,0 A, T = 20 ms); nhấp nháy ở tần số thấp và "50 Hz mắt không phân biệt" chỉ mang tính minh hoạ. Nội dung là bản soạn lại, cần đối chiếu sách in.

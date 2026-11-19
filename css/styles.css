@@ -1809,3 +1809,26 @@ body[data-role="teacher"] .sw--stu { display: none; }
 @media (max-width: 560px) { .cl__gauges { grid-template-columns: 1fr; } }
 /* Đợt 4: kính lúp (optics-mag) */
 .olab__focus { fill: var(--ink); } .olab__gridline { stroke: color-mix(in srgb, var(--pen) 22%, var(--paper)); stroke-width: 1; }
+/* Đợt 5: điện từ (em-lab), tác dụng dòng xoay chiều (em-effects), năng lượng điện (circuit-power) */
+.em__svg { width: 100%; height: auto; max-height: 440px; touch-action: none; }
+.em__N { fill: #e0575b; stroke: var(--ink); stroke-width: 2; } .em__S { fill: #6f8fe0; stroke: var(--ink); stroke-width: 2; }
+.em__pole { font: 800 15px var(--font-sans, system-ui); fill: #fff; pointer-events: none; }
+.em__fl { fill: none; stroke: var(--pen); stroke-width: 1.2; opacity: .5; stroke-dasharray: 5 4; }
+.em__coil { stroke: #b8651c; stroke-width: 3; }
+.em__core { fill: #9aa3b2; stroke: var(--ink); stroke-width: 2; }
+.em__ring { fill: #d9b44a; stroke: var(--ink); stroke-width: 2; } .em__brush { fill: #4a4f5c; }
+.em .olab__tbl--read th { text-align: left; padding-right: 10px; }
+.em .olab__sel, .pw .olab__sel { min-height: 40px; max-width: 100%; }
+.pw__dev { cursor: grab; touch-action: none; user-select: none; }
+.pw__dev.is-drag { opacity: .6; }
+.pw__zone { border: 2px dashed var(--line); border-radius: 12px; padding: 8px; min-height: 90px; }
+.pw__zone.is-over { border-color: var(--pen); background: color-mix(in srgb, var(--pen) 8%, var(--paper)); }
+.pw__chip { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; margin: 3px; min-height: 44px; border: 2px solid var(--ink); border-radius: 999px; background: var(--paper); font: 600 .9rem var(--font-sans, system-ui); cursor: grab; touch-action: none; user-select: none; }
+.pw__chip.is-sel { border-color: var(--pen); background: color-mix(in srgb, var(--pen) 14%, var(--paper)); }
+.pw__chip.is-ok { border-color: var(--teal-d); } .pw__chip.is-bad { border-color: var(--red); }
+.pw__bars { display: grid; gap: 4px; } .pw__bar { height: 14px; background: var(--pen); border-radius: 4px; min-width: 2px; }
+.pw__digits { display: inline-flex; gap: 2px; padding: 4px 8px; background: #1d2230; border-radius: 6px; font: 700 22px/1 ui-monospace, monospace; color: #fff; }
+.pw__digits b { padding: 2px 5px; background: #0b0e16; border-radius: 3px; } .pw__digits b:last-child { color: var(--red); }
+.pw__lcd { display: inline-block; padding: 6px 12px; background: #c9d8b6; color: #1c2a12; border: 3px solid #4a4f5c; border-radius: 6px; font: 700 24px/1 ui-monospace, monospace; }
+@media (prefers-reduced-motion: reduce) { .pw__disc { animation: none !important; } }
+.em .olab__tbl:not(.olab__tbl--read), .pw .olab__tbl:not(.olab__tbl--read) { display: block; max-width: 100%; overflow-x: auto; }

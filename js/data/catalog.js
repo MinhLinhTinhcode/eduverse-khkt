@@ -197,7 +197,16 @@ window.TEXTBOOK.grades = [
         en: 'Chapter III. Electricity',
         lessons: [
           { slug: 'bai-11', number: '11', vi: 'Điện trở. Định luật Ohm', en: 'Resistance. Ohm\'s law', content: 'khtn9-bai11' },
-          { slug: 'bai-12', number: '12', vi: 'Đoạn mạch nối tiếp, song song', en: 'Series and parallel circuits', content: 'khtn9-bai12' }
+          { slug: 'bai-12', number: '12', vi: 'Đoạn mạch nối tiếp, song song', en: 'Series and parallel circuits', content: 'khtn9-bai12' },
+          { slug: 'bai-13', number: '13', vi: 'Năng lượng của dòng điện và công suất điện', en: 'Electrical energy and electrical power', content: 'khtn9-bai13' }
+        ]
+      },
+      {
+        vi: 'Chương IV. Điện từ',
+        en: 'Chapter IV. Electromagnetism',
+        lessons: [
+          { slug: 'bai-14', number: '14', vi: 'Cảm ứng điện từ. Nguyên tắc tạo ra dòng điện xoay chiều', en: 'Electromagnetic induction. Principle of generating alternating current', content: 'khtn9-bai14' },
+          { slug: 'bai-15', number: '15', vi: 'Tác dụng của dòng điện xoay chiều', en: 'Effects of alternating current', content: 'khtn9-bai15' }
         ]
       }
     ]

@@ -581,7 +581,22 @@
     { lesson: 'khtn9-bai10', page: 50, after: 'activity', id: 'omag-angle' },
     { lesson: 'khtn9-bai10', page: 51, after: 'activity', id: 'omag-glass' },
     { lesson: 'khtn9-bai10', page: 52, after: 'activity', nth: 1, id: 'omag-scale' },
-    { lesson: 'khtn9-bai10', page: 52, after: 'activity', nth: 2, id: 'omag-eye' }
+    { lesson: 'khtn9-bai10', page: 52, after: 'activity', nth: 2, id: 'omag-eye' },
+    { lesson: 'khtn9-bai13', page: 64, after: 'activity', nth: 1, id: 'pow-wui' },
+    { lesson: 'khtn9-bai13', page: 65, after: 'activity', nth: 1, id: 'pow-rated' },
+    { lesson: 'khtn9-bai13', page: 65, after: 'activity', nth: 2, id: 'pow-label' },
+    { lesson: 'khtn9-bai13', page: 66, after: 'activity', nth: 1, id: 'pow-bill' },
+    { lesson: 'khtn9-bai14', page: 67, after: 'activity', nth: 1, id: 'em-magnet' },
+    { lesson: 'khtn9-bai14', page: 68, after: 'activity', nth: 1, id: 'em-electro' },
+    { lesson: 'khtn9-bai14', page: 69, after: 'activity', nth: 1, id: 'em-rotmagnet' },
+    { lesson: 'khtn9-bai14', page: 69, after: 'activity', nth: 2, id: 'em-squeeze' },
+    { lesson: 'khtn9-bai14', page: 70, after: 'activity', nth: 1, id: 'em-conditions' },
+    { lesson: 'khtn9-bai14', page: 70, after: 'activity', nth: 2, id: 'em-graph' },
+    { lesson: 'khtn9-bai14', page: 71, after: 'activity', nth: 1, id: 'em-generator' },
+    { lesson: 'khtn9-bai15', page: 72, after: 'activity', nth: 1, id: 'eff-sort' },
+    { lesson: 'khtn9-bai15', page: 72, after: 'activity', nth: 2, id: 'eff-heat' },
+    { lesson: 'khtn9-bai15', page: 73, after: 'activity', nth: 1, id: 'eff-magnet' },
+    { lesson: 'khtn9-bai15', page: 74, after: 'activity', nth: 1, id: 'eff-safety' }
   ];
   function inject() {
     PLACE.forEach((p) => {
