@@ -1868,3 +1868,7 @@ body[data-role="teacher"] .sw--stu { display: none; }
 .mol__bar { display: grid; grid-template-columns: 8em 1fr 5em; gap: 6px; align-items: center; margin: 3px 0; font-size: .9rem; } .mol__bar i { display: block; height: 14px; background: var(--pen); border-radius: 4px; min-width: 2px; }
 .mol__bar.is-top i { background: var(--red); }
 .mol__tube { display: inline-block; text-align: center; }
+
+/* Đợt 9: bảng so sánh kéo–thả, vùng thả đúng/sai */
+.pw__zone.is-ok { border-color: #2e9d57; background: color-mix(in srgb, #2e9d57 12%, var(--paper)); }
+.pw__zone.is-bad { border-color: #d6453d; background: color-mix(in srgb, #d6453d 10%, var(--paper)); }

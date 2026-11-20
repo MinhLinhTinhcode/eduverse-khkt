@@ -1,0 +1,270 @@
+/* ==========================================================================
+   DANH MỤC KHỐI LỚP VÀ BÀI HỌC
+   --------------------------------------------------------------------------
+   - Khối lớp có `available: true` mới mở được.
+   - Bài học có trường `content` (trỏ tới một bài trong TEXTBOOK.lessons)
+     là bài đã sẵn sàng; bài không có `content` sẽ hiện "Đang cập nhật".
+   - Để thêm bài mới: viết file js/data/lesson-....js rồi thêm `content`
+     vào đúng bài ở dưới (xem README.md).
+   ========================================================================== */
+window.TEXTBOOK = window.TEXTBOOK || {};
+window.TEXTBOOK.lessons = window.TEXTBOOK.lessons || {};
+
+window.TEXTBOOK.grades = [
+  { id: 6, slug: 'lop-6', subject: 'Tin học 6', available: false },
+  { id: 7, slug: 'lop-7', subject: 'Tin học 7', available: false },
+  { id: 8, slug: 'lop-8', subject: 'Tin học 8', available: false },
+  {
+    id: 9,
+    slug: 'lop-9',
+    subject: 'Tin học 9',
+    label: 'Tin 9',
+    short: 'Tin học',
+    subjectEn: 'Informatics 9',
+    available: true,
+    topics: [
+      {
+        vi: 'Máy tính và cộng đồng',
+        en: 'Computers and the community',
+        lessons: [
+          { slug: 'bai-1', number: '1', vi: 'Thế giới kĩ thuật số', en: 'The digital world', content: 'tin9-bai1' }
+        ]
+      },
+      {
+        vi: 'Tổ chức lưu trữ, tìm kiếm và trao đổi thông tin',
+        en: 'Organising, searching and exchanging information',
+        lessons: [
+          { slug: 'bai-2', number: '2', vi: 'Thông tin trong giải quyết vấn đề', en: 'Information in problem solving', content: 'tin9-bai2' },
+          { slug: 'bai-3', number: '3', vi: 'Thực hành: Đánh giá chất lượng thông tin', en: 'Practice: Evaluating the quality of information', content: 'tin9-bai3' }
+        ]
+      },
+      {
+        vi: 'Đạo đức, pháp luật và văn hoá trong môi trường số',
+        en: 'Ethics, law and culture in the digital environment',
+        lessons: [
+          { slug: 'bai-4', number: '4', vi: 'Một số vấn đề pháp lí về sử dụng dịch vụ Internet', en: 'Legal issues in using Internet services', content: 'tin9-bai4' }
+        ]
+      },
+      {
+        vi: 'Ứng dụng tin học',
+        en: 'Applications of informatics',
+        lessons: [
+          { slug: 'bai-5', number: '5', vi: 'Tìm hiểu phần mềm mô phỏng', en: 'Exploring simulation software', content: 'tin9-bai5' },
+          { slug: 'bai-6', number: '6', vi: 'Thực hành: Khai thác phần mềm mô phỏng', en: 'Practice: Using simulation software', content: 'tin9-bai6' },
+          { slug: 'bai-7', number: '7', vi: 'Trình bày thông tin trong trao đổi và hợp tác', en: 'Presenting information when communicating and collaborating', content: 'tin9-bai7' },
+          { slug: 'bai-8', number: '8', vi: 'Thực hành: Sử dụng công cụ trực quan trình bày thông tin trong trao đổi và hợp tác', en: 'Practice: Using visual tools to present information', content: 'tin9-bai8' },
+          { slug: 'bai-9a', number: '9a', vi: 'Sử dụng công cụ xác thực dữ liệu', en: 'Using data validation tools', content: 'tin9-bai9a' },
+          { slug: 'bai-10a', number: '10a', vi: 'Sử dụng hàm COUNTIF', en: 'Using the COUNTIF function', content: 'tin9-bai10a' },
+          { slug: 'bai-11a', number: '11a', vi: 'Sử dụng hàm SUMIF', en: 'Using the SUMIF function', content: 'tin9-bai11a' },
+          { slug: 'bai-12a', number: '12a', vi: 'Sử dụng hàm IF', en: 'Using the IF function', content: 'tin9-bai12a' },
+          { slug: 'bai-13a', number: '13a', vi: 'Hoàn thiện bảng tính quản lí tài chính gia đình', en: 'Completing a family finance spreadsheet', content: 'tin9-bai13a' }
+        ]
+      },
+      {
+        vi: 'Giải quyết vấn đề với sự trợ giúp của máy tính',
+        en: 'Solving problems with the help of computers',
+        lessons: [
+          { slug: 'bai-14', number: '14', vi: 'Giải quyết vấn đề', en: 'Problem solving', content: 'tin9-bai14' },
+          { slug: 'bai-15', number: '15', vi: 'Bài toán tin học', en: 'Computing problems', content: 'tin9-bai15' },
+          { slug: 'bai-16', number: '16', vi: 'Thực hành: Lập chương trình máy tính', en: 'Practice: Writing a computer program', content: 'tin9-bai16' }
+        ]
+      },
+      {
+        vi: 'Hướng nghiệp với tin học',
+        en: 'Careers in informatics',
+        lessons: [
+          { slug: 'bai-17', number: '17', vi: 'Tin học và thế giới nghề nghiệp', en: 'Informatics and the world of work', content: 'tin9-bai17' }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    id: 9,
+    slug: 'toan-9',
+    subject: 'Toán 9',
+    subjectEn: 'Mathematics 9',
+    label: 'Toán 9',
+    short: 'Toán',
+    available: true,
+    topics: [
+      {
+        vi: 'Chương I. Phương trình và hệ hai phương trình bậc nhất hai ẩn',
+        en: 'Chapter I. Equations and systems of two linear equations in two unknowns',
+        lessons: [
+          { slug: 'bai-1', number: '1', vi: 'Khái niệm phương trình và hệ hai phương trình bậc nhất hai ẩn', en: 'Linear equations and systems of two linear equations', content: 'toan9-bai1' },
+          { slug: 'bai-2', number: '2', vi: 'Giải hệ hai phương trình bậc nhất hai ẩn', en: 'Solving a system of two linear equations', content: 'toan9-bai2' },
+          { slug: 'bai-3', number: '3', vi: 'Giải bài toán bằng cách lập hệ phương trình', en: 'Solving word problems with a system of equations', content: 'toan9-bai3' }
+        ]
+      },
+      {
+        vi: 'Chương II. Phương trình và bất phương trình bậc nhất một ẩn',
+        en: 'Chapter II. Equations and linear inequalities in one unknown',
+        lessons: [
+          { slug: 'bai-4', number: '4', vi: 'Phương trình quy về phương trình bậc nhất một ẩn', en: 'Equations that reduce to linear equations in one unknown', content: 'toan9-bai4' },
+          { slug: 'bai-5', number: '5', vi: 'Bất đẳng thức và tính chất', en: 'Inequalities and their properties', content: 'toan9-bai5' },
+          { slug: 'luyen-tap-chung-2', number: 'LT', vi: 'Luyện tập chung', en: 'General practice', content: 'toan9-ltc2' },
+          { slug: 'bai-6', number: '6', vi: 'Bất phương trình bậc nhất một ẩn', en: 'Linear inequalities in one unknown', content: 'toan9-bai6' },
+          { slug: 'bai-tap-cuoi-chuong-2', number: 'BT', vi: 'Bài tập cuối chương II', en: 'End-of-chapter exercises', content: 'toan9-btcc2' }
+        ]
+      },
+      {
+        vi: 'Chương III. Căn bậc hai và căn bậc ba',
+        en: 'Chapter III. Square roots and cube roots',
+        lessons: [
+          { slug: 'bai-7', number: '7', vi: 'Căn bậc hai và căn thức bậc hai', en: 'Square roots and radical expressions', content: 'toan9-bai7' },
+          { slug: 'bai-8', number: '8', vi: 'Khai căn bậc hai với phép nhân và phép chia', en: 'Square roots with multiplication and division', content: 'toan9-bai8' },
+          { slug: 'luyen-tap-chung-3', number: 'LT', vi: 'Luyện tập chung', en: 'General practice', content: 'toan9-ltc3a' },
+          { slug: 'bai-9', number: '9', vi: 'Biến đổi đơn giản và rút gọn biểu thức chứa căn thức bậc hai', en: 'Simple transformations and simplifying expressions with square roots', content: 'toan9-bai9' },
+          { slug: 'bai-10', number: '10', vi: 'Căn bậc ba và căn thức bậc ba', en: 'Cube roots and cube-root expressions', content: 'toan9-bai10' },
+          { slug: 'luyen-tap-chung-4', number: 'LT', vi: 'Luyện tập chung', en: 'General practice', content: 'toan9-ltc3b' },
+          { slug: 'bai-tap-cuoi-chuong-3', number: 'BT', vi: 'Bài tập cuối chương III', en: 'End-of-chapter exercises', content: 'toan9-btcc3' }
+        ]
+      },
+      {
+        vi: 'Chương IV. Hệ thức lượng trong tam giác vuông',
+        en: 'Chapter IV. Right-triangle trigonometry',
+        lessons: [
+          { slug: 'bai-11', number: '11', vi: 'Tỉ số lượng giác của góc nhọn', en: 'Trigonometric ratios of an acute angle', content: 'toan9-bai11' },
+          { slug: 'bai-12', number: '12', vi: 'Một số hệ thức giữa cạnh, góc trong tam giác vuông và ứng dụng', en: 'Relations between sides and angles in a right triangle, and applications', content: 'toan9-bai12' },
+          { slug: 'luyen-tap-chung-5', number: 'LT', vi: 'Luyện tập chung', en: 'General practice', content: 'toan9-ltc4' },
+          { slug: 'bai-tap-cuoi-chuong-4', number: 'BT', vi: 'Bài tập cuối chương IV', en: 'End-of-chapter exercises', content: 'toan9-btcc4' }
+        ]
+      },
+      {
+        vi: 'Chương V. Đường tròn',
+        en: 'Chapter V. Circles',
+        lessons: [
+          { slug: 'bai-13', number: '13', vi: 'Mở đầu về đường tròn', en: 'Introduction to circles', content: 'toan9-bai13' },
+          { slug: 'bai-14', number: '14', vi: 'Cung và dây của một đường tròn', en: 'Arcs and chords of a circle', content: 'toan9-bai14' },
+          { slug: 'bai-15', number: '15', vi: 'Độ dài của cung tròn. Diện tích hình quạt tròn và hình vành khuyên', en: 'Arc length; area of a sector and of an annulus', content: 'toan9-bai15' },
+          { slug: 'luyen-tap-chung-6', number: 'LT', vi: 'Luyện tập chung', en: 'General practice', content: 'toan9-ltc5' },
+          { slug: 'bai-16', number: '16', vi: 'Vị trí tương đối của đường thẳng và đường tròn', en: 'Relative positions of a line and a circle', content: 'toan9-bai16' },
+          { slug: 'bai-17', number: '17', vi: 'Vị trí tương đối của hai đường tròn', en: 'Relative positions of two circles', content: 'toan9-bai17' }
+        ]
+      },
+      {
+        vi: 'Chương VI. Hàm số y = ax² (a ≠ 0). Phương trình bậc hai một ẩn',
+        en: 'Chapter VI. The function y = ax² (a ≠ 0). Quadratic equations in one variable',
+        lessons: [
+          { slug: 'bai-18', number: '18', vi: 'Hàm số y = ax² (a ≠ 0)', en: 'The function y = ax² (a ≠ 0)', content: 'toan9-bai18' },
+          { slug: 'bai-19', number: '19', vi: 'Phương trình bậc hai một ẩn', en: 'Quadratic equations in one variable', content: 'toan9-bai19' },
+          { slug: 'bai-20', number: '20', vi: 'Định lí Viète và ứng dụng', en: "Vieta's theorem and its applications", content: 'toan9-bai20' }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    id: 9,
+    slug: 'khtn-9',
+    subject: 'Khoa học tự nhiên 9',
+    subjectEn: 'Natural Science 9',
+    label: 'KHTN 9',
+    short: 'KHTN',
+    available: true,
+    topics: [
+      {
+        vi: 'Bài mở đầu',
+        en: 'Opening lesson',
+        lessons: [
+          { slug: 'bai-1', number: '1', vi: 'Nhận biết một số dụng cụ, hoá chất. Thuyết trình một vấn đề khoa học', en: 'Recognising some laboratory equipment and chemicals. Presenting a scientific topic', content: 'khtn9-bai1' }
+        ]
+      },
+      {
+        vi: 'Chương I. Năng lượng cơ học',
+        en: 'Chapter I. Mechanical energy',
+        lessons: [
+          { slug: 'bai-2', number: '2', vi: 'Động năng. Thế năng', en: 'Kinetic energy. Potential energy', content: 'khtn9-bai2' },
+          { slug: 'bai-3', number: '3', vi: 'Cơ năng', en: 'Mechanical energy', content: 'khtn9-bai3' },
+          { slug: 'bai-4', number: '4', vi: 'Công và công suất', en: 'Work and power', content: 'khtn9-bai4' }
+        ]
+      },
+      {
+        vi: 'Chương II. Ánh sáng',
+        en: 'Chapter II. Light',
+        lessons: [
+          { slug: 'bai-5', number: '5', vi: 'Khúc xạ ánh sáng', en: 'Refraction of light', content: 'khtn9-bai5' },
+          { slug: 'bai-6', number: '6', vi: 'Phản xạ toàn phần', en: 'Total internal reflection', content: 'khtn9-bai6' },
+          { slug: 'bai-7', number: '7', vi: 'Lăng kính', en: 'Prisms', content: 'khtn9-bai7' },
+          { slug: 'bai-8', number: '8', vi: 'Thấu kính', en: 'Lenses', content: 'khtn9-bai8' },
+          { slug: 'bai-9', number: '9', vi: 'Thực hành đo tiêu cự của thấu kính hội tụ', en: 'Practical: measuring the focal length of a converging lens', content: 'khtn9-bai9' },
+          { slug: 'bai-10', number: '10', vi: 'Kính lúp. Bài tập thấu kính', en: 'Magnifying glass. Lens exercises', content: 'khtn9-bai10' }
+        ]
+      },
+      {
+        vi: 'Chương III. Điện',
+        en: 'Chapter III. Electricity',
+        lessons: [
+          { slug: 'bai-11', number: '11', vi: 'Điện trở. Định luật Ohm', en: 'Resistance. Ohm\'s law', content: 'khtn9-bai11' },
+          { slug: 'bai-12', number: '12', vi: 'Đoạn mạch nối tiếp, song song', en: 'Series and parallel circuits', content: 'khtn9-bai12' },
+          { slug: 'bai-13', number: '13', vi: 'Năng lượng của dòng điện và công suất điện', en: 'Electrical energy and electrical power', content: 'khtn9-bai13' }
+        ]
+      },
+      {
+        vi: 'Chương IV. Điện từ',
+        en: 'Chapter IV. Electromagnetism',
+        lessons: [
+          { slug: 'bai-14', number: '14', vi: 'Cảm ứng điện từ. Nguyên tắc tạo ra dòng điện xoay chiều', en: 'Electromagnetic induction. Principle of generating alternating current', content: 'khtn9-bai14' },
+          { slug: 'bai-15', number: '15', vi: 'Tác dụng của dòng điện xoay chiều', en: 'Effects of alternating current', content: 'khtn9-bai15' }
+        ]
+      },
+      {
+        vi: 'Chương V. Năng lượng với cuộc sống',
+        en: 'Chapter V. Energy and life',
+        lessons: [
+          { slug: 'bai-16', number: '16', vi: 'Vòng năng lượng trên Trái Đất. Năng lượng hoá thạch', en: 'The energy cycle on Earth. Fossil energy', content: 'khtn9-bai16' },
+          { slug: 'bai-17', number: '17', vi: 'Một số dạng năng lượng tái tạo', en: 'Some forms of renewable energy', content: 'khtn9-bai17' }
+        ]
+      },
+      {
+        vi: 'Chương VI. Kim loại. Sự khác nhau cơ bản giữa phi kim và kim loại',
+        en: 'Chapter VI. Metals. Basic differences between non-metals and metals',
+        lessons: [
+          { slug: 'bai-18', number: '18', vi: 'Tính chất chung của kim loại', en: 'General properties of metals', content: 'khtn9-bai18' },
+          { slug: 'bai-19', number: '19', vi: 'Dãy hoạt động hoá học', en: 'The reactivity series', content: 'khtn9-bai19' },
+          { slug: 'bai-20', number: '20', vi: 'Tách kim loại và việc sử dụng hợp kim', en: 'Extracting metals and using alloys', content: 'khtn9-bai20' },
+          { slug: 'bai-21', number: '21', vi: 'Sự khác nhau cơ bản giữa phi kim và kim loại', en: 'Basic differences between non-metals and metals', content: 'khtn9-bai21' }
+        ]
+      },
+      {
+        vi: 'Chương VII. Giới thiệu về chất hữu cơ. Hydrocarbon và nguồn nhiên liệu',
+        en: 'Chapter VII. Introduction to organic matter. Hydrocarbons and fuels',
+        lessons: [
+          { slug: 'bai-22', number: '22', vi: 'Giới thiệu về hợp chất hữu cơ', en: 'Introduction to organic compounds', content: 'khtn9-bai22' },
+          { slug: 'bai-23', number: '23', vi: 'Alkane', en: 'Alkanes', content: 'khtn9-bai23' },
+          { slug: 'bai-24', number: '24', vi: 'Alkene', en: 'Alkenes', content: 'khtn9-bai24' },
+          { slug: 'bai-25', number: '25', vi: 'Nguồn nhiên liệu', en: 'Fuel sources', content: 'khtn9-bai25' }
+        ]
+      },
+      {
+        vi: 'Chương VIII. Ethylic alcohol và acetic acid',
+        en: 'Chapter VIII. Ethyl alcohol and acetic acid',
+        lessons: [
+          { slug: 'bai-26', number: '26', vi: 'Ethylic alcohol', en: 'Ethyl alcohol (ethanol)', content: 'khtn9-bai26' },
+          { slug: 'bai-27', number: '27', vi: 'Acetic acid', en: 'Acetic acid', content: 'khtn9-bai27' }
+        ]
+      },
+      {
+        vi: 'Chương IX. Lipid. Carbohydrate. Protein. Polymer',
+        en: 'Chapter IX. Lipids, carbohydrates, proteins, polymers',
+        lessons: [
+          { slug: 'bai-28', number: '28', vi: 'Lipid', en: 'Lipids', content: 'khtn9-bai28' },
+          { slug: 'bai-29', number: '29', vi: 'Carbohydrate. Glucose và saccharose', en: 'Carbohydrates. Glucose and sucrose (saccharose)', content: 'khtn9-bai29' },
+          { slug: 'bai-30', number: '30', vi: 'Tinh bột và cellulose', en: 'Starch and cellulose', content: 'khtn9-bai30' },
+          { slug: 'bai-31', number: '31', vi: 'Protein', en: 'Proteins', content: 'khtn9-bai31' },
+          { slug: 'bai-32', number: '32', vi: 'Polymer', en: 'Polymers', content: 'khtn9-bai32' }
+        ]
+      },
+      {
+        vi: 'Chương X. Khai thác tài nguyên từ vỏ Trái Đất',
+        en: 'Chapter X. Exploiting resources from the Earth’s crust',
+        lessons: [
+          { slug: 'bai-33', number: '33', vi: 'Sơ lược về hoá học vỏ Trái Đất và khai thác tài nguyên từ vỏ Trái Đất', en: 'Outline of the chemistry of the Earth’s crust and exploiting its resources', content: 'khtn9-bai33' },
+          { slug: 'bai-34', number: '34', vi: 'Khai thác đá vôi. Công nghiệp silicate', en: 'Quarrying limestone. The silicate industry', content: 'khtn9-bai34' },
+          { slug: 'bai-35', number: '35', vi: 'Khai thác nhiên liệu hoá thạch. Nguồn carbon. Chu trình carbon và sự ấm lên toàn cầu', en: 'Exploiting fossil fuels. Carbon sources. The carbon cycle and global warming', content: 'khtn9-bai35' }
+        ]
+      }
+    ]
+  }
+];
