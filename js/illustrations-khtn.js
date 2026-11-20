@@ -776,6 +776,51 @@
   const khtn21b = () => svg('0 0 480 270', 'Hình 21.2: một số ứng dụng của lưu huỳnh',
     circ(240, 135, 44, '#f2e04a', { w: 3 }) + bil(240, 132, 'Lưu huỳnh', 'Sulfur', { a: 'middle', s: 12 }) +
     [['Sản xuất dược phẩm', 'Making medicines', 240, 30], ['Lưu hoá cao su', 'Vulcanising rubber', 70, 135], ['Sản xuất thuốc diệt nấm', 'Making fungicides', 410, 135], ['Sản xuất pháo hoa, diêm', 'Making fireworks, matches', 240, 245]].map((q) => line(240, 135, q[2], q[3] + (q[3] < 100 ? 8 : q[3] > 200 ? -22 : 0), C.grey, 2) + bil(q[2], q[3], q[0], q[1], { a: 'middle', s: 11 })).join(''));
+
+  /* ===== Đợt 8: Chương VII (Bài 22–24). Công thức cấu tạo do engine MolLab dựng (không chép ảnh sách) ===== */
+  const mol = (smi, x, y, w) => {
+    const ME = window.MolLab && window.MolLab.engine; if (!ME) return '';
+    const sv = ME.drawFull(ME.fromSmiles(smi), { maxW: w, unit: 30 }), vb = /viewBox="0 0 (\d+) (\d+)"/.exec(sv); if (!vb) return '';
+    const h = Math.round(w * (+vb[2]) / (+vb[1]));
+    return sv.replace('<svg class="mol__svg"', '<svg x="' + x + '" y="' + y + '" style="color:#1f2937" height="' + h + '"').replace(/ width="\d+"/, ' width="' + w + '"');
+  };
+  const khtn22a = () => svg('0 0 480 250', 'Hình 22.1: một số hợp chất hữu cơ phổ biến',
+    [['Butane', 'C₄H₁₀', 'khí hoá lỏng, nhiên liệu', 'liquefied gas fuel', '#cfe3ff'], ['Ethylic alcohol', 'C₂H₅OH', 'đồ uống có cồn', 'alcoholic drinks', '#ffe0b8'], ['Acetic acid', 'CH₃COOH', 'trong giấm', 'in vinegar', '#e4f4c8'], ['Urea', 'CO(NH₂)₂', 'một loại phân đạm', 'a nitrogen fertiliser', '#f1dcf7']].map((q, i) => { const x = 14 + i * 116;
+      return rect(x, 20, 104, 92, q[4], { r: 14 }) + (i === 0 ? rect(x + 34, 40, 36, 52, '#8aa9d6', { r: 6 }) + rect(x + 42, 30, 20, 12, '#666', { r: 2 }) : i === 1 ? path('M' + (x + 44) + ' 34 h16 v18 l10 12 v28 h-36 v-28 l10 -12z', '#c9854a') : i === 2 ? path('M' + (x + 42) + ' 36 h20 v14 l10 10 v30 h-40 v-30 l10 -10z', '#e8e0c0') : path('M' + (x + 24) + ' 50 q30 -22 56 0 l-4 40 h-48z', '#d9c7a0')) +
+        t(x + 52, 136, q[0], { a: 'middle', s: 12, b: 1 }) + t(x + 52, 152, q[1], { a: 'middle', s: 13, b: 1 }) + t(x + 52, 172, q[2], { a: 'middle', s: 10 }) + t(x + 52, 185, q[3], { a: 'middle', s: 9, i: 1 }); }).join('') +
+    t(240, 222, 'Điểm chung: phân tử đều có nguyên tử carbon · Common feature: every molecule contains carbon', { a: 'middle', s: 11, b: 1 }));
+  const khtn22b = () => svg('0 0 480 230', 'Công thức phân tử, công thức cấu tạo đầy đủ và thu gọn của C₂H₆ và C₂H₄',
+    t(70, 24, 'Công thức phân tử', { a: 'middle', s: 11, b: 1 }) + t(240, 24, 'Cấu tạo đầy đủ', { a: 'middle', s: 11, b: 1 }) + t(410, 24, 'Cấu tạo thu gọn', { a: 'middle', s: 11, b: 1 }) +
+    t(70, 90, 'C₂H₆', { a: 'middle', s: 14, b: 1 }) + mol('CC', 160, 40, 160) + t(410, 90, 'CH₃–CH₃', { a: 'middle', s: 14, b: 1 }) + line(10, 128, 470, 128, C.grey, 1) +
+    t(70, 190, 'C₂H₄', { a: 'middle', s: 14, b: 1 }) + mol('C=C', 160, 140, 160) + t(410, 190, 'CH₂=CH₂', { a: 'middle', s: 14, b: 1 }));
+  const khtn22c = () => { const n = (x, y, k) => circ(x, y, 11, '#d9a58a', { w: 1 }) + t(x, y + 4, k, { a: 'middle', s: 11, b: 1 });
+    return svg('0 0 480 300', 'Hình 22.2: công thức phân tử và công thức cấu tạo của một số chất',
+      t(40, 60, 'C₄H₁₀', { a: 'middle', s: 14, b: 1 }) + n(40, 96, '1') + mol('CCCC', 90, 20, 170) + n(175, 128, '2') + mol('CC(C)C', 290, 8, 150) + n(365, 140, '3') +
+      t(40, 205, 'C₂H₆O', { a: 'middle', s: 14, b: 1 }) + n(40, 240, '4') + mol('CCO', 90, 165, 150) + n(165, 268, '5') + mol('COC', 290, 165, 150) + n(365, 268, '6')); };
+  const khtn22d = () => svg('0 0 480 250', 'Hình 22.3: cấu tạo mạch carbon',
+    mol('CCCC', 6, 20, 150) + mol('CC(C)C', 170, 10, 140) + mol('C1CCC1', 335, 20, 120) +
+    t(80, 150, 'CH₃–CH₂–CH₂–CH₃', { a: 'middle', s: 11, b: 1 }) + t(240, 150, 'CH₃–CH(CH₃)–CH₃', { a: 'middle', s: 11, b: 1 }) + t(395, 150, '(CH₂)₄', { a: 'middle', s: 11, b: 1 }) +
+    bil(80, 190, 'a) mạch hở, không phân nhánh', 'a) open chain, unbranched', { a: 'middle', s: 10 }) + bil(240, 190, 'b) mạch hở, phân nhánh', 'b) open chain, branched', { a: 'middle', s: 10 }) + bil(395, 190, 'c) mạch vòng', 'c) ring', { a: 'middle', s: 10 }));
+  const khtn23a = () => svg('0 0 480 240', 'Hình 23.1: một số hydrocarbon thông dụng',
+    mol('C', 10, 20, 110) + mol('CCC', 150, 40, 170) + mol('C=C', 350, 30, 120) +
+    bil(65, 160, 'a) Methane', 'a) Methane', { a: 'middle', s: 11 }) + bil(235, 160, 'b) Propane', 'b) Propane', { a: 'middle', s: 11 }) + bil(410, 160, 'c) Ethylene', 'c) Ethylene', { a: 'middle', s: 11 }) +
+    bil(65, 185, 'khí bùn ao', 'pond gas', { a: 'middle', s: 10 }) + bil(235, 185, 'bình gas', 'gas cylinder', { a: 'middle', s: 10 }) + bil(410, 185, 'quả chín', 'ripening fruit', { a: 'middle', s: 10 }));
+  const khtn23b = () => svg('0 0 480 260', 'Bảng 23.1: bốn alkane đầu tiên (cấu tạo đầy đủ do máy dựng)',
+    [['C', 'CH₄', 'CH₄', 'Methane'], ['CC', 'C₂H₆', 'CH₃–CH₃', 'Ethane'], ['CCC', 'C₃H₈', 'CH₃–CH₂–CH₃', 'Propane'], ['CCCC', 'C₄H₁₀', 'CH₃–CH₂–CH₂–CH₃', 'Butane']].map((q, i) => { const x = i * 120; return mol(q[0], x + 4, 10 + (i === 0 ? 20 : i === 1 ? 20 : 25), i < 2 ? 100 : 112) + t(x + 60, 160, q[1], { a: 'middle', s: 13, b: 1 }) + t(x + 60, 180, q[2], { a: 'middle', s: 10 }) + t(x + 60, 204, q[3], { a: 'middle', s: 12, b: 1 }); }).join(''));
+  const khtn23c = () => svg('0 0 480 270', 'Hình 23.2: thí nghiệm về phản ứng cháy của butane',
+    path('M60 40 H140 L170 120 H30 Z', '#e6f1ff') + rect(88, 120, 24, 30, '#e6f1ff', { r: 0 }) + path('M62 42 H138 L165 118 H35 Z', '#9aa3ad', { w: 0 }) + rect(92, 150, 16, 70, '#3f67c9', { r: 4 }) + path('M100 148 q-8 -16 0 -34 q8 18 0 34z', '#ffa24a', { w: 1 }) +
+    bil(100, 245, 'Úp ngược bình, đốt butane', 'Inverted flask, butane burning', { a: 'middle', s: 10 }) + bil(100, 20, 'Thành bình mờ đi', 'The wall clouds over', { a: 'middle', s: 10 }) +
+    arrow(190, 100, 260, 100, C.ink, 2) + path('M300 40 H380 L410 120 H270 Z', '#f2f2f2') + rect(328, 120, 24, 30, '#f2f2f2', { r: 0 }) + path('M282 110 H398 L410 120 H270 Z', '#e8e8e8', { w: 0 }) +
+    bil(340, 20, 'Nước vôi trong vẩn đục', 'Limewater turns cloudy', { a: 'middle', s: 10 }) + bil(340, 245, 'Lật bình, đổ nước vôi, lắc', 'Turn over, add limewater, shake', { a: 'middle', s: 10 }) + t(240, 200, '⚠ Chỉ minh hoạ · Illustration only', { a: 'middle', s: 10, b: 1 }));
+  const khtn24a = () => svg('0 0 480 280', 'Hình 24.1: điều chế ethylene và thử tính chất',
+    path('M40 120 h22 v18 l30 50 q6 14 -10 14 h-62 q-16 0 -10 -14 l30 -50z', '#e6f1ff') + rect(30, 200, 66, 12, '#8f949c', { r: 0 }) + path('M62 124 h60 v26', 'none', { w: 3 }) + rect(94, 150, 56, 66, '#dfeaff', { r: 6 }) + rect(96, 186, 52, 28, '#a8c4f0', { r: 0, w: 0 }) +
+    path('M122 150 v-50 h90 l20 -8', 'none', { w: 3 }) + path('M232 92 q-8 -24 0 -46 q8 22 0 46z', '#ffa24a', { w: 1 }) + bil(235, 30, 'a) Đốt ethylene', 'a) Burning ethylene', { a: 'middle', s: 10 }) +
+    path('M300 100 h110 v70', 'none', { w: 3 }) + path('M385 150 h50 v80 q0 8 -8 8 h-34 q-8 0 -8 -8z', '#fb923c') + bil(410, 255, 'Nước bromine', 'Bromine water', { a: 'middle', s: 10 }) + bil(360, 90, 'b) Dẫn vào nước bromine', 'b) Into bromine water', { a: 'middle', s: 10 }) +
+    bil(60, 240, 'Cồn 96° + H₂SO₄ đặc, đá bọt', '96° alcohol + conc. H₂SO₄, boiling chips', { a: 'middle', s: 9 }) + bil(122, 236, 'Dung dịch NaOH', 'NaOH solution', { a: 'middle', s: 9 }) + t(240, 270, '⚠ Chỉ minh hoạ · Illustration only', { a: 'middle', s: 10, b: 1 }));
+  const khtn24b = () => svg('0 0 480 270', 'Hình 24.2: một số ứng dụng của ethylene',
+    circ(240, 135, 44, '#cfe8c8', { w: 3 }) + bil(240, 132, 'Ethylene', 'Ethylene', { a: 'middle', s: 12 }) + t(240, 150, 'C₂H₄', { a: 'middle', s: 11, b: 1 }) +
+    [['Tổng hợp ethylic alcohol', 'Making ethylic alcohol', 90, 40], ['Tổng hợp acetic acid', 'Making acetic acid', 240, 28], ['Sản xuất dung môi', 'Making solvents', 390, 40], ['Kích thích quả chín', 'Ripening fruit', 90, 235], ['Sản xuất polyethylene (PE)', 'Making polyethylene (PE)', 240, 248], ['Sản xuất PVC', 'Making PVC', 390, 235]].map((q) => line(240, 135, q[2], q[3] + (q[3] < 100 ? 8 : -22), C.grey, 2) + bil(q[2], q[3], q[0], q[1], { a: 'middle', s: 10 })).join(''));
+  Object.assign(T.art, { khtn22a, khtn22b, khtn22c, khtn22d, khtn23a, khtn23b, khtn23c, khtn24a, khtn24b });
   Object.assign(T.art, { khtn19a, khtn19b, khtn20a, khtn20b, khtn20c, khtn21a, khtn21b });
   Object.assign(T.art, { khtn13a, khtn13b, khtn14a, khtn14b, khtn14c, khtn14d, khtn14e, khtn14f, khtn14g, khtn14h, khtn14i, khtn15a, khtn15b, khtn15c, khtn15d, khtn15e, khtn15f });
 })();

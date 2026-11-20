@@ -268,3 +268,16 @@ Hai tệp `optics-lens.js`, `optics-prism.js` nạp **sau** `optics-lab.js` (xem
 **Cách thêm phản ứng / thiết bị công nghiệp cho Chương VII (Bài 22+):** (1) thêm phương trình vào `EXTRA` trong `chem-lab.js` (hệ số do `balance()` tính); (2) thêm nguyên tố mới vào `ELEMENTS` nếu cần; (3) thêm hàm mô hình thuần vào `IND` trong `chem-industry.js` + một dòng `selfTest`; (4) viết widget bằng `EnergyLab.sorter` (kéo thả thẻ), `ChemLab.bench` (ống nghiệm), `ChemLab.dnd` (chip → vùng), `OpticsLab.makeDrag` (tay kéo SVG; phím mũi tên đã được `makeDrag` nhân Shift ×5 — đừng nhân lại; sau khi vẽ lại SVG phải trả focus cho tay kéo); (5) khai báo trong `LabSims` và `PLACE`.
 
 **Mô hình / bổ sung (không in trong sách):** nhiệt độ nóng chảy hợp kim Wood ngoài tỉ lệ 50/25/12,5/12,5 (nội suy, đúng 55,5 °C và đúng 4 đỉnh); khối lượng Al theo định luật Faraday; lò cao theo tỉ lệ có chất hạn chế; %C, %Si, %Mn trong lò thổi (hàm mũ); ví dụ Mg–O, CaO, Na₂O, CO₂, P₂O₅; bài tính tấn–kg; lớp lọc nước; độ dẫn điện tương đối. Ngưỡng inox (Cr, Ni) sách không nêu. Em đã học / Em có thể của Bài 19 và 21 và Em có thể của Bài 20 soạn theo mục tiêu bài vì bản quét bị cắt.
+
+## Đợt 8 – Khoa học tự nhiên 9, Chương VII (Bài 22–24)
+
+Bài 22 *Giới thiệu về hợp chất hữu cơ*, Bài 23 *Alkane*, Bài 24 *Alkene* (sách tr. 103–113). Dừng đúng cuối Bài 24; Bài 25 (Nguồn nhiên liệu) chưa làm.
+
+**File mới:** `js/mol-lab.js` (thư viện phân tử dùng lại cho Bài 25+: engine thuần + bảng lắp ghép + kéo thả), `js/mol-w22.js`, `js/mol-w23.js`, `js/mol-w24.js` (19 mô phỏng), `js/data/lesson-khtn9-bai22/23/24.js`. **Sửa:** `chem-lab.js` (thêm `E.ORG`: phản ứng cháy, cộng Br₂, trùng hợp, nhiệt cháy), `illustrations-khtn.js` (9 hình), `interactive.js` (PLACE), `catalog.js`, `styles.css`, `index.html`.
+
+**Thêm nguyên tử / nhóm chức / phản ứng cho Bài 25+:**
+- Nguyên tử mới: thêm vào `VAL` (hoá trị) và `MASS` (khối lượng) trong `mol-lab.js`, thêm màu vào `CLR`/`TXT`, rồi đưa ký hiệu vào `cfg.atoms` của `MolLab.board`.
+- Nhóm chức / tên chất: thêm vào `SUBST`, `KNOWN` (nhận tên) và `classify`.
+- Phản ứng: thêm hàm trong `ORG` của `chem-lab.js` (trả về `{kind, left, right, ...}`) kèm một dòng trong `ORG.selfTest`.
+
+**Lưu ý kiểm tra với sách in:** nội dung là diễn đạt lại; "Em đã học / Em có thể" của Bài 23 không đọc được trên bản scan nên dùng lời riêng; nước vôi trong và mục đích bình NaOH là phần bổ sung ngoài sách; số đồng phân do máy đếm (C₄H₁₀=2, C₃H₆=2, C₂H₆O=2). Nhiệt bình gas 1 : 1 theo mol, 1 kg ≈ 49 980 kJ.

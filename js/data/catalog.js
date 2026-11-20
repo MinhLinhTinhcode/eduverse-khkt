@@ -226,6 +226,15 @@ window.TEXTBOOK.grades = [
           { slug: 'bai-20', number: '20', vi: 'Tách kim loại và việc sử dụng hợp kim', en: 'Extracting metals and using alloys', content: 'khtn9-bai20' },
           { slug: 'bai-21', number: '21', vi: 'Sự khác nhau cơ bản giữa phi kim và kim loại', en: 'Basic differences between non-metals and metals', content: 'khtn9-bai21' }
         ]
+      },
+      {
+        vi: 'Chương VII. Giới thiệu về chất hữu cơ. Hydrocarbon và nguồn nhiên liệu',
+        en: 'Chapter VII. Introduction to organic matter. Hydrocarbons and fuels',
+        lessons: [
+          { slug: 'bai-22', number: '22', vi: 'Giới thiệu về hợp chất hữu cơ', en: 'Introduction to organic compounds', content: 'khtn9-bai22' },
+          { slug: 'bai-23', number: '23', vi: 'Alkane', en: 'Alkanes', content: 'khtn9-bai23' },
+          { slug: 'bai-24', number: '24', vi: 'Alkene', en: 'Alkenes', content: 'khtn9-bai24' }
+        ]
       }
     ]
   }

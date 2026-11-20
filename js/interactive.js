@@ -640,7 +640,26 @@
     { lesson: 'khtn9-bai21', page: 101, after: 'activity', nth: 2, id: 'nm-class' },
     { lesson: 'khtn9-bai21', page: 102, after: 'activity', nth: 1, id: 'nm-ion' },
     { lesson: 'khtn9-bai21', page: 102, after: 'activity', nth: 2, id: 'nm-oxide' },
-    { lesson: 'khtn9-bai21', page: 102, after: 'activity', nth: 3, id: 'nm-layers' }
+    { lesson: 'khtn9-bai21', page: 102, after: 'activity', nth: 3, id: 'nm-layers' },
+    { lesson: 'khtn9-bai22', page: 104, after: 'activity', nth: 1, id: 'mol-sort' },
+    { lesson: 'khtn9-bai22', page: 104, after: 'activity', nth: 2, id: 'mol-hist' },
+    { lesson: 'khtn9-bai22', page: 105, after: 'activity', nth: 1, id: 'mol-fig222' },
+    { lesson: 'khtn9-bai22', page: 106, after: 'activity', nth: 1, id: 'mol-board' },
+    { lesson: 'khtn9-bai22', page: 106, after: 'activity', nth: 2, id: 'mol-iso' },
+    { lesson: 'khtn9-bai22', page: 106, after: 'activity', nth: 3, id: 'mol-hc' },
+    { lesson: 'khtn9-bai23', page: 108, after: 'activity', nth: 1, id: 'mol-alk' },
+    { lesson: 'khtn9-bai23', page: 108, after: 'activity', nth: 2, id: 'mol-homol' },
+    { lesson: 'khtn9-bai23', page: 109, after: 'activity', nth: 1, id: 'mol-burn' },
+    { lesson: 'khtn9-bai23', page: 109, after: 'activity', nth: 2, id: 'mol-balance' },
+    { lesson: 'khtn9-bai23', page: 109, after: 'activity', nth: 3, id: 'mol-stable' },
+    { lesson: 'khtn9-bai23', page: 110, after: 'activity', nth: 1, id: 'mol-heat' },
+    { lesson: 'khtn9-bai24', page: 111, after: 'activity', nth: 1, id: 'mol-alkene' },
+    { lesson: 'khtn9-bai24', page: 111, after: 'activity', nth: 2, id: 'mol-ethylene' },
+    { lesson: 'khtn9-bai24', page: 112, after: 'activity', nth: 1, id: 'mol-apparatus' },
+    { lesson: 'khtn9-bai24', page: 112, after: 'activity', nth: 2, id: 'mol-add' },
+    { lesson: 'khtn9-bai24', page: 112, after: 'activity', nth: 3, id: 'mol-tell' },
+    { lesson: 'khtn9-bai24', page: 113, after: 'activity', nth: 1, id: 'mol-poly' },
+    { lesson: 'khtn9-bai24', page: 113, after: 'activity', nth: 2, id: 'mol-use' }
   ];
   function inject() {
     PLACE.forEach((p) => {

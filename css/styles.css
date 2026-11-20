@@ -1845,3 +1845,26 @@ body[data-role="teacher"] .sw--stu { display: none; }
 .chem .chem__tbl { display: block; overflow-x: auto; }
 .chem [data-zone="tube"] { cursor: pointer; border-radius: 12px; } .chem [data-zone="tube"].is-over { outline: 3px dashed var(--pen); }
 .chem [data-zone="tube"]:focus-visible { outline: 3px solid var(--pen); }
+
+/* ===== Đợt 8: mol-lab (Chương VII — hoá hữu cơ) ===== */
+.mol__tray { display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0; }
+.mol__chip b { font-size: 1rem; } .mol__chip small { color: var(--muted); }
+.mol__tog { cursor: pointer; font-size: .85rem; } .mol__tog input { width: 18px; height: 18px; accent-color: var(--pen); }
+.mol__btns { align-items: center; margin-bottom: 8px; } .mol__pre select { min-height: 44px; max-width: 100%; }
+.mol__board { width: 100%; max-width: 640px; height: auto; touch-action: none; border: 2px solid var(--ink); border-radius: 12px; background: var(--paper); user-select: none; display: block; }
+.mol__a { cursor: grab; outline: none; } .mol__a:focus-visible .mol__ring, .mol__a.is-src .mol__ring { stroke: var(--pen); stroke-width: 3; }
+.mol__b { cursor: pointer; outline: none; } .mol__b:focus-visible { filter: drop-shadow(0 0 3px var(--pen)); }
+.mol__lack .mol__ring { stroke: #f59e0b; stroke-width: 3; stroke-dasharray: 5 4; animation: molblink 1s ease-in-out infinite; }
+.mol__over .mol__ring { stroke: #dc2626; stroke-width: 4; }
+.mol--still .mol__lack .mol__ring { animation: none; }
+@keyframes molblink { 50% { opacity: .25; } }
+@media (prefers-reduced-motion: reduce) { .mol__lack .mol__ring { animation: none; } }
+.mol__ghost { position: fixed; z-index: 9999; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; border: 2px solid #111827; display: grid; place-items: center; font: 700 16px system-ui; pointer-events: none; opacity: .9; }
+.mol__draw .mol__full, .mol__full { overflow-x: auto; margin: 8px 0; color: var(--ink); } .mol__svg { max-width: 100%; height: auto; }
+.mol__row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 6px 0; }
+.mol__card { display: inline-flex; flex-direction: column; align-items: center; padding: 6px 10px; border: 2px solid var(--ink); border-radius: 12px; background: var(--paper); margin: 3px; min-height: 44px; }
+.mol__card.is-found { border-color: var(--teal-d); background: color-mix(in srgb, var(--teal-d) 10%, var(--paper)); }
+.mol__f { font: 700 1.05rem var(--font-sans, system-ui); } .mol__meter { height: 14px; background: color-mix(in srgb, var(--ink) 12%, var(--paper)); border-radius: 7px; overflow: hidden; } .mol__meter i { display: block; height: 100%; background: var(--teal-d); transition: width .3s; }
+.mol__bar { display: grid; grid-template-columns: 8em 1fr 5em; gap: 6px; align-items: center; margin: 3px 0; font-size: .9rem; } .mol__bar i { display: block; height: 14px; background: var(--pen); border-radius: 4px; min-width: 2px; }
+.mol__bar.is-top i { background: var(--red); }
+.mol__tube { display: inline-block; text-align: center; }

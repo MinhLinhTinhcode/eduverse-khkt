@@ -248,6 +248,63 @@
       return T;
     }
   };
+  /* ===================================================================== ORG — hoá hữu cơ (Chương VII, Bài 22–24)
+     Dữ liệu thuần, tự cân bằng bằng balance(): cháy CₙH₂ₙ₊₂ và CₙH₂ₙ (số mol O₂ phân số hoặc số nguyên), cộng Br₂, trùng hợp,
+     nhiệt lượng theo Bảng ở Bài 23 (CRC Handbook, 97th ed.), hỗn hợp theo tỉ lệ mol, dữ liệu chất (Bảng 22.1, ethylene −104 °C / −169 °C).
+     Khối lượng mol dùng số của sách (H 1, C 12, O 16, Br 80), khác ELEMENTS ở trên (Br 79,904).
+     CÁCH THÊM PHẢN ỨNG HỮU CƠ MỚI (Bài 25+): thêm hàm sinh {re:[f…], pr:[f…], cond} rồi gọi mk() — hệ số do balance() tính; thêm một dòng vào selfTest. */
+  const ORG = (function () {
+    const MB = { H: 1, C: 12, N: 14, O: 16, S: 32, Cl: 35.5, Br: 80 };
+    const mm = (f) => { const m = parseFormula(f); let s = 0; for (const k in m) s += MB[k] * m[k]; return s; };
+    const alk = (n) => 'C' + (n > 1 ? n : '') + 'H' + (2 * n + 2), ene = (n) => 'C' + n + 'H' + (2 * n);
+    const mk = (re, pr, cond, extra) => { const co = balance(re, pr); if (!co) return null; const R = re.map((f, i) => ({ f, n: co[i] })), P = pr.map((f, i) => ({ f, n: co[re.length + i] })); return Object.assign({ re: R, pr: P, cond, eq: { re: R, pr: P } }, extra || {}); };
+    const frac = (a, b) => { const g = (x, y) => (y ? g(y, x % y) : x), d = g(a, b); a /= d; b /= d; return b === 1 ? String(a) : a + '/' + b; };
+    function burn(kind, n, mode) {                                   // kind: 'alkane' | 'alkene'; mode: 'int' | 'frac'
+      const f = kind === 'alkane' ? alk(n) : ene(n), r = mk([f, 'O2'], ['CO2', 'H2O'], 't°', { fuel: f });
+      if (!r || mode !== 'frac') return r;
+      const o2 = kind === 'alkane' ? [3 * n + 1, 2] : [3 * n, 2], h2o = kind === 'alkane' ? n + 1 : n;
+      return { re: [{ f, n: 1 }, { f: 'O2', n: 0, txt: frac(o2[0], o2[1]) }], pr: [{ f: 'CO2', n }, { f: 'H2O', n: h2o }], cond: 't°', fuel: f, o2: o2[0] / o2[1] };
+    }
+    const fracStr = (rx) => rx.re.map((s) => (s.txt ? s.txt : s.n > 1 ? s.n : '') + uni(s.f)).join(' + ') + ' —' + (rx.cond || '') + '→ ' + rx.pr.map((s) => (s.n > 1 ? s.n : '') + uni(s.f)).join(' + ');
+    const addBr2 = (f) => mk([f, 'Br2'], [f + 'Br2'], '', { kind: 'add' });
+    const polymer = (f, n) => ({ monomer: f, n, M: mm(f) * n, mono: mm(f) });
+    const HEAT = { CH4: 891, C2H6: 1561, C3H8: 2220, C4H10: 2878 };          // kJ/mol (Bài 23)
+    const heatMol = (f) => HEAT[f] || null, heatGram = (f) => (HEAT[f] ? HEAT[f] / mm(f) : null);
+    const heatMass = (f, g) => (HEAT[f] ? HEAT[f] * g / mm(f) : null);
+    function mix(x1, f1, f2, kg) {                                   // x1 = phần mol của f1 (tỉ lệ thể tích = tỉ lệ mol cùng điều kiện)
+      const x2 = 1 - x1, M = x1 * mm(f1) + x2 * mm(f2), Q = x1 * HEAT[f1] + x2 * HEAT[f2], mol = 1000 * kg / M;
+      return { M, Q, mol, kJ: mol * Q };
+    }
+    const SUBS = [
+      { key: 'CH3Cl', vi: 'methyl chloride', en: 'methyl chloride', f: 'CH3Cl', s: 'CH₃Cl', state: 'gas', sol: 'rất ít tan', solEn: 'very slightly soluble', na: false },
+      { key: 'ethanol', vi: 'ethylic alcohol', en: 'ethylic alcohol (ethanol)', f: 'C2H6O', s: 'CH₃–CH₂–OH', smi: 'CCO', state: 'liquid', sol: 'tan vô hạn', solEn: 'miscible in all proportions', na: true },
+      { key: 'dme', vi: 'dimethyl ether', en: 'dimethyl ether', f: 'C2H6O', s: 'CH₃–O–CH₃', smi: 'COC', state: 'gas', sol: 'tan ít', solEn: 'slightly soluble', na: false }
+    ];
+    const ETHYLENE = { liquefy: -104, solid: -169 };
+    const stateAt = (T) => (T <= ETHYLENE.solid ? 'solid' : T <= ETHYLENE.liquefy ? 'liquid' : 'gas');
+    function selfTest() {
+      const T = [], add = (n, ok, got) => T.push({ name: n, ok: !!ok, got }), near = (a, b, e) => Math.abs(a - b) <= e, same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+      const co = (r) => r.re.concat(r.pr).map((s) => s.n);
+      add('cháy CH₄: 1 · 2 · 1 · 2; C₂H₆: 2 · 7 · 4 · 6; C₃H₈: 1 · 5 · 3 · 4; C₄H₁₀: 2 · 13 · 8 · 10', same(co(burn('alkane', 1)), [1, 2, 1, 2]) && same(co(burn('alkane', 2)), [2, 7, 4, 6]) && same(co(burn('alkane', 3)), [1, 5, 3, 4]) && same(co(burn('alkane', 4)), [2, 13, 8, 10]), co(burn('alkane', 2)).join());
+      add('cháy C₂H₄: 1 · 3 · 2 · 2; C₃H₆: 2 · 9 · 6 · 6', same(co(burn('alkene', 2)), [1, 3, 2, 2]) && same(co(burn('alkene', 3)), [2, 9, 6, 6]), co(burn('alkene', 3)).join());
+      let allBal = true, cons = 0; for (let n = 1; n <= 12; n++) ['alkane', 'alkene'].forEach((k) => { if (k === 'alkene' && n < 2) return; const r = burn(k, n); if (!r) { allBal = false; return; } const c = check({ re: r.re, pr: r.pr }); if (c.atoms && c.mass) cons++; else allBal = false; });
+      add('cháy tổng quát cân bằng và bảo toàn nguyên tử, khối lượng với n = 1…12 (' + cons + ' phản ứng)', allBal && cons === 23, cons);
+      add('công thức tổng quát: O₂ = (3n+1)/2 đúng với n = 1…12; C₄H₁₀ + 13/2 O₂', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].every((n) => { const r = burn('alkane', n, 'int'), q = burn('alkane', n, 'frac'); return near(q.o2, (3 * n + 1) / 2, 1e-9) && r.re[1].n / r.re[0].n === q.o2; }) && burn('alkane', 4, 'frac').re[1].txt === '13/2', fracStr(burn('alkane', 4, 'frac')));
+      const a1 = addBr2('C2H4'), a2 = addBr2('C3H6');
+      add('cộng Br₂: C₂H₄ + Br₂ → C₂H₄Br₂ và C₃H₆ + Br₂ → C₃H₆Br₂ (hệ số 1:1:1), M(C₂H₄Br₂) = 188', a1 && a2 && same(co(a1), [1, 1, 1]) && same(co(a2), [1, 1, 1]) && mm('C2H4Br2') === 188, mm('C2H4Br2'));
+      add('M: C₂H₄ = 28, C₃H₆ = 42, CH₄ = 16, C₄H₁₀ = 58; polymer (C₂H₄)ₙ = 28n', mm('C2H4') === 28 && mm('C3H6') === 42 && mm('CH4') === 16 && mm('C4H10') === 58 && polymer('C2H4', 100).M === 2800 && polymer('C3H6', 10).M === 420, '');
+      const per = ['CH4', 'C2H6', 'C3H8', 'C4H10'].map(heatGram);
+      add('nhiệt 1 g: CH₄ 55,7; C₂H₆ 52,0; C₃H₈ 50,5; C₄H₁₀ 49,6 kJ; CH₄ lớn nhất, giảm dần', near(per[0], 55.69, 0.01) && near(per[1], 52.03, 0.01) && near(per[2], 50.45, 0.01) && near(per[3], 49.62, 0.01) && per[0] > per[1] && per[1] > per[2] && per[2] > per[3], per.map((x) => x.toFixed(2)).join(' '));
+      const m = mix(0.5, 'C3H8', 'C4H10', 1);
+      add('bình gas propane : butane = 1 : 1 (mol): M = 51; 2 549 kJ/mol; 1 kg ≈ 49 980 kJ', near(m.M, 51, 1e-9) && near(m.Q, 2549, 1e-9) && near(m.kJ, 49980, 1), m.kJ.toFixed(1));
+      add('hỗn hợp: x = 1 là propane nguyên chất (50 454 kJ/kg); x = 0 là butane (49 621 kJ/kg)', near(mix(1, 'C3H8', 'C4H10', 1).kJ, 2220 / 44 * 1000, 1e-6) && near(mix(0, 'C3H8', 'C4H10', 1).kJ, 2878 / 58 * 1000, 1e-6));
+      add('ethylene: khí ở 25 °C, lỏng ở −104 °C, rắn ở −169 °C; Bảng 22.1: ethanol tác dụng Na, dimethyl ether không', stateAt(25) === 'gas' && stateAt(-104) === 'liquid' && stateAt(-150) === 'liquid' && stateAt(-169) === 'solid' && SUBS[1].na && !SUBS[2].na && !SUBS[0].na && SUBS[1].f === SUBS[2].f, '');
+      add('không NaN/∞: n = 0, âm hoặc rất lớn cho kết quả null hoặc hợp lệ', [0, -1, 1000].every((n) => { const r = burn('alkane', n); return r === null || r.re.every((s) => isFinite(s.n)); }), '');
+      return T;
+    }
+    return { MB, mm, alk, ene, burn, fracStr, addBr2, polymer, HEAT, heatMol, heatGram, heatMass, mix, SUBS, ETHYLENE, stateAt, selfTest, mk };
+  })();
+  E.ORG = ORG; { const st0 = E.selfTest; E.selfTest = function () { return st0().concat(ORG.selfTest()); }; }
   L.engine.chem = E;
   const prev = L.engine.selfTest; L.engine.selfTest = function () { return prev().concat(E.selfTest()); };
 
