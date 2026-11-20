@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sách giáo khoa song ngữ tương tác</title>
+  <meta name="description" content="Sách giáo khoa Tin học song ngữ Việt – Anh: bấm vào từ vựng để xem phiên âm, nghĩa trong Tin học và nghe phát âm.">
+  <meta name="theme-color" content="#1f46d0">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%231f46d0'/%3E%3Cpath d='M16 11.2c-2-1.5-4.8-2-8-1.6v12.4c3.2-.4 6 .1 8 1.6 2-1.5 4.8-2 8-1.6V9.6c-3.2-.4-6 .1-8 1.6z' fill='white'/%3E%3Cpath d='M8.5 26.6h15' stroke='%23ffe24a' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='3.2 3'/%3E%3C/svg%3E">
+
+  <!-- Phông chữ lấy từ Google Fonts khi có mạng; mất mạng thì tự dùng phông có sẵn trong máy (Segoe UI, Georgia…). -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=Literata:ital,wght@0,400;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Bỏ qua, đến nội dung chính</a>
+
+  <!-- Toàn bộ màn hình (trang chủ, danh sách bài, trang sách) được dựng vào đây bằng js/app.js -->
+  <div id="app"></div>
+
+  <!-- Popup từ vựng dùng chung -->
+  <div id="vpop" class="vpop" role="dialog" aria-modal="false" aria-labelledby="vpop-title" hidden></div>
+
+  <!-- Thông báo ngắn -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Hộp thoại "Cách dùng". Biểu tượng [data-ico] được app.js chèn vào lúc khởi động. -->
+  <dialog id="help" class="dlg" aria-labelledby="help-title">
+    <form method="dialog" class="dlg__in">
+      <h2 id="help-title"><span class="vi">Cách dùng cuốn sách này</span><span class="en" lang="en">How to use this book</span></h2>
+      <ol>
+        <li>
+          <span class="dlg__ico" data-ico="list"></span>
+          <p><b>Đọc song ngữ.</b> Dòng tiếng Việt ở trên, dòng tiếng Anh in nghiêng ở dưới. Gạt công tắc <b>Tiếng Anh</b> (hoặc nhấn phím <kbd>E</kbd>) để ẩn hoặc hiện phần tiếng Anh. Nút <b>A−</b> <b>A+</b> đổi cỡ chữ.</p>
+        </li>
+        <li>
+          <span class="dlg__ico" data-ico="pencil"></span>
+          <p><b>Bấm vào từ gạch chân nét đứt</b> trong phần tiếng Anh để mở bảng từ vựng: phiên âm, nghĩa trong Tin học và một câu ví dụ. Bấm ra ngoài hoặc nhấn <kbd>Esc</kbd> để đóng.</p>
+        </li>
+        <li>
+          <span class="dlg__ico" data-ico="speaker"></span>
+          <p><b>Bấm nút loa</b> để nghe phát âm. Chọn giọng <b>Anh</b> hoặc <b>Mỹ</b> ngay trên thanh công cụ. Nếu không nghe thấy tiếng, hãy kiểm tra âm lượng và dùng Chrome hoặc Edge.</p>
+        </li>
+        <li>
+          <span class="dlg__ico" data-ico="right"></span>
+          <p><b>Lật trang</b> bằng nút <b>Trang sau</b> / <b>Trang trước</b>, bằng phím <kbd>←</kbd> <kbd>→</kbd>, hoặc chọn trang trong danh sách thả xuống.</p>
+        </li>
+      </ol>
+      <div class="dlg__foot"><button class="btn btn--primary" value="close" autofocus>Đã hiểu</button></div>
+    </form>
+  </dialog>
+
+  <noscript>
+    <p style="padding:24px;font:16px/1.5 sans-serif">Trang này cần bật JavaScript để hiển thị bài học. Hãy bật JavaScript trong trình duyệt rồi tải lại trang.</p>
+  </noscript>
+
+  <!-- Thứ tự nạp: biểu tượng → dữ liệu → hình minh hoạ → logic.
+       Dùng thẻ script thường (không dùng module) để mở file trực tiếp bằng file:// vẫn chạy. -->
+  <script src="js/auth.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/data/catalog.js"></script>
+  <script src="js/data/glossary.js"></script>
+  <script src="js/data/lesson-tin9-bai1.js"></script>
+  <script src="js/data/lesson-tin9-chu-de-2.js"></script>
+  <script src="js/data/lesson-tin9-bai4.js"></script>
+  <script src="js/data/lesson-tin9-bai5.js"></script>
+  <script src="js/data/lesson-tin9-bai6.js"></script>
+  <script src="js/data/lesson-tin9-bai7.js"></script>
+  <script src="js/data/lesson-tin9-bai8.js"></script>
+  <script src="js/data/lesson-tin9-bai9a.js"></script>
+  <script src="js/data/lesson-tin9-bai10a.js"></script>
+  <script src="js/data/lesson-tin9-bai11a.js"></script>
+  <script src="js/data/lesson-tin9-bai12a.js"></script>
+  <script src="js/data/lesson-tin9-bai13a.js"></script>
+  <script src="js/data/lesson-tin9-bai14.js"></script>
+  <script src="js/data/lesson-tin9-bai15.js"></script>
+  <script src="js/data/lesson-tin9-bai16.js"></script>
+  <script src="js/data/lesson-tin9-bai17.js"></script>
+  <script src="js/illustrations.js"></script>
+  <script src="js/illustrations-hinh.js"></script>
+  <script src="js/illustrations-hinh2.js"></script>
+  <script src="js/illustrations-hinh3.js"></script>
+  <script src="js/illustrations-hinh4.js"></script>
+  <script src="js/illustrations-tin.js"></script>
+  <script src="js/illustrations-tin2.js"></script>
+  <script src="js/illustrations-khtn.js"></script>
+  <script src="js/data/lesson-toan9-chuong2.js"></script>
+  <script src="js/data/lesson-toan9-chuong-ii.js"></script>
+  <script src="js/data/lesson-toan9-chuong-iii.js"></script>
+  <script src="js/data/lesson-toan9-chuong-iv.js"></script>
+  <script src="js/data/lesson-toan9-chuong-v.js"></script>
+  <script src="js/data/lesson-toan9-chuong-v-b2.js"></script>
+  <script src="js/data/lesson-toan9-chuong-vi.js"></script>
+  <script src="js/data/lesson-khtn9-bai1.js"></script>
+  <script src="js/data/lesson-khtn9-bai2.js"></script>
+  <script src="js/data/lesson-khtn9-bai3.js"></script>
+  <script src="js/data/lesson-khtn9-bai4.js"></script>
+  <script src="js/data/lesson-khtn9-bai5.js"></script>
+  <script src="js/data/lesson-khtn9-bai6.js"></script>
+  <script src="js/data/lesson-khtn9-bai7.js"></script>
+  <script src="js/data/lesson-khtn9-bai8.js"></script>
+  <script src="js/data/lesson-khtn9-bai9.js"></script>
+  <script src="js/data/lesson-khtn9-bai10.js"></script>
+  <script src="js/data/lesson-khtn9-bai11.js"></script>
+  <script src="js/data/lesson-khtn9-bai12.js"></script>
+  <script src="js/data/lesson-khtn9-bai13.js"></script>
+  <script src="js/data/lesson-khtn9-bai14.js"></script>
+  <script src="js/data/lesson-khtn9-bai15.js"></script>
+  <script src="js/data/lesson-khtn9-bai16.js"></script>
+  <script src="js/data/lesson-khtn9-bai17.js"></script>
+  <script src="js/data/lesson-khtn9-bai18.js"></script>
+  <script src="js/data/lesson-khtn9-bai19.js"></script>
+  <script src="js/data/lesson-khtn9-bai20.js"></script>
+  <script src="js/data/lesson-khtn9-bai21.js"></script>
+  <script src="js/data/lesson-khtn9-bai22.js"></script>
+  <script src="js/data/lesson-khtn9-bai23.js"></script>
+  <script src="js/data/lesson-khtn9-bai24.js"></script>
+  <script src="js/data/lesson-khtn9-bai25.js"></script>
+  <script src="js/data/lesson-khtn9-bai26.js"></script>
+  <script src="js/data/lesson-khtn9-bai27.js"></script>
+  <script src="js/data/lesson-khtn9-bai28.js"></script>
+  <script src="js/data/lesson-khtn9-bai29.js"></script>
+  <script src="js/data/lesson-khtn9-bai30.js"></script>
+  <script src="js/data/lesson-khtn9-bai31.js"></script>
+  <script src="js/data/lesson-khtn9-bai32.js"></script>
+  <script src="js/data/lesson-khtn9-bai33.js"></script>
+  <script src="js/data/lesson-khtn9-bai34.js"></script>
+  <script src="js/data/lesson-khtn9-bai35.js"></script>
+  <!-- Lớp học (mã bài tập, mã kết quả) → luyện tập → khung hai cột → ứng dụng chính -->
+  <script src="js/data/ai-bank.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/phrases.js"></script>
+  <script src="js/classroom.js"></script>
+  <script src="js/practice.js"></script>
+  <script src="js/games.js"></script>
+  <script src="js/rain.js"></script>
+  <script src="js/review.js"></script>
+  <script src="js/quests.js"></script>
+  <script src="js/workspace.js"></script>
+  <script src="js/optics-lab.js"></script>
+  <script src="js/optics-lens.js"></script>
+  <script src="js/optics-prism.js"></script>
+  <script src="js/circuit-lab.js"></script>
+  <script src="js/circuit-ui.js"></script>
+  <script src="js/optics-mag.js"></script>
+  <script src="js/em-lab.js"></script>
+  <script src="js/em-effects.js"></script>
+  <script src="js/circuit-power.js"></script>
+  <script src="js/energy-lab.js"></script>
+  <script src="js/chem-lab.js"></script>
+  <script src="js/chem-series.js"></script>
+  <script src="js/chem-nonmetal.js"></script>
+  <script src="js/chem-industry.js"></script>
+  <script src="js/chem-lime.js"></script>
+  <script src="js/prot-lab.js"></script>
+  <script src="js/earth-lab.js"></script>
+  <script src="js/earth-carbon.js"></script>
+  <script src="js/mol-lab.js"></script>
+  <script src="js/mol-w22.js"></script>
+  <script src="js/mol-w23.js"></script>
+  <script src="js/mol-w24.js"></script>
+  <script src="js/mol-w25.js"></script>
+  <script src="js/mol-w26.js"></script>
+  <script src="js/mol-w27.js"></script>
+  <script src="js/mol-w28.js"></script>
+  <script src="js/mol-w29.js"></script>
+  <script src="js/mol-w30.js"></script>
+  <script src="js/mol-w31.js"></script>
+  <script src="js/mol-w32.js"></script>
+  <script src="js/mol-w33.js"></script>
+  <script src="js/mol-w34.js"></script>
+  <script src="js/mol-w35.js"></script>
+  <script src="js/mol-w35b.js"></script>
+  <script src="js/work-lab.js"></script>
+  <script src="js/interactive.js"></script>
+  <script src="js/roles.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
