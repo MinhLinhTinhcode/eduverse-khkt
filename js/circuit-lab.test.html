@@ -1,6 +1,6 @@
 <!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Circuit lab test</title><link rel="stylesheet" href="../css/styles.css"></head>
 <body><div id="out"></div><div id="m"></div>
-<script src="optics-lab.js"></script><script src="optics-lens.js"></script><script src="optics-prism.js"></script><script src="circuit-lab.js"></script><script src="circuit-ui.js"></script><script src="optics-mag.js"></script><script src="em-lab.js"></script><script src="em-effects.js"></script><script src="circuit-power.js"></script>
+<script src="optics-lab.js"></script><script src="optics-lens.js"></script><script src="optics-prism.js"></script><script src="circuit-lab.js"></script><script src="circuit-ui.js"></script><script src="optics-mag.js"></script><script src="em-lab.js"></script><script src="em-effects.js"></script><script src="circuit-power.js"></script><script src="energy-lab.js"></script><script src="chem-lab.js"></script><script src="chem-series.js"></script><script src="chem-nonmetal.js"></script><script src="chem-industry.js"></script>
 <script>
 const t = OpticsLab.engine.selfTest(); document.getElementById('out').textContent = t.filter(x=>x.ok).length + '/' + t.length + ' self-tests OK';
 const id = new URLSearchParams(location.search).get('sim'); if (id) { LabSims[id].fn(document.getElementById('m')); }

@@ -208,6 +208,24 @@ window.TEXTBOOK.grades = [
           { slug: 'bai-14', number: '14', vi: 'Cảm ứng điện từ. Nguyên tắc tạo ra dòng điện xoay chiều', en: 'Electromagnetic induction. Principle of generating alternating current', content: 'khtn9-bai14' },
           { slug: 'bai-15', number: '15', vi: 'Tác dụng của dòng điện xoay chiều', en: 'Effects of alternating current', content: 'khtn9-bai15' }
         ]
+      },
+      {
+        vi: 'Chương V. Năng lượng với cuộc sống',
+        en: 'Chapter V. Energy and life',
+        lessons: [
+          { slug: 'bai-16', number: '16', vi: 'Vòng năng lượng trên Trái Đất. Năng lượng hoá thạch', en: 'The energy cycle on Earth. Fossil energy', content: 'khtn9-bai16' },
+          { slug: 'bai-17', number: '17', vi: 'Một số dạng năng lượng tái tạo', en: 'Some forms of renewable energy', content: 'khtn9-bai17' }
+        ]
+      },
+      {
+        vi: 'Chương VI. Kim loại. Sự khác nhau cơ bản giữa phi kim và kim loại',
+        en: 'Chapter VI. Metals. Basic differences between non-metals and metals',
+        lessons: [
+          { slug: 'bai-18', number: '18', vi: 'Tính chất chung của kim loại', en: 'General properties of metals', content: 'khtn9-bai18' },
+          { slug: 'bai-19', number: '19', vi: 'Dãy hoạt động hoá học', en: 'The reactivity series', content: 'khtn9-bai19' },
+          { slug: 'bai-20', number: '20', vi: 'Tách kim loại và việc sử dụng hợp kim', en: 'Extracting metals and using alloys', content: 'khtn9-bai20' },
+          { slug: 'bai-21', number: '21', vi: 'Sự khác nhau cơ bản giữa phi kim và kim loại', en: 'Basic differences between non-metals and metals', content: 'khtn9-bai21' }
+        ]
       }
     ]
   }

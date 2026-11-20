@@ -247,3 +247,24 @@ Hai tệp `optics-lens.js`, `optics-prism.js` nạp **sau** `optics-lab.js` (xem
 
 **Mô phỏng:** `pow-wui`, `pow-rated`, `pow-label`, `pow-bill` (Bài 13); `em-magnet`, `em-electro`, `em-rotmagnet`, `em-squeeze`, `em-conditions`, `em-graph`, `em-generator` (Bài 14); `eff-sort`, `eff-heat`, `eff-magnet`, `eff-safety` (Bài 15).
 **Lưu ý:** công suất nồi cơm, quạt, tủ lạnh là số minh hoạ; giá điện do học sinh nhập (2 000 đồng/kWh chỉ là ví dụ, không phải giá hiện hành); Hình 14.7 đọc từ bản quét (biên độ 1,0 A, T = 20 ms); nhấp nháy ở tần số thấp và "50 Hz mắt không phân biệt" chỉ mang tính minh hoạ. Nội dung là bản soạn lại, cần đối chiếu sách in.
+
+## Khoa học tự nhiên 9 — Đợt 6 (Bài 16–18): năng lượng với cuộc sống, kim loại
+
+**Tệp mới:** `js/data/lesson-khtn9-bai16.js` (tr. 75–79), `-bai17.js` (tr. 80–86), `-bai18.js` (tr. 87–91); `js/energy-lab.js` (engine năng lượng + 8 mô phỏng + bộ kéo thả `EnergyLab.sorter`); `js/chem-lab.js` (kho dữ liệu hoá học, bộ cân bằng, 9 mô phỏng). 11 hình mới trong `illustrations-khtn.js`; PLACE trong `interactive.js`; CSS `chem__*`; `catalog.js` (Chương V, Chương VI); `index.html`.
+
+**Engine năng lượng (`EnergyLab.engine`):** pin 𝒫 = S·G·η·cosθ (θ giữa pháp tuyến và tia sáng), gió 𝒫 = ½ρAv³C_p (C_p = 0,45 ≤ 0,59, có v khởi động/định mức/ngắt), thuỷ điện 𝒫 = ηρgQh, sóng 𝒫/m = ρg²H²T/(64π). Tất cả là MÔ HÌNH MINH HOẠ; chỉ Hình 16.4 (50/25/14/11 %) và Hình 16.5 là số của sách.
+**Engine hoá học (`ChemLab.engine`):** `balance` (ma trận nguyên tố + khử Gauss phân số), `check` (bảo toàn nguyên tử, khối lượng), `react(M,R)` (phản ứng, "không phản ứng" hoặc ngoài phạm vi), `stoich` (Vm mặc định 24,79 L/mol; chọn được 22,4), `ACTIVITY` (dãy hoạt động — TỔNG HỢP, sách chưa in).
+
+**Thêm chất / phản ứng mới (Bài 19+):** kim loại mới → `METALS` (val, rank, màu, tính chất); chất mới → `REAGENTS` và một nhánh trong `build()`; trường hợp đặc biệt → sửa trong `build()`/`OBS`. Hệ số luôn do `balance()` tính. Thêm một dòng vào `selfTest()` và, nếu là phương trình trong sách, vào `BOOK`.
+**Mô phỏng:** `en-living, en-water, en-oil, en-oilorder, en-pros, en-price, en-oilres` (Bài 16); `en-class, en-solar, en-wind, en-wave, en-waveparts, en-hydro, en-hydroimpact, en-actions, en-matrix` (Bài 17); `chem-phys, chem-o2, chem-cl, chem-water, chem-hcl, chem-zn, chem-salt, chem-free, chem-use` (Bài 18).
+**Cần đối chiếu sách in:** số ở Hình 16.4–16.5 đọc từ bản quét; mục "Em có thể" và "Em đã học" của Bài 17, "Em có thể" của Bài 16, 18 không đọc được nên viết chung.
+
+## Đợt 7 — KHTN 9, Chương VI (tiếp): Bài 19, 20, 21
+
+**Bài mới** (trang sách = trang PDF − 2): Bài 19 *Dãy hoạt động hoá học* (tr. 92–94), Bài 20 *Tách kim loại và việc sử dụng hợp kim* (tr. 95–99), Bài 21 *Sự khác nhau cơ bản giữa phi kim và kim loại* (tr. 100–102). Dừng đúng cuối Bài 21 (Bài 22 thuộc Chương VII, chưa làm).
+
+**File mới:** `js/data/lesson-khtn9-bai19.js`, `-bai20.js`, `-bai21.js`; `js/chem-series.js` (ser-*), `js/chem-nonmetal.js` (nm-*), `js/chem-industry.js` (ind-*, engine `ChemLab.industry` có selfTest). Hình mới trong `js/illustrations-khtn.js`: khtn19a–b, 20a–c, 21a–b (tự vẽ). Đã sửa: `chem-lab.js` (engine + bàn thí nghiệm: nồng độ, thời gian, dự đoán, nhật kí `ChemLab.log`), `energy-lab.js` (`sorter` trả thêm `render`, `lab`), `catalog.js`, `index.html`, `interactive.js` (PLACE), `circuit-lab.test.html`.
+
+**Cách thêm phản ứng / thiết bị công nghiệp cho Chương VII (Bài 22+):** (1) thêm phương trình vào `EXTRA` trong `chem-lab.js` (hệ số do `balance()` tính); (2) thêm nguyên tố mới vào `ELEMENTS` nếu cần; (3) thêm hàm mô hình thuần vào `IND` trong `chem-industry.js` + một dòng `selfTest`; (4) viết widget bằng `EnergyLab.sorter` (kéo thả thẻ), `ChemLab.bench` (ống nghiệm), `ChemLab.dnd` (chip → vùng), `OpticsLab.makeDrag` (tay kéo SVG; phím mũi tên đã được `makeDrag` nhân Shift ×5 — đừng nhân lại; sau khi vẽ lại SVG phải trả focus cho tay kéo); (5) khai báo trong `LabSims` và `PLACE`.
+
+**Mô hình / bổ sung (không in trong sách):** nhiệt độ nóng chảy hợp kim Wood ngoài tỉ lệ 50/25/12,5/12,5 (nội suy, đúng 55,5 °C và đúng 4 đỉnh); khối lượng Al theo định luật Faraday; lò cao theo tỉ lệ có chất hạn chế; %C, %Si, %Mn trong lò thổi (hàm mũ); ví dụ Mg–O, CaO, Na₂O, CO₂, P₂O₅; bài tính tấn–kg; lớp lọc nước; độ dẫn điện tương đối. Ngưỡng inox (Cr, Ni) sách không nêu. Em đã học / Em có thể của Bài 19 và 21 và Em có thể của Bài 20 soạn theo mục tiêu bài vì bản quét bị cắt.
