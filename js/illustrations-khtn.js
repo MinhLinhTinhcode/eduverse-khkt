@@ -1042,5 +1042,58 @@
       t(240, 196, 'Hình minh hoạ đơn giản, không đúng tỉ lệ', { a: 'middle', s: 9, i: 1 }));
   };
   Object.assign(T.art, { khtn36a, khtn37a, khtn37b, khtn38a, khtn38b, khtn38c });
+  /* ---------------- Đợt 14: Bài 39–41 (hình tự vẽ) ---------------- */
+  const strand = (x, y, seq, dir, f) => { let o = ''; for (let i = 0; i < seq.length; i++) o += nuc(x + i * 24, y, seq[i], (f || NC)[seq[i]]); return o; };
+  const khtn39a = () => {
+    const A = 'AGCTCGAT', B = 'TCGAGCTA';
+    return svg('0 0 480 330', 'Hình 39.1: tái bản DNA',
+      rect(8, 8, 464, 314, '#fafafa', { r: 14, w: 1 }) +
+      bil(20, 28, 'Giai đoạn 1: khởi đầu (tháo xoắn)', 'Stage 1: initiation (unwinding)', { s: 10 }) +
+      strand(30, 40, A, 0) + strand(30, 84, B, 0) + line(41, 62, 41, 84, C.grey, 2) + line(65, 62, 65, 84, C.grey, 2) + t(250, 70, 'enzyme tháo xoắn →', { s: 9 }) +
+      bil(20, 140, 'Giai đoạn 2: kéo dài (nucleotide tự do ghép theo A–T, G–C)', 'Stage 2: elongation (free nucleotides pair A–T, G–C)', { s: 10 }) +
+      strand(30, 152, A, 0) + strand(30, 178, B.replace(/./g, '·'), 0, { '·': '#f1f5f9' }) + t(250, 190, '↑ mạch mới (T A G C…)', { s: 9 }) +
+      strand(30, 214, B, 0) + strand(30, 240, A.replace(/./g, '·'), 0, { '·': '#f1f5f9' }) +
+      bil(20, 282, 'Giai đoạn 3: kết thúc → 2 DNA giống nhau, mỗi DNA có 1 mạch cũ + 1 mạch mới', 'Stage 3: termination → 2 identical DNA, each with 1 old + 1 new strand', { s: 10 }) +
+      t(30, 310, 'DNA 1: mạch cũ + mạch mới    DNA 2: mạch cũ + mạch mới', { s: 9, i: 1 }));
+  };
+  const khtn39b = () => {
+    const tp = 'TACGGCATT', mr = 'AUGCCGUAA';
+    return svg('0 0 480 300', 'Hình 39.2: phiên mã',
+      rect(8, 8, 464, 284, '#fafafa', { r: 14, w: 1 }) +
+      bil(20, 28, 'Giai đoạn 1: khởi đầu (RNA polymerase gắn vào gene, tách hai mạch)', 'Stage 1: initiation (RNA polymerase binds the gene, strands separate)', { s: 10 }) +
+      strand(30, 40, 'ATGCCGTAA', 0) + strand(30, 70, tp, 0) + t(300, 62, 'mạch khuôn ↑', { s: 9 }) +
+      bil(20, 128, 'Giai đoạn 2: kéo dài (nucleotide RNA ghép: A–U, T–A, G–C, C–G)', 'Stage 2: elongation (RNA nucleotides pair: A–U, T–A, G–C, C–G)', { s: 10 }) +
+      strand(30, 140, tp, 0) + strand(30, 168, mr.slice(0, 5) + '····', 0, Object.assign({ '·': '#f1f5f9' }, NC)) + t(300, 182, 'mRNA đang dài ra', { s: 9 }) +
+      bil(20, 232, 'Giai đoạn 3: kết thúc → mRNA tách ra', 'Stage 3: termination → mRNA is released', { s: 10 }) +
+      strand(30, 246, mr, 0) + t(260, 262, "5′ … 3′", { s: 10 }));
+  };
+  const khtn40a = () => {
+    const mr = 'AUGGGUUCCAUC', aa = ['Met', 'Gly', 'Ser', 'Ile'];
+    let d = ''; for (let i = 0; i < mr.length; i++) d += nuc(40 + i * 28, 150, mr[i], NC[mr[i]]);
+    let ch = ''; aa.forEach((a, i) => { ch += rect(40 + i * 84 + 4, 28, 60, 28, '#bbf7d0', { r: 8 }) + t(40 + i * 84 + 34, 47, a, { a: 'middle', s: 12 }) + (i ? line(40 + i * 84 - 20, 42, 40 + i * 84 + 4, 42, C.ink, 2) : '') + line(40 + i * 84 + 34, 56, 40 + i * 84 + 34, 118, C.grey, 1.5); });
+    return svg('0 0 480 260', 'Hình 40.4: dịch mã',
+      rect(8, 8, 464, 244, '#fafafa', { r: 14, w: 1 }) + ch +
+      [0, 1, 2, 3].map((i) => rect(40 + i * 84, 116, 68, 24, '#c4b5fd', { r: 12 }) + t(40 + i * 84 + 34, 133, 'tRNA', { a: 'middle', s: 10 })).join('') + d +
+      t(24, 168, "5′", { a: 'middle', s: 11 }) + t(40 + mr.length * 28 + 6, 168, "3′", { a: 'middle', s: 11 }) +
+      bil(240, 196, 'mRNA: mỗi bộ ba (codon) ↔ một tRNA mang amino acid', 'mRNA: each triplet (codon) ↔ a tRNA carrying an amino acid', { a: 'middle', s: 10 }) +
+      bil(240, 218, 'Mở đầu (AUG) → kéo dài → kết thúc (UAA, UAG, UGA)', 'Initiation (AUG) → elongation → termination (UAA, UAG, UGA)', { a: 'middle', s: 10 }));
+  };
+  const khtn40b = () => {
+    const mr = 'AAAUAUGGCCGA';
+    let d = ''; for (let i = 0; i < mr.length; i++) d += nuc(40 + i * 28, 40, mr[i], NC[mr[i]]);
+    const aa = [['Lys', '#fde68a'], ['Tyr', '#fbcfe8'], ['Gly', '#bae6fd'], ['Arg', '#fecaca']];
+    return svg('0 0 480 230', 'Hình 40.3: mã di truyền và cấu trúc protein',
+      rect(8, 8, 464, 214, '#fafafa', { r: 14, w: 1 }) + t(24, 56, "5′", { a: 'middle', s: 11 }) + d + t(40 + mr.length * 28 + 6, 56, "3′", { a: 'middle', s: 11 }) +
+      aa.map((a, i) => rect(40 + i * 84, 120, 76, 36, a[1], { r: 10 }) + t(78 + i * 84, 143, a[0], { a: 'middle', s: 13 }) + line(78 + i * 84, 72, 78 + i * 84, 118, C.grey, 1.5) + (i ? line(40 + i * 84 - 8, 138, 40 + i * 84, 138, C.ink, 3) : '')).join('') +
+      bil(240, 184, 'Trình tự codon → trình tự amino acid → cấu trúc protein', 'Codon order → amino-acid order → protein structure', { a: 'middle', s: 11 }) + t(240, 206, '— liên kết peptide giữa các amino acid', { a: 'middle', s: 9, i: 1 }));
+  };
+  const khtn41a = () => {
+    const col = (x, ttl, seq) => bil(x + 30, 28, ttl[0], ttl[1], { a: 'middle', s: 10 }) + seq.split('').map((b, i) => nuc(x, 40 + i * 24, b, NC[b]) + nuc(x + 26, 40 + i * 24, ({ A: 'T', T: 'A', G: 'C', C: 'G' })[b], NC[({ A: 'T', T: 'A', G: 'C', C: 'G' })[b]])).join('');
+    return svg('0 0 480 280', 'Hình 41.1: allele kiểu dại và allele đột biến',
+      rect(8, 8, 464, 264, '#fafafa', { r: 14, w: 1 }) +
+      col(24, ['Kiểu dại', 'Wild type'], 'TTAGTAGC') + col(144, ['Allele 1: mất', 'Allele 1: loss'], 'TAGTAGC') + col(264, ['Allele 2: thêm', 'Allele 2: gain'], 'TTTAGTAGC') + col(384, ['Allele 3: thay', 'Allele 3: replace'], 'TTGGTAGC') +
+      t(240, 262, 'Mỗi hàng ngang là một cặp nucleotide (chữ trái ghép với chữ phải)', { a: 'middle', s: 9, i: 1 }));
+  };
+  Object.assign(T.art, { khtn39a, khtn39b, khtn40a, khtn40b, khtn41a });
   Object.assign(T.art, { khtn28a, khtn29a, khtn29b, khtn29c, khtn30a, khtn30b, khtn31a, khtn31b, khtn32a, khtn32b, khtn32c, khtn32d, khtn32e, khtn32f, khtn32g, khtn32h, khtn33a });
 })();

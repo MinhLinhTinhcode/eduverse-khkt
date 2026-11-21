@@ -763,7 +763,19 @@
     { lesson: 'khtn9-bai38', page: 169, after: 'activity', nth: 1, id: 'rna-lab' },
     { lesson: 'khtn9-bai38', page: 169, after: 'activity', nth: 2, id: 'gene-timeline' },
     { lesson: 'khtn9-bai38', page: 169, after: 'activity', nth: 3, id: 'dna-lab' },
-    { lesson: 'khtn9-bai38', page: 169, after: 'activity', nth: 4, id: 'ch11-review' }
+    { lesson: 'khtn9-bai38', page: 169, after: 'activity', nth: 4, id: 'ch11-review' },
+    { lesson: 'khtn9-bai39', page: 170, after: 'activity', nth: 1, id: 'dna-replic' },
+    { lesson: 'khtn9-bai39', page: 171, after: 'activity', nth: 1, id: 'transcribe-lab' },
+    { lesson: 'khtn9-bai39', page: 172, after: 'activity', nth: 1, id: 'repl-trans' },
+    { lesson: 'khtn9-bai40', page: 173, after: 'activity', nth: 1, id: 'code-count' },
+    { lesson: 'khtn9-bai40', page: 174, after: 'activity', nth: 1, id: 'codon-table' },
+    { lesson: 'khtn9-bai40', page: 174, after: 'activity', nth: 2, id: 'nirenberg' },
+    { lesson: 'khtn9-bai40', page: 175, after: 'activity', nth: 1, id: 'translate-lab' },
+    { lesson: 'khtn9-bai40', page: 176, after: 'activity', nth: 1, id: 'gene-trait' },
+    { lesson: 'khtn9-bai40', page: 177, after: 'activity', nth: 1, id: 'ch11-review2' },
+    { lesson: 'khtn9-bai41', page: 178, after: 'activity', nth: 1, id: 'gene-mut' },
+    { lesson: 'khtn9-bai41', page: 179, after: 'activity', nth: 1, id: 'abo-blood' },
+    { lesson: 'khtn9-bai41', page: 180, after: 'activity', nth: 1, id: 'mut-effect' }
   ];
   function inject() {
     PLACE.forEach((p) => {
