@@ -233,7 +233,45 @@ window.TEXTBOOK.grades = [
         lessons: [
           { slug: 'bai-22', number: '22', vi: 'Giới thiệu về hợp chất hữu cơ', en: 'Introduction to organic compounds', content: 'khtn9-bai22' },
           { slug: 'bai-23', number: '23', vi: 'Alkane', en: 'Alkanes', content: 'khtn9-bai23' },
-          { slug: 'bai-24', number: '24', vi: 'Alkene', en: 'Alkenes', content: 'khtn9-bai24' }
+          { slug: 'bai-24', number: '24', vi: 'Alkene', en: 'Alkenes', content: 'khtn9-bai24' },
+          { slug: 'bai-25', number: '25', vi: 'Nguồn nhiên liệu', en: 'Fuel sources', content: 'khtn9-bai25' }
+        ]
+      },
+      {
+        vi: 'Chương VIII. Ethylic alcohol và acetic acid',
+        en: 'Chapter VIII. Ethyl alcohol and acetic acid',
+        lessons: [
+          { slug: 'bai-26', number: '26', vi: 'Ethylic alcohol', en: 'Ethyl alcohol (ethanol)', content: 'khtn9-bai26' },
+          { slug: 'bai-27', number: '27', vi: 'Acetic acid', en: 'Acetic acid', content: 'khtn9-bai27' }
+        ]
+      },
+      {
+        vi: 'Chương IX. Lipid. Carbohydrate. Protein. Polymer',
+        en: 'Chapter IX. Lipids, carbohydrates, proteins, polymers',
+        lessons: [
+          { slug: 'bai-28', number: '28', vi: 'Lipid', en: 'Lipids', content: 'khtn9-bai28' },
+          { slug: 'bai-29', number: '29', vi: 'Carbohydrate. Glucose và saccharose', en: 'Carbohydrates. Glucose and sucrose (saccharose)', content: 'khtn9-bai29' },
+          { slug: 'bai-30', number: '30', vi: 'Tinh bột và cellulose', en: 'Starch and cellulose', content: 'khtn9-bai30' },
+          { slug: 'bai-31', number: '31', vi: 'Protein', en: 'Proteins', content: 'khtn9-bai31' },
+          { slug: 'bai-32', number: '32', vi: 'Polymer', en: 'Polymers', content: 'khtn9-bai32' }
+        ]
+      },
+      {
+        vi: 'Chương X. Khai thác tài nguyên từ vỏ Trái Đất',
+        en: 'Chapter X. Exploiting resources from the Earth’s crust',
+        lessons: [
+          { slug: 'bai-33', number: '33', vi: 'Sơ lược về hoá học vỏ Trái Đất và khai thác tài nguyên từ vỏ Trái Đất', en: 'Outline of the chemistry of the Earth’s crust and exploiting its resources', content: 'khtn9-bai33' },
+          { slug: 'bai-34', number: '34', vi: 'Khai thác đá vôi. Công nghiệp silicate', en: 'Quarrying limestone. The silicate industry', content: 'khtn9-bai34' },
+          { slug: 'bai-35', number: '35', vi: 'Khai thác nhiên liệu hoá thạch. Nguồn carbon. Chu trình carbon và sự ấm lên toàn cầu', en: 'Exploiting fossil fuels. Carbon sources. The carbon cycle and global warming', content: 'khtn9-bai35' }
+        ]
+      },
+      {
+        vi: 'Chương XI. Di truyền học Mendel, cơ sở phân tử của hiện tượng di truyền',
+        en: 'Chapter XI. Mendelian genetics and the molecular basis of heredity',
+        lessons: [
+          { slug: 'bai-36', number: '36', vi: 'Khái quát về di truyền học', en: 'Introduction to genetics', content: 'khtn9-bai36' },
+          { slug: 'bai-37', number: '37', vi: 'Các quy luật di truyền của Mendel', en: 'Mendel’s laws of inheritance', content: 'khtn9-bai37' },
+          { slug: 'bai-38', number: '38', vi: 'Nucleic acid và gene', en: 'Nucleic acids and genes', content: 'khtn9-bai38' }
         ]
       }
     ]
