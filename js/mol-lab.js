@@ -168,7 +168,7 @@
     ['butadiene', 'buta-1,3-diene', 'C=CC=C'], ['cyclopropane', 'cyclopropane', 'C1CC1'], ['cyclobutane', 'cyclobutane', 'C1CCC1'], ['methylcyclopropane', 'methylcyclopropane', 'CC1CC1'],
     ['ethanol', 'ethylic alcohol (ethanol)', 'CCO'], ['methanol', 'methanol', 'CO'], ['dimethyl ether', 'dimethyl ether', 'COC'], ['acetic acid', 'acetic acid', 'CC(=O)O'],
     ['methyl chloride', 'methyl chloride (chloromethane)', 'CCl'], ['methylamine', 'methylamine', 'CN'], ['ethyl acetate', 'ethyl acetate', 'CC(=O)OCC'], ['urea', 'urea', 'NC(=O)N'],
-    ['benzene', 'benzene', 'C1=CC=CC=C1'], ['dibromoethane', '1,2-dibromoethane', 'BrCCBr'], ['dibromopropane', '1,2-dibromopropane', 'CC(Br)CBr']
+    ['benzene', 'benzene', 'C1=CC=CC=C1'], ['propyl acetate', 'propyl acetate', 'CC(=O)OCCC'], ['glycerol', 'glycerol (propane-1,2,3-triol)', 'OCC(O)CO'], ['triacetin', 'triacetin (triester của glycerol)', 'CC(=O)OCC(OC(C)=O)COC(C)=O'], ['glucose (mạch hở)', 'glucose (open chain)', 'OCC(O)C(O)C(O)C(O)C=O'], ['formic acid', 'formic acid (HCOOH)', 'OC=O'], ['acetaldehyde', 'acetaldehyde (CH₃CHO)', 'CC=O'], ['propanol', 'propan-1-ol', 'CCCO'], ['dibromoethane', '1,2-dibromoethane', 'BrCCBr'], ['dibromopropane', '1,2-dibromopropane', 'CC(Br)CBr']
   ];
   const KNAME = {}; KNOWN.forEach((k) => { const g = fromSmiles(k[2]); KNAME[formula(g).plain + '/' + canon(g)] = k[1]; });
   const PREFIX = ['', 'meth', 'eth', 'prop', 'but', 'pent', 'hex', 'hept', 'oct', 'non', 'dec'];
@@ -277,6 +277,7 @@
       const ln = (ox, oy) => '<line x1="' + (ax + ox).toFixed(1) + '" y1="' + (ay + oy).toFixed(1) + '" x2="' + (bx + ox).toFixed(1) + '" y2="' + (by + oy).toFixed(1) + '"/>';
       s += b.o === 1 ? ln(0, 0) : b.o === 2 ? ln(nx, ny) + ln(-nx, -ny) : ln(0, 0) + ln(nx * 1.6, ny * 1.6) + ln(-nx * 1.6, -ny * 1.6);
     });
+    const hl = opt.hl ? new Set(opt.hl) : null; if (hl) { s += '</g><g fill="#93c5fd" fill-opacity=".55" stroke="#2563eb" stroke-width="1.5">'; g.atoms.forEach((a, i) => { if (hl.has(i)) s += '<circle cx="' + X(P[i]).toFixed(1) + '" cy="' + Y(P[i]).toFixed(1) + '" r="15"/>'; }); }
     s += '</g><g font-family="Be Vietnam Pro,Segoe UI,sans-serif" font-size="17" font-weight="700" text-anchor="middle" fill="currentColor">';
     g.atoms.forEach((a, i) => { s += '<text x="' + X(P[i]).toFixed(1) + '" y="' + (Y(P[i]) + 6).toFixed(1) + '"' + (a.el === 'H' ? ' font-weight="500"' : '') + '>' + a.el + '</text>'; });
     return s + '</g></svg>';
@@ -284,7 +285,7 @@
   /* ---- chất mẫu dùng chung cho widget */
   const SUBST = {
     benzene: 'C1=CC=CC=C1', glucose: null, methane: 'C', ethane: 'CC', propane: 'CCC', butane: 'CCCC', isobutane: 'CC(C)C', ethylene: 'C=C', propylene: 'C=CC', cyclopropane: 'C1CC1', cyclobutane: 'C1CCC1',
-    ethanol: 'CCO', 'dimethyl ether': 'COC', methanol: 'CO', 'methyl chloride': 'CCl', 'acetic acid': 'CC(=O)O', methylamine: 'CN', 'ethyl acetate': 'CC(=O)OCC', urea: 'NC(=O)N', 'but-2-ene': 'CC=CC', butadiene: 'C=CC=C', isobutylene: 'C=C(C)C'
+    ethanol: 'CCO', 'dimethyl ether': 'COC', methanol: 'CO', 'methyl chloride': 'CCl', 'acetic acid': 'CC(=O)O', methylamine: 'CN', 'ethyl acetate': 'CC(=O)OCC', urea: 'NC(=O)N', 'propyl acetate': 'CC(=O)OCCC', 'formic acid': 'OC=O', acetaldehyde: 'CC=O', 'but-2-ene': 'CC=CC', butadiene: 'C=CC=C', isobutylene: 'C=C(C)C'
   };
 
   function brominate(g) {                                          // phản ứng cộng Br₂ vào liên kết đôi C=C (alkene); null nếu không có C=C
@@ -296,6 +297,37 @@
     const cl = classify(g); if (!cl.organic || !cl.connected) return null; if (cl.ring) return 'ring';
     const hv = heavyOf(g); for (let i = 0; i < hv.n; i++) if (hv.A[i].filter(Boolean).length >= 3) return 'branched'; return 'straight';
   }
+
+  /* ---- nhóm chức (Bài 26–27): –OH (alcohol), –COOH, ester –COO–, ether –O–, C=O.  Nhận diện theo CẤU TRÚC, trả về chỉ số nguyên tử để tô nền. */
+  function groups(g) {
+    const r = { oh: [], cooh: [], ester: [], ether: [], carbonyl: [] }, el = (i) => g.atoms[i].el, N = (i) => nbrs(g, i);
+    const dblO = (c) => N(c).filter((x) => el(x.j) === 'O' && x.o === 2).map((x) => x.j);
+    const hOf = (i) => N(i).filter((x) => el(x.j) === 'H').length;
+    g.atoms.forEach((a, i) => {
+      if (a.el === 'C') { const d = dblO(i); if (!d.length) return;
+        const os = N(i).filter((x) => el(x.j) === 'O' && x.o === 1).map((x) => x.j);
+        const acid = os.find((o) => hOf(o) === 1), est = os.find((o) => hOf(o) === 0 && N(o).filter((x) => el(x.j) === 'C').length === 2);
+        if (acid !== undefined) r.cooh.push({ c: i, o: d[0], oh: acid, atoms: [i, d[0], acid, N(acid).find((x) => el(x.j) === 'H').j] });
+        else if (est !== undefined) r.ester.push({ c: i, o: d[0], o2: est, atoms: [i, d[0], est] });
+        else r.carbonyl.push({ c: i, o: d[0], atoms: [i, d[0]] }); }
+    });
+    g.atoms.forEach((a, i) => {
+      if (a.el !== 'O') return; const nb = N(i), cs = nb.filter((x) => el(x.j) === 'C' && x.o === 1), hs = nb.filter((x) => el(x.j) === 'H');
+      const inCooh = r.cooh.some((q) => q.atoms.indexOf(i) >= 0), inEst = r.ester.some((q) => q.atoms.indexOf(i) >= 0);
+      if (inCooh || inEst || nb.some((x) => x.o === 2)) return;
+      if (cs.length === 1 && hs.length === 1) { const c = cs[0].j; if (!dblO(c).length) r.oh.push({ o: i, c, atoms: [i, hs[0].j] }); }
+      else if (cs.length === 2 && !hs.length) r.ether.push({ o: i, atoms: [i] });
+    });
+    return r;
+  }
+  function family(g) {                                              // 'acid' | 'ester' | 'alcohol' | 'ether' | 'carbonyl' | 'hydrocarbon' | 'other'
+    const c = classify(g); if (!c.organic) return 'inorganic'; const q = groups(g);
+    if (q.cooh.length) return 'acid'; if (q.ester.length) return 'ester'; if (q.oh.length) return 'alcohol'; if (q.ether.length) return 'ether'; if (q.carbonyl.length) return 'carbonyl';
+    return c.hydrocarbon ? 'hydrocarbon' : 'other';
+  }
+  const hlAtoms = (g, kind) => { const q = groups(g), out = []; (kind === 'cooh' ? q.cooh : kind === 'oh' ? q.oh : kind === 'ester' ? q.ester : kind === 'ether' ? q.ether : q.oh.concat(q.cooh, q.ester)).forEach((x) => x.atoms.forEach((a) => out.push(a))); return out; };
+  const reactsNa = (g) => { const q = groups(g); return q.oh.length > 0 || q.cooh.length > 0; };          // thế H của –OH (alcohol) / –COOH bằng Na
+  const acidic = (g) => groups(g).cooh.length > 0;                                                  // có tính acid (đổi màu quỳ tím, tác dụng Mg, CuO, NaOH, CaCO₃)
   const uf = (s) => String(s).replace(/(\D)(\d+)/g, (m, a, d) => a + sub(d)).replace(/^(\d+)/, (m, d) => sub(d));
   /* ---- kiểm thử tự động */
   function selfTest() {
@@ -337,9 +369,24 @@
     const eb = brominate(F('C=C')), pb = brominate(F('C=CC')), nb = brominate(F('CC'));
     add('cộng Br₂: C₂H₄ → C₂H₄Br₂ (1,2-dibromoethane); C₃H₆ (propene) → C₃H₆Br₂; ethane không có C=C ⇒ null', eb && formula(eb).plain === 'C2H4Br2' && same(eb, F('BrCCBr')) && pb && formula(pb).plain === 'C3H6Br2' && same(pb, F('CC(Br)CBr')) && nb === null && valence(eb).every((v) => v === 'ok'), eb && formula(eb).plain);
     add('mạch carbon (Hình 22.3): butane thẳng, isobutane nhánh, cyclobutane vòng', chainKind(F('CCCC')) === 'straight' && chainKind(F('CC(C)C')) === 'branched' && chainKind(F('C1CCC1')) === 'ring' && chainKind(F('O')) === null);
+
+    const gq = (q) => groups(F(q)), fam = (q) => family(F(q));
+    add('nhóm chức: C₂H₆O có 2 đồng phân, chỉ ethanol có –OH và tác dụng Na; dimethyl ether có –O–', iso({ C: 2, H: 6, O: 1 }).list.length === 2 && gq('CCO').oh.length === 1 && !gq('COC').oh.length && gq('COC').ether.length === 1 && reactsNa(F('CCO')) && !reactsNa(F('COC')), [gq('CCO').oh.length, gq('COC').ether.length].join(','));
+    add('acetic acid C₂H₄O₂ có –COOH, tính acid; ethyl acetate là ester, không có –COOH; HCOOH có –COOH; CH₃CHO, CH₃COOC₂H₅ không', formula(F('CC(=O)O')).plain === 'C2H4O2' && gq('CC(=O)O').cooh.length === 1 && acidic(F('CC(=O)O')) && gq('CC(=O)OCC').ester.length === 1 && !gq('CC(=O)OCC').cooh.length && acidic(F('OC=O')) && !acidic(F('CC=O')) && !acidic(F('CC(=O)OCC')), '');
+    add('CH₃OH, CH₃CH₂OH tác dụng Na; CH₃CH₃, CH₂=CH₂ thì không; acetic acid tác dụng Na', reactsNa(F('CO')) && reactsNa(F('CCO')) && !reactsNa(F('CC')) && !reactsNa(F('C=C')) && reactsNa(F('CC(=O)O')));
+    add('họ chất: ethanol=alcohol, acetic acid=acid, ethyl acetate=ester, ethane=hydrocarbon, dimethyl ether=ether', fam('CCO') === 'alcohol' && fam('CC(=O)O') === 'acid' && fam('CC(=O)OCC') === 'ester' && fam('CC') === 'hydrocarbon' && fam('COC') === 'ether', [fam('CCO'), fam('CC(=O)O'), fam('CC(=O)OCC')].join(','));
+    add('khối lượng mol: ethanol 46; acetic acid 60; ethyl acetate 88; propyl acetate 102', mass(F('CCO')) === 46 && mass(F('CC(=O)O')) === 60 && mass(F('CC(=O)OCC')) === 88 && mass(F('CC(=O)OCCC')) === 102 && formula(F('CC(=O)OCC')).plain === 'C4H8O2', '');
+    add('tô nhóm chức không lỗi; tên: ethylic alcohol, acetic acid, ethyl acetate, propyl acetate', drawFull(F('CCO'), { hl: hlAtoms(F('CCO'), 'oh') }).indexOf('<circle') > 0 && /ethylic/.test(nameOf(F('CCO'))) && nameOf(F('CC(=O)O')) === 'acetic acid' && nameOf(F('CC(=O)OCC')) === 'ethyl acetate' && nameOf(F('CC(=O)OCCC')) === 'propyl acetate', '');
+    add('thu gọn: ethanol CH₃–CH₂–OH; acetic acid CH₃–COOH', condensed(F('CCO')) === 'CH₃–CH₂–OH' && condensed(F('CC(=O)O')) === 'CH₃–COOH', condensed(F('CCO')) + ' ; ' + condensed(F('CC(=O)O')) + ' ; ' + condensed(F('CC(=O)OCC')));
+    add('Bài 28: glycerol C₃H₈O₃ (M 92), 3 nhóm –OH; triacetin là triester (3 nhóm –COO–); ethyl acetate không phải triester', formula(F('OCC(O)CO')).plain === 'C3H8O3' && mass(F('OCC(O)CO')) === 92 && polyol(F('OCC(O)CO')) === 3 && triester(F('CC(=O)OCC(OC(C)=O)COC(C)=O')) && !triester(F('CC(=O)OCC')) && !triester(F('OCC(O)CO')), '');
+    add('glucose mạch hở C₆H₁₂O₆ (M 180), 5 nhóm –OH và 1 nhóm C=O', formula(F('OCC(O)C(O)C(O)C(O)C=O')).plain === 'C6H12O6' && mass(F('OCC(O)C(O)C(O)C(O)C=O')) === 180 && polyol(F('OCC(O)C(O)C(O)C(O)C=O')) === 5, '');
     return T;
   }
-  const engine = { brominate, chainKind, uf, VAL, MASS, sub, mk, clone, nbrs, deg, valence, counts, hill, formula, mass, stats, fromSmiles, heavyOf, canon, same, isomers, classify, organicFormula, nameOf, outOfBook, condensed, layout, drawFull, SUBST, KNOWN, selfTest };
+
+  /* ---- Bài 28: triester (chất béo) — 3 nhóm –COO– cùng gắn vào khung glycerol (3 carbon liên tiếp); polyol = nhiều nhóm –OH. */
+  function triester(g) { const r = groups(g); if (r.ester.length !== 3) return false; const cs = r.ester.map((q) => nbrs(g, q.o2).filter((x) => g.atoms[x.j].el === 'C' && x.j !== q.c)[0]); if (cs.some((x) => !x)) return false; const set = cs.map((x) => x.j); return set.every((c) => nbrs(g, c).filter((x) => g.atoms[x.j].el === 'C' && set.indexOf(x.j) >= 0).length >= 1); }
+  const polyol = (g) => groups(g).oh.length;
+  const engine = { triester, polyol, groups, family, hlAtoms, reactsNa, acidic, brominate, chainKind, uf, VAL, MASS, sub, mk, clone, nbrs, deg, valence, counts, hill, formula, mass, stats, fromSmiles, heavyOf, canon, same, isomers, classify, organicFormula, nameOf, outOfBook, condensed, layout, drawFull, SUBST, KNOWN, selfTest };
   root.MolLab = Object.assign(root.MolLab || {}, { engine });
   /* ----------------------------------------------------------------- GIAO DIỆN: bàn lắp ghép phân tử */
   const L = root.OpticsLab; if (typeof document === 'undefined' || !L) return;
@@ -362,6 +409,7 @@
     p.push(c.organic ? ['hợp chất hữu cơ', 'organic compound'] : ['hợp chất vô cơ', 'inorganic compound']);
     if (c.organic) { p.push(c.hydrocarbon ? ['hydrocarbon', 'hydrocarbon'] : ['dẫn xuất của hydrocarbon', 'hydrocarbon derivative']); p.push(c.open ? ['mạch hở', 'open chain'] : ['mạch vòng', 'ring']);
       if (c.hydrocarbon) p.push(c.saturated ? ['chỉ liên kết đơn', 'single bonds only'] : ['có liên kết bội', 'has multiple bonds']);
+      { const fm = M.family(a.g); const T = { alcohol: ['alcohol (nhóm –OH)', 'alcohol (–OH group)'], acid: ['carboxylic acid (nhóm –COOH)', 'carboxylic acid (–COOH group)'], ester: ['ester (nhóm –COO–)', 'ester (–COO– group)'], ether: ['ether (nhóm –O–)', 'ether (–O– group)'] }; if (T[fm]) p.push(T[fm]); if (M.reactsNa(a.g)) p.push(['tác dụng được với Na', 'reacts with Na']); if (M.acidic(a.g)) p.push(['có tính acid', 'acidic']); }
       if (c.alkane) p.push(['alkane', 'alkane']); if (c.alkene) p.push(['alkene (một liên kết đôi C=C, mạch hở)', 'alkene (one C=C, open chain)']); }
     return pr(p.map((x) => x[0]).join(' · '), p.map((x) => x[1]).join(' · ')); };
   function board(body, cfg) {

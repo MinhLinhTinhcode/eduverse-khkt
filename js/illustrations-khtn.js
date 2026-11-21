@@ -778,9 +778,9 @@
     [['Sản xuất dược phẩm', 'Making medicines', 240, 30], ['Lưu hoá cao su', 'Vulcanising rubber', 70, 135], ['Sản xuất thuốc diệt nấm', 'Making fungicides', 410, 135], ['Sản xuất pháo hoa, diêm', 'Making fireworks, matches', 240, 245]].map((q) => line(240, 135, q[2], q[3] + (q[3] < 100 ? 8 : q[3] > 200 ? -22 : 0), C.grey, 2) + bil(q[2], q[3], q[0], q[1], { a: 'middle', s: 11 })).join(''));
 
   /* ===== Đợt 8: Chương VII (Bài 22–24). Công thức cấu tạo do engine MolLab dựng (không chép ảnh sách) ===== */
-  const mol = (smi, x, y, w) => {
+  const mol = (smi, x, y, w, hl) => {
     const ME = window.MolLab && window.MolLab.engine; if (!ME) return '';
-    const sv = ME.drawFull(ME.fromSmiles(smi), { maxW: w, unit: 30 }), vb = /viewBox="0 0 (\d+) (\d+)"/.exec(sv); if (!vb) return '';
+    const gg = ME.fromSmiles(smi), sv = ME.drawFull(gg, { maxW: w, unit: 30, hl: hl ? ME.hlAtoms(gg, hl) : null }), vb = /viewBox="0 0 (\d+) (\d+)"/.exec(sv); if (!vb) return '';
     const h = Math.round(w * (+vb[2]) / (+vb[1]));
     return sv.replace('<svg class="mol__svg"', '<svg x="' + x + '" y="' + y + '" style="color:#1f2937" height="' + h + '"').replace(/ width="\d+"/, ' width="' + w + '"');
   };
@@ -820,7 +820,227 @@
   const khtn24b = () => svg('0 0 480 270', 'Hình 24.2: một số ứng dụng của ethylene',
     circ(240, 135, 44, '#cfe8c8', { w: 3 }) + bil(240, 132, 'Ethylene', 'Ethylene', { a: 'middle', s: 12 }) + t(240, 150, 'C₂H₄', { a: 'middle', s: 11, b: 1 }) +
     [['Tổng hợp ethylic alcohol', 'Making ethylic alcohol', 90, 40], ['Tổng hợp acetic acid', 'Making acetic acid', 240, 28], ['Sản xuất dung môi', 'Making solvents', 390, 40], ['Kích thích quả chín', 'Ripening fruit', 90, 235], ['Sản xuất polyethylene (PE)', 'Making polyethylene (PE)', 240, 248], ['Sản xuất PVC', 'Making PVC', 390, 235]].map((q) => line(240, 135, q[2], q[3] + (q[3] < 100 ? 8 : -22), C.grey, 2) + bil(q[2], q[3], q[0], q[1], { a: 'middle', s: 10 })).join(''));
+
+  /* ===== Đợt 9: Chương VII (Bài 25) và Chương VIII (Bài 26–27). Mô hình quả cầu–que và công thức do máy dựng, không chép ảnh sách ===== */
+  const CLRB = { C: '#6b7280', H: '#f3f4f6', O: '#ef4444', Na: '#8b5cf6' };
+  const ball = (A, B, ox, oy, k, hlIdx) => {                      // A: [el,x,y,z], B: [i,j,order]; chiếu nghiêng nhẹ
+    const P = A.map((a) => ({ x: ox + (a[1] + a[3] * 0.35) * k, y: oy + (a[2] - a[3] * 0.25) * k, z: a[3], el: a[0] }));
+    let o = B.map((b) => line(P[b[0]].x, P[b[0]].y, P[b[1]].x, P[b[1]].y, '#4b5563', b[2] === 2 ? 6 : 4)).join('');
+    P.map((q, i) => [q, i]).sort((u, v) => u[0].z - v[0].z).forEach((pi) => { const q = pi[0], r = q.el === 'H' ? 0.28 * k : q.el === 'Na' ? 0.5 * k : 0.42 * k; o += (hlIdx && hlIdx.indexOf(pi[1]) >= 0 ? '<circle cx="' + q.x.toFixed(1) + '" cy="' + q.y.toFixed(1) + '" r="' + (r + 7).toFixed(1) + '" fill="#93c5fd" fill-opacity=".6" stroke="#2563eb" stroke-width="1.5"/>' : '') + circ(q.x.toFixed(1), q.y.toFixed(1), r.toFixed(1), CLRB[q.el], { w: 1.5 }); });
+    return o;
+  };
+  const ETOH = [['C', -1.3, -0.2, 0], ['C', 0.2, 0.3, 0], ['O', 1.1, -0.7, 0.1], ['H', 1.9, -0.4, 0.3], ['H', -1.9, 0.6, 0.1], ['H', -1.4, -0.8, 0.9], ['H', -1.5, -0.8, -0.9], ['H', 0.4, 0.9, 0.9], ['H', 0.4, 0.9, -0.9]], ETB = [[0, 1, 1], [1, 2, 1], [2, 3, 1], [0, 4, 1], [0, 5, 1], [0, 6, 1], [1, 7, 1], [1, 8, 1]];
+  const ACOH = [['C', -1.3, 0, 0], ['C', 0.15, 0, 0], ['O', 0.8, 1.1, 0], ['O', 0.9, -1.1, 0], ['H', 1.8, -0.9, 0], ['H', -1.7, 1, 0], ['H', -1.7, -0.5, 0.9], ['H', -1.7, -0.5, -0.9]], ACB = [[0, 1, 1], [1, 2, 2], [1, 3, 1], [3, 4, 1], [0, 5, 1], [0, 6, 1], [0, 7, 1]];
+  const legendCHO = (x, y) => circ(x, y, 7, CLRB.C, { w: 1 }) + t(x + 12, y + 4, 'C', { s: 10 }) + circ(x + 38, y, 5, CLRB.H, { w: 1 }) + t(x + 47, y + 4, 'H', { s: 10 }) + circ(x + 70, y, 7, CLRB.O, { w: 1 }) + t(x + 82, y + 4, 'O', { s: 10 });
+  const khtn25a = () => svg('0 0 480 280', 'Hình 25.1: sơ đồ cấu tạo một mỏ dầu',
+    rect(10, 60, 460, 210, '#d9c7a3', { r: 6, w: 2 }) + rect(10, 60, 460, 38, '#fff3b0', { r: 0, w: 0 }) + rect(10, 98, 460, 78, '#3a2f2a', { r: 0, w: 0 }) + rect(10, 176, 460, 40, '#8ec5e8', { r: 0, w: 0 }) +
+    path('M10 60 H470', 'none', { w: 2 }) + path('M10 98 H470 M10 176 H470 M10 216 H470', 'none', { w: 1.5, c: '#555' }) + '<path d="M10 100 Q240 70 470 100 V60 H10Z" fill="#e8d9b5" opacity="0"/>' +
+    path('M210 8 L230 58 H190Z', '#9ca3af') + line(210, 58, 210, 200, '#374151', 4) + circ(210, 205, 5, '#374151', { w: 1 }) +
+    bil(250, 82, 'Lớp khí (khí mỏ dầu): methane khoảng 75%', 'Gas layer (oil-field gas): about 75% methane', { s: 11 }) + bil(250, 134, 'Lớp dầu lỏng có hoà tan khí', 'Liquid oil with dissolved gas', { s: 11, c: '#ffffff' }) +
+    bil(250, 195, 'Lớp nước mặn', 'Salt water', { s: 11 }) + bil(250, 246, 'Các lớp đất đá', 'Layers of rock', { s: 11 }) + t(240, 276, 'Sơ đồ minh hoạ · Schematic illustration', { a: 'middle', s: 10, b: 1 }));
+  const khtn25b = () => svg('0 0 480 250', 'Hình 25.2: một số loại nhiên liệu phổ biến',
+    [['Nhiên liệu rắn', 'Solid fuels', 'gỗ · than đá', 'wood · coal', '#e9d2b4', 20], ['Nhiên liệu lỏng', 'Liquid fuels', 'xăng · dầu diesel · xăng sinh học', 'petrol · diesel · biofuel', '#ffe0b8', 170], ['Nhiên liệu khí', 'Gaseous fuels', 'khí thiên nhiên · khí mỏ dầu', 'natural gas · oil-field gas', '#cfe3ff', 320]].map((q, i) =>
+      rect(q[5], 20, 140, 210, q[4], { r: 14 }) + (i === 0 ? path('M' + (q[5] + 30) + ' 90 h80 v22 h-80z', '#8b5a2b') + path('M' + (q[5] + 40) + ' 70 h60 v20 h-60z', '#a0693a') + circ(q[5] + 70, 140, 22, '#374151') : i === 1 ? path('M' + (q[5] + 40) + ' 60 h60 v90 q0 10 -10 10 h-40 q-10 0 -10 -10z', '#f59e0b') + path('M' + (q[5] + 55) + ' 50 h30 v10 h-30z', '#666') : path('M' + (q[5] + 50) + ' 60 h40 v90 q0 10 -10 10 h-20 q-10 0 -10 -10z', '#93c5fd') + path('M' + (q[5] + 60) + ' 48 h20 v12 h-20z', '#666')) +
+      bil(q[5] + 70, 182, q[0], q[1], { a: 'middle', s: 12 }) + t(q[5] + 70, 214, q[2], { a: 'middle', s: 9 }) + t(q[5] + 70, 226, q[3], { a: 'middle', s: 8.5, i: 1 })).join(''));
+  const khtn25c = () => svg('0 0 480 300', 'Sơ đồ tháp chưng cất dầu mỏ (minh hoạ, không ghi nhiệt độ)',
+    rect(170, 20, 90, 255, '#e5e7eb', { r: 12 }) + [['Khí hoá lỏng', 'Liquefied gas'], ['Dầu nhẹ', 'Light oil'], ['Naphtha nhẹ', 'Light naphtha'], ['Xăng', 'Petrol'], ['Dầu hoả', 'Kerosene'], ['Dầu diesel', 'Diesel oil'], ['Dầu bôi trơn', 'Lubricating oil'], ['Sáp paraffin', 'Paraffin wax'], ['Nhựa đường', 'Bitumen']].map((q, i) => line(170, 38 + i * 26, 260, 38 + i * 26, '#6b7280', 1.5) + line(260, 30 + i * 26, 300, 30 + i * 26, '#6b7280', 1.5) + t(306, 28 + i * 26, q[0] + ' · ' + q[1], { s: 10, b: 1 })).join('') +
+    rect(40, 205, 70, 50, '#fb923c', { r: 6 }) + bil(75, 232, 'Dầu thô', 'Crude oil', { a: 'middle', s: 10 }) + arrow(110, 230, 170, 230, '#555', 3) + arrow(215, 300, 215, 276, '#ef4444', 3) + t(235, 296, 'Nung nóng · Heating', { s: 10, b: 1 }) + t(20, 14, 'Nhẹ (trên) → nặng (dưới) · Light (top) → heavy (bottom)', { s: 10, b: 1 }));
+  const khtn26a = () => svg('0 0 480 230', 'Hình 26.1: mô hình phân tử ethylic alcohol', rect(10, 10, 460, 210, '#f8fafc', { r: 14, w: 1 }) + ball(ETOH, ETB, 240, 120, 52) + legendCHO(30, 30) + t(240, 214, 'Ethylic alcohol C₂H₆O (quả cầu: C xám, H trắng, O đỏ)', { a: 'middle', s: 10, b: 1 }));
+  const khtn26b = () => svg('0 0 480 200', 'Hình 26.2: công thức cấu tạo của ethylic alcohol, tô nhóm –OH',
+    mol('CCO', 90, 20, 300, 'oh') + bil(240, 165, 'Nhóm –OH (tô xanh) gây nên tính chất đặc trưng', 'The –OH group (blue) gives the characteristic properties', { a: 'middle', s: 11 }));
+  const khtn26c = () => svg('0 0 480 230', 'Hình 26.3: lọ đựng ethylic alcohol',
+    path('M200 40 h60 v20 l30 30 v110 q0 14 -14 14 h-92 q-14 0 -14 -14 v-110 l30 -30z', '#e0f2fe') + rect(210, 24, 40, 18, '#4b5563', { r: 3 }) + rect(180, 120, 100, 50, '#bfe3f7', { r: 0, w: 0 }) + rect(190, 100, 80, 40, '#ffffff', { r: 4, w: 1 }) + t(230, 125, 'Cồn 96°', { a: 'middle', s: 12, b: 1 }) +
+    bil(320, 80, 'Chất lỏng không màu, mùi đặc trưng', 'Colourless liquid with a typical smell', { s: 11 }) + bil(320, 130, 'Sôi ở 78,3 °C · d = 0,789 g/mL (20 °C)', 'Boils at 78.3 °C · d = 0.789 g/mL (20 °C)', { s: 11 }) + bil(320, 180, 'Tan vô hạn trong nước', 'Miscible with water in all proportions', { s: 11 }));
+  const khtn26d = () => svg('0 0 480 260', 'Hình 26.4: natri phản ứng với ethylic alcohol (minh hoạ)',
+    path('M190 30 v170 q0 20 20 20 h40 q20 0 20 -20 v-170', 'none', { w: 3 }) + rect(194, 120, 92, 96, '#e0f2fe', { r: 0, w: 0 }) + circ(240, 190, 9, '#d1d5db', { w: 1.5 }) + [[220, 160], [250, 145], [235, 130], [262, 175], [212, 185]].map((q) => circ(q[0], q[1], 4, '#ffffff', { w: 1 })).join('') +
+    path('M300 40 l-52 96', 'none', { w: 4, c: '#6b7280' }) + bil(330, 60, 'Panh kẹp mẩu natri nhỏ', 'Tongs holding a small piece of sodium', { s: 11 }) + bil(300, 170, 'Bọt khí H₂ nổi lên', 'H₂ bubbles rise', { s: 11 }) + bil(300, 220, '5 mL ethylic alcohol tuyệt đối', '5 mL absolute ethylic alcohol', { s: 11 }) + t(240, 255, '⚠ Chỉ minh hoạ · Illustration only', { a: 'middle', s: 10, b: 1 }));
+  const hub = (cx, cy, title, en, c, items) => circ(cx, cy, 44, c, { w: 3 }) + bil(cx, cy - 3, title, en, { a: 'middle', s: 12 }) + items.map((q) => line(cx, cy, q[2], q[3] + (q[3] < cy - 40 ? 14 : q[3] > cy + 40 ? -26 : 0), C.grey, 2) + bil(q[2], q[3], q[0], q[1], { a: 'middle', s: 10 })).join('');
+  const khtn26e = () => svg('0 0 480 270', 'Hình 26.5: một số ứng dụng của ethylic alcohol', hub(240, 135, 'Ethylic alcohol', 'Ethylic alcohol', '#fde7c2', [['Dung môi (mĩ phẩm, dược phẩm, sơn)', 'Solvent (cosmetics, drugs, paints)', 120, 34], ['Dung dịch sát khuẩn (cồn 70°)', 'Disinfectant (70° alcohol)', 360, 34], ['Đồ uống có cồn', 'Alcoholic drinks', 60, 135], ['Nhiên liệu sinh học', 'Biofuel', 420, 135], ['Điều chế acetic acid, ester', 'Making acetic acid, esters', 240, 248]]));
+  const khtn27a = () => svg('0 0 480 230', 'Hình 27.1: mô hình phân tử acetic acid', rect(10, 10, 460, 210, '#f8fafc', { r: 14, w: 1 }) + ball(ACOH, ACB, 240, 120, 56) + legendCHO(30, 30) + t(240, 214, 'Acetic acid C₂H₄O₂ (quả cầu: C xám, H trắng, O đỏ)', { a: 'middle', s: 10, b: 1 }));
+  const khtn27b = () => svg('0 0 480 200', 'Hình 27.2: công thức cấu tạo của acetic acid, tô nhóm –COOH',
+    mol('CC(=O)O', 90, 20, 300, 'cooh') + bil(240, 165, 'Nhóm –COOH (tô xanh) gây nên tính chất đặc trưng', 'The –COOH group (blue) gives the characteristic properties', { a: 'middle', s: 11 }));
+  const khtn27c = () => svg('0 0 480 230', 'Hình 27.3: a) lọ acetic acid trong phòng thí nghiệm; b) chai giấm gạo',
+    path('M90 50 h40 v16 l24 24 v100 q0 12 -12 12 h-64 q-12 0 -12 -12 v-100 l24 -24z', '#e0f2fe') + rect(98, 36, 24, 16, '#4b5563', { r: 3 }) + rect(72, 120, 76, 40, '#fef9c3', { r: 0, w: 0 }) + t(110, 144, 'CH₃COOH', { a: 'middle', s: 11, b: 1 }) + bil(110, 216, 'a) Acetic acid', 'a) Acetic acid', { a: 'middle', s: 10 }) +
+    path('M340 50 h30 v30 l16 20 v100 q0 12 -12 12 h-38 q-12 0 -12 -12 v-100 l16 -20z', '#f5deb3') + rect(342, 36, 26, 16, '#b91c1c', { r: 3 }) + rect(330, 120, 50, 40, '#ffffff', { r: 3, w: 1 }) + t(355, 144, 'GIẤM', { a: 'middle', s: 10, b: 1 }) + bil(355, 216, 'b) Giấm gạo (2%–5%)', 'b) Rice vinegar (2%–5%)', { a: 'middle', s: 10 }));
+  const khtn27d = () => svg('0 0 480 270', 'Hình 27.4: một số ứng dụng của acetic acid', hub(240, 135, 'Acetic acid', 'Acetic acid', '#e4f4c8', [['Sản xuất tơ', 'Making silk-like fibres', 90, 34], ['Dược phẩm', 'Medicines', 240, 28], ['Hoá chất', 'Chemicals', 390, 34], ['Chất kết dính', 'Adhesives', 70, 135], ['Giấm ăn', 'Table vinegar', 410, 135], ['Dung môi', 'Solvents', 240, 248]]));
+  const khtn27e = () => svg('0 0 480 270', 'Sơ đồ thí nghiệm phản ứng ester hoá (minh hoạ)',
+    path('M60 40 v120 q0 14 14 14 h40 q14 0 14 -14 v-120', 'none', { w: 3 }) + rect(64, 110, 100, 60, '#fef3c7', { r: 0, w: 0 }) + bil(110, 60, 'Acetic acid + ethylic alcohol + H₂SO₄ đặc', 'Acetic acid + ethylic alcohol + conc. H₂SO₄', { a: 'middle', s: 9 }) +
+    rect(50, 190, 130, 56, '#fca5a5', { r: 8 }) + bil(115, 216, 'Cốc nước nóng 60–70 °C', 'Hot water bath 60–70 °C', { a: 'middle', s: 9 }) + arrow(190, 130, 250, 130, '#555', 3) +
+    path('M290 40 v120 q0 14 14 14 h40 q14 0 14 -14 v-120', 'none', { w: 3 }) + rect(294, 100, 100, 70, '#e0f2fe', { r: 0, w: 0 }) + rect(294, 82, 100, 18, '#fefce8', { r: 0, w: 0 }) + bil(404, 80, 'Lớp ester nổi, thơm nhẹ', 'Ester layer floats, mild fruity smell', { s: 9 }) + bil(404, 130, 'Dung dịch muối ăn bão hoà', 'Saturated salt solution', { s: 9 }) + t(240, 262, '⚠ H₂SO₄ đặc gây bỏng · Chỉ minh hoạ', { a: 'middle', s: 10, b: 1 }));
+  Object.assign(T.art, { khtn25a, khtn25b, khtn25c, khtn26a, khtn26b, khtn26c, khtn26d, khtn26e, khtn27a, khtn27b, khtn27c, khtn27d, khtn27e });
   Object.assign(T.art, { khtn22a, khtn22b, khtn22c, khtn22d, khtn23a, khtn23b, khtn23c, khtn24a, khtn24b });
   Object.assign(T.art, { khtn19a, khtn19b, khtn20a, khtn20b, khtn20c, khtn21a, khtn21b });
   Object.assign(T.art, { khtn13a, khtn13b, khtn14a, khtn14b, khtn14c, khtn14d, khtn14e, khtn14f, khtn14g, khtn14h, khtn14i, khtn15a, khtn15b, khtn15c, khtn15d, khtn15e, khtn15f });
+  /* ---- Đợt 10: hình Bài 28–30 (tự vẽ, minh hoạ; không chép ảnh sách) ---- */
+  const E2 = (x, y, rx, ry, f, c) => '<ellipse cx="' + x + '" cy="' + y + '" rx="' + rx + '" ry="' + ry + '" fill="' + f + '" stroke="' + (c || C.ink) + '" stroke-width="2"/>';
+  const khtn28a = () => svg('0 0 480 270', 'Hình 28.1: một số loại lipid — chất béo (a) và sáp (b)',
+    rect(8, 8, 464, 254, '#fafafa', { r: 14, w: 1 }) + t(130, 28, 'a) Chất béo · Fats', { a: 'middle', s: 13, b: 1 }) + t(370, 28, 'b) Sáp · Waxes', { a: 'middle', s: 13, b: 1 }) + line(240, 40, 240, 250, '#9ca3af', 1.5, '5 4') +
+    path('M52 80 h26 v14 l14 16 v90 q0 8 -8 8 h-38 q-8 0 -8 -8 v-90 l14 -16z', '#fde68a') + rect(56, 66, 18, 14, '#b45309', { r: 3 }) + t(65, 160, 'DẦU', { a: 'middle', s: 10, b: 1 }) + bil(65, 232, 'Dầu thực vật', 'Vegetable oil', { a: 'middle', s: 10 }) +
+    rect(118, 150, 64, 44, '#fffbeb', { r: 6 }) + rect(118, 150, 64, 14, '#fef3c7', { r: 6 }) + bil(150, 232, 'Mỡ động vật', 'Animal fat', { a: 'middle', s: 10 }) +
+    rect(198, 156, 40, 32, '#fde047', { r: 4 }) + path('M198 156 l10 -10 h40 l-10 10z', '#fef08a', { w: 1.5 }) + bil(208, 232, 'Bơ', 'Butter', { a: 'middle', s: 10 }) +
+    E2(300, 130, 40, 56, '#4d7c0f') + E2(300, 132, 33, 48, '#bef264', '#4d7c0f') + bil(300, 232, 'Vỏ quả bơ', 'Avocado skin', { a: 'middle', s: 10 }) +
+    path('M385 190 q-8 -70 28 -100 q-2 40 -4 70 q30 -50 40 -60 q-8 60 -50 100 q-10 4 -14 -10z', '#86efac') + line(388, 190, 424, 110, '#166534', 2) + line(392, 175, 440, 118, '#166534', 1.5) + bil(414, 232, 'Bề mặt lá cọ', 'Surface of a palm leaf', { a: 'middle', s: 10 }));
+  const khtn29a = () => svg('0 0 480 280', 'Hình 29.1: một số loại carbohydrate và trạng thái tự nhiên',
+    rect(8, 8, 464, 264, '#fafafa', { r: 14, w: 1 }) +
+    [[70, 82], [100, 78], [84, 104], [58, 106], [112, 104], [88, 130]].map((q) => circ(q[0], q[1], 14, '#a78bfa', { w: 1.5 })).join('') + path('M84 56 q4 -14 18 -16', 'none', { w: 3, c: '#166534' }) + bil(90, 168, 'a) Glucose C₆H₁₂O₆', 'a) Glucose C₆H₁₂O₆', { a: 'middle', s: 11 }) + bil(90, 196, '(nho chín)', '(ripe grapes)', { a: 'middle', s: 10 }) +
+    [0, 1, 2].map((i) => rect(305 + i * 18, 40 + i * 8, 11, 112 - i * 8, '#d9f99d', { r: 3, w: 1.5 })).join('') +
+    bil(330, 168, 'b) Saccharose C₁₂H₂₂O₁₁', 'b) Sucrose C₁₂H₂₂O₁₁', { a: 'middle', s: 11 }) + bil(330, 196, '(cây mía)', '(sugar cane)', { a: 'middle', s: 10 }) +
+    path('M54 214 q36 44 72 0z', '#fef3c7') + [0, 1, 2, 3, 4].map((i) => E2(66 + i * 12, 212, 4, 2.5, '#fffbeb', '#a16207')).join('') + bil(90, 262, 'c) Tinh bột (C₆H₁₀O₅)ₙ — gạo, ngô, khoai, sắn', 'c) Starch (C₆H₁₀O₅)ₙ — rice, maize, potato, cassava', { a: 'middle', s: 9 }) +
+    circ(330, 224, 22, '#ffffff', { w: 1.5 }) + circ(318, 218, 14, '#f8fafc', { w: 1.2 }) + circ(344, 220, 15, '#f8fafc', { w: 1.2 }) + bil(330, 262, 'd) Cellulose (C₆H₁₀O₅)ₘ — bông', 'd) Cellulose (C₆H₁₀O₅)ₘ — cotton', { a: 'middle', s: 9 }));
+  const khtn29b = () => svg('0 0 480 230', 'Hình 29.2: đường glucose (a) và đường saccharose (b)',
+    rect(8, 8, 464, 214, '#fafafa', { r: 14, w: 1 }) +
+    path('M40 150 q50 -70 100 0z', '#f1f5f9') + [[70, 140], [90, 130], [110, 140], [100, 118], [84, 146], [122, 144]].map((q) => rect(q[0], q[1], 9, 9, '#ffffff', { r: 1.5, w: 1.2 })).join('') + bil(90, 178, 'a) Glucose C₆H₁₂O₆', 'a) Glucose C₆H₁₂O₆', { a: 'middle', s: 11 }) + t(90, 208, 'd = 1,56 g/cm³ · vị ngọt, tan tốt', { a: 'middle', s: 10 }) +
+    path('M300 150 q50 -70 100 0z', '#f1f5f9') + [[330, 140], [350, 128], [370, 140], [360, 112], [344, 146], [382, 144]].map((q) => rect(q[0], q[1], 12, 12, '#ffffff', { r: 1.5, w: 1.2 })).join('') + bil(350, 178, 'b) Saccharose C₁₂H₂₂O₁₁', 'b) Sucrose C₁₂H₂₂O₁₁', { a: 'middle', s: 11 }) + t(350, 208, 'd = 1,58 g/cm³ · vị ngọt, tan tốt', { a: 'middle', s: 10 }));
+  const khtn29c = () => svg('0 0 480 280', 'Hình 29.3: một số ứng dụng của glucose (a) và saccharose (b)',
+    rect(8, 8, 464, 264, '#fafafa', { r: 14, w: 1 }) + t(150, 28, 'a) Glucose', { a: 'middle', s: 13, b: 1 }) + t(380, 28, 'b) Saccharose', { a: 'middle', s: 13, b: 1 }) + line(240, 38, 240, 262, '#9ca3af', 1.5, '5 4') +
+    E2(60, 100, 30, 44, '#e0f2fe') + path('M40 130 q20 -24 40 -60', 'none', { w: 3, c: '#ffffff' }) + bil(60, 168, 'Gương soi', 'Mirror', { a: 'middle', s: 10 }) +
+    path('M118 60 q-6 40 14 46 q20 -6 14 -46z', '#fecaca') + line(132, 106, 132, 140, C.ink, 2) + line(118, 140, 146, 140, C.ink, 2) + bil(132, 168, 'Rượu vang', 'Wine', { a: 'middle', s: 10 }) +
+    rect(170, 64, 50, 70, '#e0f2fe', { r: 10 }) + t(195, 104, 'Glu', { a: 'middle', s: 11, b: 1 }) + line(195, 134, 195, 156, C.ink, 2) + bil(195, 190, 'Dịch truyền glucose', 'Glucose drip', { a: 'middle', s: 9 }) +
+    path('M290 70 h50 l-6 66 h-38z', '#fdba74') + bil(315, 168, 'Nước trái cây', 'Fruit juice', { a: 'middle', s: 10 }) +
+    [0, 1, 2].map((i) => circ(380 + i * 26, 110 + (i % 2) * 8, 11, ['#f472b6', '#facc15', '#60a5fa'][i], { w: 1.5 })).join('') + bil(415, 168, 'Bánh kẹo', 'Sweets', { a: 'middle', s: 10 }) +
+    bil(150, 236, 'tráng gương · lên men · dịch truyền', 'silvering · fermentation · infusion', { a: 'middle', s: 9 }) + bil(380, 236, 'chất tạo ngọt · cung cấp năng lượng', 'sweetener · energy', { a: 'middle', s: 9 }));
+  const khtn30a = () => svg('0 0 480 270', 'Hình 30.1: sự hình thành tinh bột và cellulose ở thực vật',
+    rect(8, 8, 464, 254, '#fafafa', { r: 14, w: 1 }) + circ(60, 130, 34, '#fef9c3') + t(60, 126, 'CO₂ +', { a: 'middle', s: 12, b: 1 }) + t(60, 144, 'H₂O', { a: 'middle', s: 12, b: 1 }) +
+    line(96, 130, 170, 130, '#166534', 3) + path('M170 122 l12 8 l-12 8z', '#166534', { w: 1 }) + bil(134, 108, 'Quang hợp', 'Photosynthesis', { a: 'middle', s: 10 }) + bil(134, 156, 'Giải phóng O₂', 'releases O₂', { a: 'middle', s: 9 }) +
+    circ(222, 130, 36, '#bbf7d0') + t(222, 134, 'GLUCOSE', { a: 'middle', s: 12, b: 1 }) +
+    line(254, 108, 330, 62, '#166534', 3) + rect(334, 40, 130, 46, '#e0f2fe', { r: 10 }) + bil(399, 56, 'CELLULOSE', 'CELLULOSE', { a: 'middle', s: 11 }) + t(399, 100, '(xây dựng cấu trúc)', { a: 'middle', s: 10 }) +
+    line(254, 152, 330, 198, '#166534', 3) + rect(334, 176, 130, 46, '#fef3c7', { r: 10 }) + bil(399, 192, 'TINH BỘT', 'STARCH', { a: 'middle', s: 11 }) + t(399, 236, '(dự trữ năng lượng)', { a: 'middle', s: 10 }) +
+    t(240, 258, 'Sơ đồ minh hoạ — không phải phương trình hoá học', { a: 'middle', s: 9, i: 1 }));
+  const khtn30b = () => svg('0 0 480 270', 'Hình 30.2: một số ứng dụng của tinh bột (a) và cellulose (b)',
+    rect(8, 8, 464, 254, '#fafafa', { r: 14, w: 1 }) + t(130, 28, 'a) Tinh bột', { a: 'middle', s: 13, b: 1 }) + t(360, 28, 'b) Cellulose', { a: 'middle', s: 13, b: 1 }) + line(240, 38, 240, 250, '#9ca3af', 1.5, '5 4') +
+    path('M40 100 q40 56 80 0z', '#ffffff') + E2(80, 100, 40, 8, '#fffbeb') + bil(80, 168, 'Cơm', 'Cooked rice', { a: 'middle', s: 10 }) +
+    path('M150 70 q-4 30 12 36 q16 -6 12 -36z', '#fecaca') + bil(162, 168, 'Rượu', 'Rice wine', { a: 'middle', s: 10 }) +
+    rect(70, 196, 100, 36, '#fde68a', { r: 6 }) + bil(120, 244, 'Hồ dán; nguyên liệu sản xuất ethylic alcohol', 'Paste; raw material for ethylic alcohol', { a: 'middle', s: 8 }) +
+    rect(290, 64, 36, 48, '#ffffff', { r: 2 }) + line(296, 78, 320, 78, '#9ca3af', 1.5) + line(296, 90, 320, 90, '#9ca3af', 1.5) + bil(308, 140, 'Giấy', 'Paper', { a: 'middle', s: 10 }) +
+    path('M350 112 l36 -34 l36 34z', '#d97706') + rect(358, 112, 56, 38, '#fbbf24', { r: 2 }) + bil(386, 168, 'Nhà gỗ, đồ gỗ', 'Wooden house, furniture', { a: 'middle', s: 10 }) +
+    bil(360, 214, 'Cồn công nghiệp, tơ sợi, hoá chất', 'Industrial alcohol, fibres, chemicals', { a: 'middle', s: 9 }));
+  /* ---------------- Đợt 11: Bài 31–33 (tự vẽ) ---------------- */
+  const aa = (x, y, nm, r, col) => rect(x, y, 78, 78, col, { r: 12 }) + t(x + 39, y + 28, nm, { a: 'middle', s: 14, b: 1 }) + t(x + 39, y + 46, 'R = ' + r, { a: 'middle', s: 11 }) + t(x + 8, y + 70, 'H₂N', { s: 10 }) + t(x + 70, y + 70, 'COOH', { a: 'end', s: 10 });
+  const khtn31a = () => svg('0 0 480 280', 'Hình 31.1: amino acid và protein',
+    rect(8, 8, 464, 264, '#fafafa', { r: 14, w: 1 }) + aa(30, 24, 'Alanine', 'CH₃', '#bbf7d0') + aa(130, 24, 'Glycine', 'H', '#bfdbfe') + bil(130, 118, 'Amino acid: có –NH₂ và –COOH, khác gốc R', 'Amino acids: –NH₂ and –COOH, different R', { a: 'middle', s: 9 }) +
+    line(30, 140, 450, 140, '#d1d5db', 1.5, '4 4') + aa(30, 150, 'Ala', 'CH₃', '#bbf7d0') + line(108, 189, 142, 189, '#dc2626', 5) + aa(142, 150, 'Gly', 'H', '#bfdbfe') + line(220, 189, 254, 189, '#dc2626', 5) + aa(254, 150, 'Ala', 'CH₃', '#bbf7d0') + line(332, 189, 366, 189, '#dc2626', 5) + t(398, 192, '…', { s: 22, b: 1 }) +
+    t(125, 180, '–CO–NH–', { a: 'middle', s: 9, c: '#dc2626' }) + bil(240, 258, 'Một đoạn mạch protein · liên kết peptide (đỏ)', 'A piece of protein chain · peptide bond (red)', { a: 'middle', s: 9 }));
+  const khtn31b = () => svg('0 0 480 270', 'Hình 31.2: một số sản phẩm chứa protein',
+    rect(8, 8, 464, 254, '#fafafa', { r: 14, w: 1 }) + path('M40 70 h44 l-4 70 h-36z', '#ffffff') + bil(62, 160, 'Sữa', 'Milk', { a: 'middle', s: 10 }) + E2(150, 110, 24, 32, '#fef3c7') + circ(150, 116, 12, '#fbbf24', { w: 1 }) + bil(150, 160, 'Trứng', 'Eggs', { a: 'middle', s: 10 }) +
+    rect(210, 84, 76, 40, '#f87171', { r: 16 }) + bil(248, 160, 'Thịt', 'Meat', { a: 'middle', s: 10 }) + path('M320 110 q40 -40 80 0 q-40 40 -80 0z', '#93c5fd') + path('M400 110 l22 -18 v36z', '#93c5fd') + bil(360, 160, 'Cá', 'Fish', { a: 'middle', s: 10 }) +
+    E2(240, 214, 30, 20, '#f5f5f4') + bil(240, 250, 'Kén tằm (tơ tằm)', 'Silkworm cocoon (silk)', { a: 'middle', s: 10 }) + t(240, 28, 'Nguồn thực phẩm giàu protein · nguyên liệu tơ tự nhiên', { a: 'middle', s: 11, b: 1 }));
+  const chainRow = (x0, y, n, f) => Array.from({ length: n }, (_, i) => (i < n - 1 ? line(x0 + i * 40, y, x0 + i * 40 + 40, y, '#374151', 3) : '') + circ(x0 + i * 40, y, 9, f, { w: 2 })).join('');
+  const khtn32a = () => svg('0 0 480 280', 'Hình 32.1: các loại mạch polymer',
+    rect(8, 8, 464, 264, '#fafafa', { r: 14, w: 1 }) + t(80, 28, 'a) Mạch không phân nhánh', { a: 'middle', s: 10, b: 1 }) + chainRow(30, 60, 5, '#fde68a') + bil(100, 96, 'amylose', 'amylose', { a: 'middle', s: 9 }) +
+    t(310, 28, 'b) Mạch phân nhánh', { a: 'middle', s: 10, b: 1 }) + chainRow(250, 60, 6, '#fde68a') + line(290, 69, 300, 100, '#374151', 3) + circ(300, 106, 9, '#bbf7d0', { w: 2 }) + line(340, 69, 350, 100, '#374151', 3) + circ(350, 106, 9, '#bbf7d0', { w: 2 }) + bil(330, 130, 'amylopectin, glycogen', 'amylopectin, glycogen', { a: 'middle', s: 9 }) +
+    t(150, 166, 'c) Mạng không gian', { a: 'middle', s: 10, b: 1 }) + chainRow(40, 190, 6, '#fde68a') + chainRow(40, 240, 6, '#fde68a') + [0, 2, 4].map((i) => line(40 + i * 40 + 20, 199, 40 + i * 40 + 20, 231, '#dc2626', 4)).join('') + bil(150, 268, 'nhựa bakelite, cao su lưu hoá · cầu nối đỏ', 'bakelite, vulcanised rubber · red cross-links', { a: 'middle', s: 9 }) + t(380, 220, 'mắt xích', { s: 9 }) + circ(366, 216, 8, '#fde68a', { w: 2 }));
+  const khtn32b = () => svg('0 0 480 200', 'Hình 32.2: một số sản phẩm từ chất dẻo',
+    rect(8, 8, 464, 184, '#fafafa', { r: 14, w: 1 }) + path('M40 60 h46 l-6 64 h-34z', '#bae6fd') + bil(63, 150, 'Cốc nhựa', 'Plastic cup', { a: 'middle', s: 10 }) + rect(130, 50, 36, 80, '#bfdbfe', { r: 10 }) + rect(140, 36, 16, 14, '#60a5fa', { r: 3 }) + bil(148, 150, 'Chai nhựa', 'Plastic bottle', { a: 'middle', s: 10 }) +
+    rect(220, 80, 90, 44, '#fde68a', { r: 8 }) + bil(265, 150, 'Hộp nhựa', 'Plastic box', { a: 'middle', s: 10 }) + circ(390, 100, 28, '#fecaca', { w: 2 }) + circ(390, 100, 12, '#fff', { w: 1 }) + bil(390, 150, 'Đồ chơi, ống nhựa…', 'Toys, plastic pipes …', { a: 'middle', s: 10 }) + t(240, 28, 'Chất dẻo = polymer + chất độn, chất hoá dẻo, chất tạo màu…', { a: 'middle', s: 10, b: 1 }));
+  const sy = (x, ico, vi, en) => rect(x, 40, 66, 70, '#ffffff', { r: 10, w: 1.5 }) + t(x + 33, 82, ico, { a: 'middle', s: 26 }) + bil(x + 33, 128, vi, en, { a: 'middle', s: 7 });
+  const khtn32c = () => svg('0 0 480 170', 'Hình 32.3: ý nghĩa các kí hiệu thường gặp trên đồ nhựa gia dụng',
+    rect(8, 8, 464, 154, '#fafafa', { r: 14, w: 1 }) + sy(20, '🍴', 'An toàn thực phẩm', 'Food safe') + sy(92, '📡', 'Lò vi sóng', 'Microwave') + sy(164, '🍽', 'Máy rửa chén', 'Dishwasher') + sy(236, '❄', 'Đông lạnh', 'Freezer') + sy(308, '🌡', 'Nhiệt độ tối đa', 'Max temp.') + sy(380, '♻', 'Mã nhựa', 'Plastic code') + t(240, 156, 'Biểu tượng tự vẽ lại', { a: 'middle', s: 9, i: 1 }));
+  const khtn32d = () => svg('0 0 480 160', 'Hình 32.4: nhãn kí hiệu giặt, là đính kèm quần áo',
+    rect(8, 8, 464, 144, '#fafafa', { r: 14, w: 1 }) + rect(150, 24, 180, 96, '#ffffff', { r: 8, w: 1.5 }) + path('M185 56 h50 l-8 36 h-34z', 'none', { w: 2, c: '#374151' }) + t(210, 80, '30°', { a: 'middle', s: 11, b: 1 }) + path('M255 90 h44 l-6 -20 h-30z', 'none', { w: 2, c: '#374151' }) + bil(240, 140, 'Nhãn giặt, là: đọc kĩ trước khi giặt (hình vẽ lại)', 'Care label: read before washing (redrawn)', { a: 'middle', s: 9 }));
+  const khtn32e = () => svg('0 0 480 170', 'Hình 32.5: một số sản phẩm làm từ cao su',
+    rect(8, 8, 464, 154, '#fafafa', { r: 14, w: 1 }) + circ(80, 80, 40, '#374151') + circ(80, 80, 18, '#e5e7eb') + bil(80, 140, 'Lốp xe', 'Tyre', { a: 'middle', s: 10 }) + E2(210, 80, 50, 18, '#4b5563') + bil(210, 140, 'Băng tải, ống dẫn', 'Conveyor belt, hose', { a: 'middle', s: 10 }) + circ(330, 80, 24, 'none', { w: 8, c: '#374151' }) + bil(330, 140, 'Gioăng đệm', 'Gasket', { a: 'middle', s: 10 }) + path('M400 60 q30 -14 50 4 v50 h-50z', '#60a5fa') + bil(425, 140, 'Áo lặn', 'Wetsuit', { a: 'middle', s: 10 }));
+  const khtn32f = () => svg('0 0 480 170', 'Hình 32.6: gỗ nhựa composite',
+    rect(8, 8, 464, 154, '#fafafa', { r: 14, w: 1 }) + rect(60, 40, 220, 60, '#fde68a', { r: 8 }) + Array.from({ length: 12 }, (_, i) => circ(76 + (i % 6) * 36, 58 + Math.floor(i / 6) * 28, 6, '#92400e')).join('') + bil(170, 128, 'Gỗ nhựa composite', 'Wood-plastic composite', { a: 'middle', s: 10 }) + bil(300, 62, '● bột gỗ: vật liệu cốt', '● wood powder: reinforcement', { s: 9 }) + bil(300, 96, '■ nhựa PE: vật liệu nền', '■ PE plastic: matrix', { s: 9 }));
+  const khtn32g = () => svg('0 0 480 200', 'Hình 32.7: một số sản phẩm làm từ polyethylene',
+    rect(8, 8, 464, 184, '#fafafa', { r: 14, w: 1 }) + path('M30 60 h40 l-5 40 h-30z', '#bae6fd') + circ(100, 90, 16, '#fecaca') + rect(125, 70, 30, 30, '#fde68a', { r: 6 }) + bil(90, 120, 'Cốc, đĩa, thìa nhựa', 'Cups, plates, spoons', { a: 'middle', s: 9 }) + rect(200, 54, 26, 56, '#bfdbfe', { r: 8 }) + bil(213, 128, 'Chai, lọ', 'Bottles, jars', { a: 'middle', s: 9 }) + path('M270 60 h36 l6 50 h-48z', '#d1fae5') + bil(288, 128, 'Túi đựng', 'Bags', { a: 'middle', s: 9 }) +
+    rect(350, 72, 110, 12, '#a3a3a3', { r: 6 }) + bil(405, 128, 'Ống nhựa, vỏ dây điện', 'Pipes, cable insulation', { a: 'middle', s: 9 }) + t(240, 172, 'Đồ chơi trẻ em · màng bọc · vỏ dây điện', { a: 'middle', s: 10 }));
+  const r5 = (x, vi, en, col) => circ(x, 80, 30, col, { w: 2 }) + t(x, 86, en[0], { a: 'middle', s: 22, b: 1 }) + bil(x, 130, vi, en, { a: 'middle', s: 9 });
+  const khtn32h = () => svg('0 0 480 190', 'Hình 32.8: nguyên tắc 5R giúp hạn chế ô nhiễm môi trường khi sử dụng vật liệu polymer',
+    rect(8, 8, 464, 174, '#fafafa', { r: 14, w: 1 }) + r5(56, 'Đổi mới công nghệ', 'Renew', '#bbf7d0') + r5(148, 'Từ chối', 'Refuse', '#fecaca') + r5(240, 'Giảm thiểu', 'Reduce', '#fde68a') + r5(332, 'Tái sử dụng', 'Reuse', '#bfdbfe') + r5(424, 'Tái chế', 'Recycle', '#ddd6fe') + t(240, 170, 'Nguyên tắc 5R (vẽ lại)', { a: 'middle', s: 9, i: 1 }));
+  const rockShape = (x, y, col, nm, cp) => path('M' + x + ' ' + (y + 70) + ' L' + (x + 14) + ' ' + y + ' L' + (x + 70) + ' ' + (y - 8) + ' L' + (x + 106) + ' ' + (y + 30) + ' L' + (x + 92) + ' ' + (y + 72) + ' Z', col, { w: 2 }) + bil(x + 52, y + 92, nm[0], nm[1], { a: 'middle', s: 10 }) + t(x + 52, y + 126, cp, { a: 'middle', s: 9 });
+  const khtn33a = () => svg('0 0 480 330', 'Hình 33.1: một số loại đá',
+    rect(8, 8, 464, 314, '#fafafa', { r: 14, w: 1 }) + rockShape(30, 36, '#f1f5f9', ['a) Thạch anh', 'a) Quartz'], 'SiO₂') + rockShape(260, 36, '#d6d3d1', ['b) Dolomite', 'b) Dolomite'], 'CaCO₃·MgCO₃') + rockShape(30, 186, '#a8a29e', ['c) Đá hoa cương (granite)', 'c) Granite'], 'muối silicate Al, Na, K, Ca…') + rockShape(260, 186, '#f5f5f4', ['d) Đá cẩm thạch', 'd) Marble'], 'CaCO₃, CaCO₃·MgCO₃…'));
+  /* ---------------- Đợt 12: Bài 34–35 ---------------- */
+  const khtn34a = () => svg('0 0 480 230', 'Hình 34.1: dãy núi đá vôi',
+    rect(8, 8, 464, 214, '#e0f2fe', { r: 14, w: 1 }) + circ(410, 44, 16, C.sun, { c: '#f59e0b' }) +
+    poly('20,190 90,90 140,140 210,50 280,130 340,80 460,190', '#d6d3d1') + poly('210,50 195,80 215,70 228,88 240,72', '#f5f5f4', { w: 1 }) +
+    rect(8, 190, 464, 32, '#bbf7d0', { r: 0, w: 1 }) + line(20, 205, 460, 205, '#86efac', 2) +
+    bil(240, 212, 'Dãy núi đá vôi', 'Limestone range', { a: 'middle', s: 11 }));
+  const khtn34b = () => {
+    const heap = (x, col, nm, cp) => poly((x) + ',150 ' + (x + 30) + ',90 ' + (x + 60) + ',110 ' + (x + 95) + ',150', col) + bil(x + 48, 176, nm[0], nm[1], { a: 'middle', s: 11 }) + t(x + 48, 210, cp, { a: 'middle', s: 9, i: 1 });
+    return svg('0 0 480 230', 'Hình 34.2: clanhke và xi măng',
+      rect(8, 8, 464, 214, '#fafafa', { r: 14, w: 1 }) + heap(40, '#78716c', ['a) Clanhke', 'a) Clinker'], 'cục rắn màu xám') + heap(250, '#d1d5db', ['b) Xi măng', 'b) Cement'], 'bột mịn lục xám') +
+      arrow(150, 120, 245, 120, C.ink, 2.5) + t(198, 108, 'nghiền + thạch cao', { a: 'middle', s: 9 }) + t(198, 144, 'grind + gypsum', { a: 'middle', s: 8, i: 1 }));
+  };
+  const khtn35a = () => {
+    const dia = [[0,0],[50,0],[25,40],[75,40],[0,80],[50,80],[100,0],[100,80]];
+    let d = '', x0 = 50, y0 = 56, i, j;
+    for (i = 0; i < dia.length; i++) for (j = i + 1; j < dia.length; j++) { const dx = dia[i][0] - dia[j][0], dy = dia[i][1] - dia[j][1]; if (Math.sqrt(dx * dx + dy * dy) < 56) d += line(x0 + dia[i][0], y0 + dia[i][1], x0 + dia[j][0], y0 + dia[j][1], C.grey, 2); }
+    for (i = 0; i < dia.length; i++) d += circ(x0 + dia[i][0], y0 + dia[i][1], 7, '#334155');
+    let gr = '';
+    for (let L = 0; L < 3; L++) for (let r = 0; r < 3; r++) for (let c = 0; c < 4; c++) gr += circ(285 + c * 36 + r * 12, 56 + L * 34 + r * 12, 6, '#475569', { w: 1.5 });
+    gr = line(290, 60, 392, 60, C.grey, 2) + line(302, 72, 404, 72, C.grey, 2) + line(314, 84, 416, 84, C.grey, 2) + gr;
+    return svg('0 0 480 230', 'Hình 35.1: kim cương và than chì',
+      rect(8, 8, 464, 214, '#fafafa', { r: 14, w: 1 }) + d + bil(100, 180, 'a) Kim cương', 'a) Diamond', { a: 'middle', s: 11 }) + t(100, 210, 'mạng ba chiều bền', { a: 'middle', s: 9, i: 1 }) +
+      gr + bil(350, 180, 'b) Than chì (graphite)', 'b) Graphite', { a: 'middle', s: 11 }) + t(350, 210, 'các lớp trượt lên nhau', { a: 'middle', s: 9, i: 1 }));
+  };
+  const khtn35b = () => {
+    const bx = (x, y, w, nm, f) => rect(x, y, w, 40, f, { r: 10 }) + bil(x + w / 2, y + 16, nm[0], nm[1], { a: 'middle', s: 10 });
+    return svg('0 0 480 300', 'Hình 35.2: sơ đồ chu trình carbon',
+      rect(8, 8, 464, 284, '#fafafa', { r: 14, w: 1 }) +
+      bx(170, 16, 140, ['CO₂ khí quyển', 'Atmospheric CO₂'], '#e0f2fe') + bx(20, 120, 120, ['Thực vật', 'Plants'], C.greenL) + bx(340, 120, 120, ['Động vật', 'Animals'], C.sunL) +
+      bx(20, 232, 130, ['Xác sinh vật', 'Dead matter'], '#e7e5e4') + bx(175, 232, 130, ['Nhiên liệu hoá thạch, đá vôi', 'Fossil fuels, limestone'], '#e7e5e4') + bx(340, 232, 120, ['Nước biển', 'Seawater'], C.penL) +
+      arrow(190, 58, 100, 118, C.green, 2.5) + t(96, 84, 'quang hợp', { a: 'end', s: 9 }) +
+      arrow(80, 118, 180, 58, C.red, 2) + t(150, 108, 'hô hấp', { s: 9 }) +
+      arrow(300, 58, 380, 118, C.red, 2) + arrow(140, 142, 338, 142, C.teal, 2) + t(240, 134, 'ăn', { a: 'middle', s: 9 }) +
+      arrow(80, 162, 80, 230, C.grey, 2) + arrow(400, 162, 150, 232, C.grey, 1.5) + arrow(150, 252, 173, 252, C.grey, 2) +
+      arrow(240, 230, 240, 60, C.red, 2.5) + t(246, 190, 'đốt cháy', { s: 9 }) + arrow(340, 252, 308, 252, C.teal, 2) + arrow(312, 54, 410, 230, C.teal, 1.5) + t(400, 205, 'hoà tan', { s: 9 }));
+  };
+  Object.assign(T.art, { khtn34a, khtn34b, khtn35a, khtn35b });
+  /* ---------------- Đợt 13: Bài 36–38 (hình tự vẽ) ---------------- */
+  const flw = (x, y, purple, s) => { s = s || 1; let p = ''; for (let i = 0; i < 5; i++) { const a = i * 1.2566; p += circ(x + Math.cos(a) * 9 * s, y + Math.sin(a) * 9 * s, 6 * s, purple ? '#7c3aed' : '#ffffff', { c: '#334155', w: 1.5 }); } return p + circ(x, y, 4 * s, '#facc15', { c: '#854d0e', w: 1 }); };
+  const khtn36a = () => svg('0 0 480 300', 'Hình 36.1: lai một tính trạng màu hoa',
+    rect(8, 8, 464, 284, '#fafafa', { r: 14, w: 1 }) +
+    bil(240, 28, 'P thuần chủng', 'Purebred P', { a: 'middle', s: 11 }) + flw(170, 62, true, 1.4) + t(170, 92, 'tím · purple', { a: 'middle', s: 9 }) + t(240, 66, '×', { a: 'middle', s: 18 }) + flw(310, 62, false, 1.4) + t(310, 92, 'trắng · white', { a: 'middle', s: 9 }) +
+    arrow(240, 100, 240, 128, C.ink, 2.5) + bil(240, 138, 'F₁: 100 % tím', 'F₁: 100 % purple', { a: 'middle', s: 11 }) + flw(215, 176, true, 1.2) + flw(265, 176, true, 1.2) +
+    arrow(240, 196, 240, 220, C.ink, 2.5) + t(256, 214, 'tự thụ phấn', { s: 9 }) + t(256, 226, 'self-pollination', { s: 8, i: 1 }) +
+    bil(240, 242, 'F₂: 3 tím : 1 trắng', 'F₂: 3 purple : 1 white', { a: 'middle', s: 11 }) + flw(170, 270, true, 0.9) + flw(212, 270, true, 0.9) + flw(254, 270, true, 0.9) + flw(296, 270, false, 0.9));
+  const khtn37a = () => {
+    const cell = (x, y, g, f) => rect(x, y, 70, 30, f, { r: 8 }) + t(x + 35, y + 20, g, { a: 'middle', s: 13 });
+    return svg('0 0 480 300', 'Hình 37.1: sơ đồ lai một tính trạng',
+      rect(8, 8, 464, 284, '#fafafa', { r: 14, w: 1 }) +
+      t(70, 36, 'P', { a: 'middle', s: 12 }) + cell(100, 18, 'AA', '#ddd6fe') + t(190, 38, '×', { a: 'middle', s: 16 }) + cell(210, 18, 'aa', '#f1f5f9') +
+      t(70, 86, 'G', { a: 'middle', s: 12 }) + t(135, 88, 'A', { a: 'middle', s: 14 }) + t(245, 88, 'a', { a: 'middle', s: 14 }) +
+      arrow(135, 42, 135, 74, C.ink, 2) + arrow(245, 42, 245, 74, C.ink, 2) +
+      t(70, 140, 'F₁', { a: 'middle', s: 12 }) + cell(155, 118, 'Aa', '#c4b5fd') + arrow(135, 94, 170, 116, C.ink, 2) + arrow(245, 94, 210, 116, C.ink, 2) +
+      t(70, 196, 'F₁×F₁', { a: 'middle', s: 11 }) + cell(100, 174, 'Aa', '#c4b5fd') + t(190, 194, '×', { a: 'middle', s: 16 }) + cell(210, 174, 'Aa', '#c4b5fd') +
+      rect(300, 150, 160, 120, '#fff', { r: 8, w: 1 }) + bil(380, 163, 'Bảng Punnett F₂', 'F₂ Punnett square', { a: 'middle', s: 10 }) +
+      t(344, 190, 'A', { a: 'middle', s: 12 }) + t(398, 190, 'a', { a: 'middle', s: 12 }) + t(316, 214, 'A', { a: 'middle', s: 12 }) + t(316, 248, 'a', { a: 'middle', s: 12 }) +
+      t(344, 214, 'AA', { a: 'middle', s: 12 }) + t(398, 214, 'Aa', { a: 'middle', s: 12 }) + t(344, 248, 'Aa', { a: 'middle', s: 12 }) + t(398, 248, 'aa', { a: 'middle', s: 12 }) +
+      bil(240, 286, 'F₂: 1 AA : 2 Aa : 1 aa → 3 trội : 1 lặn', 'F₂: 1 AA : 2 Aa : 1 aa → 3 dominant : 1 recessive', { a: 'middle', s: 10 }));
+  };
+  const khtn37b = () => {
+    const col = (x, ttl, par, kids) => bil(x, 28, ttl[0], ttl[1], { a: 'middle', s: 11 }) + t(x, 64, par, { a: 'middle', s: 14 }) + arrow(x, 72, x, 100, C.ink, 2) + rect(x - 70, 104, 140, 74, '#fff', { r: 10, w: 1 }) + bil(x, 128, kids[0], kids[1], { a: 'middle', s: 10 }) + bil(x, 150, kids[2], kids[3], { a: 'middle', s: 10 });
+    return svg('0 0 480 230', 'Hình 37.2: hai phép lai phân tích',
+      rect(8, 8, 464, 214, '#fafafa', { r: 14, w: 1 }) + col(125, ['a) Đồng hợp', 'a) Homozygous'], 'AA × aa', ['100 % Aa', '100 % Aa', 'toàn tính trạng trội', 'all dominant']) + col(355, ['b) Dị hợp', 'b) Heterozygous'], 'Aa × aa', ['1 Aa : 1 aa', '1 Aa : 1 aa', 'có cả trội và lặn', 'dominant and recessive']) + bil(240, 205, 'Cây thử luôn là aa (lặn)', 'The tester is always aa (recessive)', { a: 'middle', s: 10 }));
+  };
+  const nuc = (x, y, b, c) => rect(x, y, 22, 22, c, { r: 5 }) + t(x + 11, y + 16, b, { a: 'middle', s: 13 });
+  const NC = { A: '#fca5a5', T: '#93c5fd', G: '#86efac', C: '#fcd34d', U: '#c4b5fd' };
+  const khtn38a = () => {
+    const top = 'ATGCTGATCACGT', bot = 'TACGACTAGTGCA'; let d = '';
+    for (let i = 0; i < top.length; i++) { const x = 40 + i * 28; d += nuc(x, 50, top[i], NC[top[i]]) + line(x + 11, 74, x + 11, 106, C.grey, 2) + nuc(x, 108, bot[i], NC[bot[i]]); }
+    return svg('0 0 480 230', 'Hình 38.1: mô hình đoạn DNA',
+      rect(8, 8, 464, 214, '#fafafa', { r: 14, w: 1 }) + d + t(24, 66, "5′", { a: 'middle', s: 11 }) + t(24, 124, "3′", { a: 'middle', s: 11 }) + t(456, 66, "3′", { a: 'middle', s: 11 }) + t(456, 124, "5′", { a: 'middle', s: 11 }) +
+      bil(240, 28, 'Hai mạch ngược chiều, bắt cặp A–T và G–C', 'Two antiparallel strands, pairing A–T and G–C', { a: 'middle', s: 11 }) +
+      bil(240, 168, 'Chu kì xoắn 34 Å · đường kính 20 Å', 'Helical turn 34 Å · diameter 20 Å', { a: 'middle', s: 10 }) + t(240, 190, 'nét đứt = liên kết giữa hai mạch', { a: 'middle', s: 9, i: 1 }));
+  };
+  const khtn38b = () => {
+    const s = 'AUGCUAGGCAUC'; let d = '', i;
+    for (i = 0; i < s.length; i++) d += nuc(30 + i * 34, 90, s[i], NC[s[i]]) + (i ? line(30 + i * 34 - 12, 101, 30 + i * 34, 101, C.ink, 2) : '');
+    return svg('0 0 480 230', 'Hình 38.2: mô hình đoạn RNA',
+      rect(8, 8, 464, 214, '#fafafa', { r: 14, w: 1 }) + d + t(20, 84, "5′", { a: 'middle', s: 11 }) + t(450, 84, "3′", { a: 'middle', s: 11 }) +
+      bil(240, 40, 'RNA: một mạch, có U thay cho T', 'RNA: one strand, U in place of T', { a: 'middle', s: 12 }) +
+      bil(240, 160, 'Nucleotide: A, U, G, C', 'Nucleotides: A, U, G, C', { a: 'middle', s: 11 }) + t(240, 186, 'màu có kèm chữ cái', { a: 'middle', s: 9, i: 1 }));
+  };
+  const khtn38c = () => {
+    let m = ''; for (let i = 0; i < 9; i++) m += circ(30 + i * 15, 70, 5, i % 2 ? '#fcd34d' : '#fca5a5', { c: '#111', w: 1 });
+    const stem = line(250, 50, 250, 120, C.ink, 2) + circ(250, 40, 20, '#c4b5fd', { c: '#111', w: 1.5 }) + line(235, 80, 265, 80, C.grey, 2) + line(235, 95, 265, 95, C.grey, 2) + t(250, 44, 'tRNA', { a: 'middle', s: 9 });
+    const rib = rect(340, 40, 110, 40, '#bbf7d0', { r: 20 }) + rect(350, 84, 90, 32, '#86efac', { r: 16 }) + t(395, 64, 'rRNA', { a: 'middle', s: 11 }) + t(395, 104, 'ribosome', { a: 'middle', s: 10 });
+    return svg('0 0 480 230', 'Hình 38.3: ba loại RNA',
+      rect(8, 8, 464, 214, '#fafafa', { r: 14, w: 1 }) + m + t(90, 66, '', {}) + bil(90, 110, 'mRNA: mang thông tin', 'mRNA: carries information', { a: 'middle', s: 10 }) +
+      stem + bil(250, 148, 'tRNA: có cuống tự bắt cặp', 'tRNA: self-paired stem', { a: 'middle', s: 10 }) + rib + bil(395, 148, 'rRNA trong ribosome', 'rRNA in a ribosome', { a: 'middle', s: 10 }) +
+      t(240, 196, 'Hình minh hoạ đơn giản, không đúng tỉ lệ', { a: 'middle', s: 9, i: 1 }));
+  };
+  Object.assign(T.art, { khtn36a, khtn37a, khtn37b, khtn38a, khtn38b, khtn38c });
+  Object.assign(T.art, { khtn28a, khtn29a, khtn29b, khtn29c, khtn30a, khtn30b, khtn31a, khtn31b, khtn32a, khtn32b, khtn32c, khtn32d, khtn32e, khtn32f, khtn32g, khtn32h, khtn33a });
 })();

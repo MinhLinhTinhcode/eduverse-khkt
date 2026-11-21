@@ -305,6 +305,172 @@
     return { MB, mm, alk, ene, burn, fracStr, addBr2, polymer, HEAT, heatMol, heatGram, heatMass, mix, SUBS, ETHYLENE, stateAt, selfTest, mk };
   })();
   E.ORG = ORG; { const st0 = E.selfTest; E.selfTest = function () { return st0().concat(ORG.selfTest()); }; }
+
+  /* ===================================================================== ALC — ethylic alcohol, acetic acid, nhiên liệu (Chương VII–VIII, Bài 25–27)
+     Dữ liệu thuần, hệ số luôn do balance() tính. Thêm phản ứng mới (Bài 28+): thêm một dòng vào RX (re, pr, điều kiện, vi, en, book:true/false),
+     rồi thêm một dòng kiểm tra vào selfTest. Chất mới: thêm vào SUB2 (tên, công thức, nhiệt độ sôi, khối lượng riêng). book:false = bổ sung ngoài sách. */
+  const ALC = (function () {
+    const mk = ORG.mk, mm = ORG.mm, Vm = 24.79;                         // thể tích mol chất khí 25 °C, 1 bar (L/mol) — số liệu sách KHTN 9
+    const D_ET = 0.789, D_AC = 1.045;                                  // g/mL (20 °C; 25 °C)
+    const RX = {
+      burnEtOH: { re: ['C2H5OH', 'O2'], pr: ['CO2', 'H2O'], c: 't°', book: true },
+      burnMeOH: { re: ['CH3OH', 'O2'], pr: ['CO2', 'H2O'], c: 't°', book: false },
+      burnAcOH: { re: ['CH3COOH', 'O2'], pr: ['CO2', 'H2O'], c: 't°', book: true },
+      naEtOH: { re: ['C2H5OH', 'Na'], pr: ['C2H5ONa', 'H2'], c: '', book: true },
+      naMeOH: { re: ['CH3OH', 'Na'], pr: ['CH3ONa', 'H2'], c: '', book: true },
+      hydration: { re: ['C2H4', 'H2O'], pr: ['C2H5OH'], c: 't°, H⁺', book: true },
+      ferment: { re: ['C6H12O6'], pr: ['C2H5OH', 'CO2'], c: 'enzyme', book: true },
+      acetify: { re: ['C2H5OH', 'O2'], pr: ['CH3COOH', 'H2O'], c: 'men giấm', book: true },
+      acMg: { re: ['CH3COOH', 'Mg'], pr: ['(CH3COO)2Mg', 'H2'], c: '', book: true },
+      acZn: { re: ['CH3COOH', 'Zn'], pr: ['(CH3COO)2Zn', 'H2'], c: '', book: true },
+      acCuO: { re: ['CH3COOH', 'CuO'], pr: ['(CH3COO)2Cu', 'H2O'], c: '', book: true },
+      acZnO: { re: ['CH3COOH', 'ZnO'], pr: ['(CH3COO)2Zn', 'H2O'], c: '', book: true },
+      acNaOH: { re: ['CH3COOH', 'NaOH'], pr: ['CH3COONa', 'H2O'], c: '', book: true },
+      acKOH: { re: ['CH3COOH', 'KOH'], pr: ['CH3COOK', 'H2O'], c: '', book: true },
+      acCaCO3: { re: ['CH3COOH', 'CaCO3'], pr: ['(CH3COO)2Ca', 'CO2', 'H2O'], c: '', book: true },
+      acMgCO3: { re: ['CH3COOH', 'MgCO3'], pr: ['(CH3COO)2Mg', 'CO2', 'H2O'], c: '', book: true },
+      ester: { re: ['CH3COOH', 'C2H5OH'], pr: ['CH3COOC2H5', 'H2O'], c: 'H₂SO₄ đặc, t°', rev: true, book: true },
+      esterPr: { re: ['CH3COOH', 'C3H7OH'], pr: ['CH3COOC3H7', 'H2O'], c: 'H₂SO₄ đặc, t°', rev: true, book: true }
+    };
+    const R = {}; Object.keys(RX).forEach((k) => { const x = RX[k]; R[k] = mk(x.re, x.pr, x.c, { rev: !!x.rev, book: x.book, id: k }); });
+    const SUB2 = {
+      ethanol: { vi: 'ethylic alcohol', en: 'ethylic alcohol (ethanol)', f: 'C2H5OH', bp: 78.3, d: D_ET, misc: true },
+      acetic: { vi: 'acetic acid', en: 'acetic acid', f: 'CH3COOH', bp: 118, d: D_AC, misc: true },
+      water: { vi: 'nước', en: 'water', f: 'H2O', bp: 100, d: 1, misc: true },
+      oil: { vi: 'dầu ăn', en: 'cooking oil', f: null, bp: null, d: null, misc: false }
+    };
+    const pureMl = (ml, deg) => ml * deg / 100;                       // mL ethylic alcohol nguyên chất trong ml dung dịch độ deg
+    const pureG = (ml, deg) => pureMl(ml, deg) * D_ET;
+    const dilute = (v1, d1, d2) => ({ v2: v1 * d1 / d2, water: v1 * d1 / d2 - v1 });  // pha loãng: giữ nguyên lượng cồn nguyên chất (coi thể tích cộng được — gần đúng)
+    const fermentG = (gluc) => gluc * 2 * mm('C2H6O') / mm('C6H12O6');                  // lí thuyết: 180 g glucose → 92 g
+    const fermentCO2 = (gluc) => gluc * 2 * mm('CO2') / mm('C6H12O6');
+    const acetifyG = (et) => et * mm('C2H4O2') / mm('C2H6O');                           // 46 → 60
+    const gasL = (g, f) => g / mm(f) * Vm;                                              // lít khí ở 25 °C, 1 bar
+    const esterG = (gAc, gEt, gMolEster) => { const nA = gAc / 60, nE = gEt / 46, n = Math.min(nA, nE); return { n, g: n * (gMolEster || 88), limiting: Math.abs(nA - nE) < 1e-9 ? 'cả hai' : nA < nE ? 'acid' : 'alcohol' }; };
+    const biofuel = (litre, pct) => ({ eth: litre * pct / 100, gas: litre * (1 - pct / 100) });
+    const neutral = (nBase, drops, perDrop) => { const done = Math.min(nBase, drops * perDrop); return { rest: Math.max(0, nBase - done), neutral: Math.abs(nBase - drops * perDrop) < 1e-9, over: Math.max(0, drops * perDrop - nBase) }; };
+    const litmus = (kind) => (kind === 'acid' ? 'đỏ' : kind === 'base' ? 'xanh' : 'tím');       // quỳ tím
+    const phenol = (kind) => (kind === 'base' ? 'hồng' : 'không màu');
+    const ACID = {                                                    // acetic acid tác dụng được với chất nào (W27.4)
+      Zn: { react: true, rx: 'acZn', vi: 'sủi bọt khí H₂, kẽm tan dần', en: 'H₂ bubbles, zinc dissolves' },
+      KOH: { react: true, rx: 'acKOH', vi: 'trung hoà (không thấy dấu hiệu rõ nếu không có chỉ thị)', en: 'neutralisation (no visible sign without an indicator)' },
+      ZnO: { react: true, rx: 'acZnO', vi: 'chất rắn tan dần', en: 'the solid dissolves' },
+      NaCl: { react: false, vi: 'không phản ứng', en: 'no reaction' },
+      MgCO3: { react: true, rx: 'acMgCO3', vi: 'sủi bọt khí CO₂, chất rắn tan', en: 'CO₂ bubbles, solid dissolves' },
+      Cu: { react: false, vi: 'không phản ứng (Cu đứng sau H trong dãy hoạt động)', en: 'no reaction (Cu is below H in the reactivity series)' },
+      Mg: { react: true, rx: 'acMg', vi: 'sủi bọt khí H₂', en: 'H₂ bubbles' },
+      CuO: { react: true, rx: 'acCuO', vi: 'chất rắn đen tan, dung dịch xanh (đun nhẹ)', en: 'the black solid dissolves, solution turns blue (gentle heating)' },
+      NaOH: { react: true, rx: 'acNaOH', vi: 'mất màu hồng của phenolphthalein', en: 'pink colour of phenolphthalein disappears' },
+      CaCO3: { react: true, rx: 'acCaCO3', vi: 'sủi bọt khí CO₂, đá vôi tan', en: 'CO₂ bubbles, limestone dissolves' }
+    };
+    const fmtEq = (r) => r.re.map((s) => (s.n > 1 ? s.n : '') + uni(s.f)).join(' + ') + (r.rev ? ' ⇌' : ' →') + (r.cond ? '(' + r.cond + ')' : '') + ' ' + r.pr.map((s) => (s.n > 1 ? s.n : '') + uni(s.f)).join(' + ');
+    function selfTest() {
+      const T = [], add = (n, ok, got) => T.push({ name: n, ok: !!ok, got }), near = (a, b, e) => Math.abs(a - b) <= e, same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+      const co = (r) => r.re.concat(r.pr).map((s) => s.n);
+      add('mọi phương trình Bài 25–27 cân bằng được (' + Object.keys(RX).length + ' phản ứng) và bảo toàn nguyên tử, khối lượng', Object.keys(R).every((k) => { const r = R[k]; if (!r) return false; const c = check({ re: r.re, pr: r.pr }); return c.atoms && c.mass; }), Object.keys(R).filter((k) => !R[k]).join());
+      add('cháy C₂H₅OH: 1 · 3 · 2 · 3; CH₃COOH: 1 · 2 · 2 · 2; CH₃OH: 2 · 3 · 2 · 4', same(co(R.burnEtOH), [1, 3, 2, 3]) && same(co(R.burnAcOH), [1, 2, 2, 2]) && same(co(R.burnMeOH), [2, 3, 2, 4]), co(R.burnMeOH).join());
+      add('natri: 2C₂H₅OH + 2Na → 2C₂H₅ONa + H₂; 2CH₃OH + 2Na → 2CH₃ONa + H₂', same(co(R.naEtOH), [2, 2, 2, 1]) && same(co(R.naMeOH), [2, 2, 2, 1]), co(R.naEtOH).join());
+      add('điều chế: C₂H₄ + H₂O → C₂H₅OH (1·1·1); lên men C₆H₁₂O₆ → 2C₂H₅OH + 2CO₂; C₂H₅OH + O₂ → CH₃COOH + H₂O (1·1·1·1)', same(co(R.hydration), [1, 1, 1]) && same(co(R.ferment), [1, 2, 2]) && same(co(R.acetify), [1, 1, 1, 1]), '');
+      add('acetic acid: Mg 2·1·1·1; Zn 2·1·1·1; CuO 2·1·1·1; NaOH 1·1·1·1; KOH 1·1·1·1; CaCO₃ 2·1·1·1·1; MgCO₃ 2·1·1·1·1; ZnO 2·1·1·1', same(co(R.acMg), [2, 1, 1, 1]) && same(co(R.acZn), [2, 1, 1, 1]) && same(co(R.acCuO), [2, 1, 1, 1]) && same(co(R.acNaOH), [1, 1, 1, 1]) && same(co(R.acKOH), [1, 1, 1, 1]) && same(co(R.acCaCO3), [2, 1, 1, 1, 1]) && same(co(R.acMgCO3), [2, 1, 1, 1, 1]) && same(co(R.acZnO), [2, 1, 1, 1]), '');
+      add('ester hoá: 1·1·1·1 (thuận nghịch ⇌), propyl acetate 1·1·1·1; M: 46, 60, 88, 102', same(co(R.ester), [1, 1, 1, 1]) && R.ester.rev && same(co(R.esterPr), [1, 1, 1, 1]) && mm('C2H6O') === 46 && mm('C2H4O2') === 60 && mm('C4H8O2') === 88 && mm('C5H10O2') === 102, '');
+      add('lên men lí thuyết: 180 g glucose → 92 g ethylic alcohol + 88 g CO₂; 1 g glucose → 0,511 g', near(fermentG(180), 92, 1e-9) && near(fermentCO2(180), 88, 1e-9) && near(fermentG(1), 0.5111, 1e-3), fermentG(180));
+      add('lên men giấm lí thuyết: 46 g ethylic alcohol → 60 g acetic acid', near(acetifyG(46), 60, 1e-9), acetifyG(46));
+      add('độ cồn: 100 mL cồn 70° có 70 mL (55,23 g) ethylic alcohol; rượu 40° 500 mL có 200 mL (157,8 g)', near(pureMl(100, 70), 70, 1e-9) && near(pureG(100, 70), 55.23, 1e-6) && near(pureMl(500, 40), 200, 1e-9) && near(pureG(500, 40), 157.8, 1e-6), pureG(100, 70));
+      add('pha loãng: 100 mL cồn 96° thành 70° ⇒ 137,1 mL (thêm 37,1 mL nước, gần đúng cộng thể tích)', near(dilute(100, 96, 70).v2, 137.142857, 1e-4) && near(dilute(100, 96, 70).water, 37.142857, 1e-4), dilute(100, 96, 70).v2);
+      add('xăng E5: 10 L xăng sinh học chứa 0,5 L ethylic alcohol và 9,5 L xăng; E0 và E20 hợp lệ', near(biofuel(10, 5).eth, 0.5, 1e-9) && near(biofuel(10, 5).gas, 9.5, 1e-9) && biofuel(10, 0).eth === 0 && near(biofuel(10, 20).eth, 2, 1e-9), '');
+      add('thể tích khí 25 °C: 23 g C₂H₅OH + Na → 0,25 mol H₂ = 6,20 L; 1 mol CO₂ = 24,79 L', near(23 / 46 / 2 * Vm, 6.19750, 1e-4) && near(gasL(44, 'CO2'), 24.79, 1e-9), '');
+      add('ester: 6 g acetic acid + 4,6 g ethylic alcohol ⇒ 0,1 mol, lí thuyết 8,8 g ethyl acetate (đủ cả hai)', near(esterG(6, 4.6).g, 8.8, 1e-9) && esterG(6, 4.6).limiting === 'cả hai', esterG(6, 4.6).g);
+      add('trung hoà: 5 đơn vị NaOH + 5 giọt (mỗi giọt 1 đơn vị) ⇒ trung hoà, mất màu hồng; 6 giọt ⇒ acid dư', neutral(5, 5, 1).neutral && !neutral(5, 4, 1).neutral && neutral(5, 6, 1).over === 1 && litmus('acid') === 'đỏ' && phenol('base') === 'hồng' && phenol('neutral') === 'không màu', '');
+      add('acetic acid tác dụng: Zn, KOH, ZnO, MgCO₃ có; NaCl, Cu không (đúng đáp án sách)', ['Zn', 'KOH', 'ZnO', 'MgCO3'].every((k) => ACID[k].react) && !ACID.NaCl.react && !ACID.Cu.react && ['Zn', 'KOH', 'ZnO', 'MgCO3', 'Mg', 'CuO', 'NaOH', 'CaCO3'].every((k) => R[ACID[k].rx]), '');
+      add('không NaN/∞: độ cồn 0°–96°, thể tích 0, glucose 0', [0, 96].every((d) => isFinite(pureMl(0, d)) && isFinite(pureG(250, d))) && fermentG(0) === 0 && isFinite(dilute(100, 96, 96).v2), '');
+      return T;
+    }
+    return { RX, R, SUB2, ACID, Vm, D_ET, D_AC, pureMl, pureG, dilute, fermentG, fermentCO2, acetifyG, gasL, esterG, biofuel, neutral, litmus, phenol, fmtEq, selfTest };
+  })();
+  E.ALC = ALC; { const st1 = E.selfTest; E.selfTest = function () { return st1().concat(ALC.selfTest()); }; }
+  /* ===================================================================== CHO — lipid, carbohydrate (Chương IX, Bài 28–30)
+     Chất béo (RCOO)₃C₃H₅ dựng từ 3 gốc R (C₁₅H₃₁, C₁₇H₃₅, C₁₇H₃₃, C₁₇H₃₁): công thức, M, xà phòng hoá, thuỷ phân; carbohydrate Cₙ(H₂O)ₘ;
+     tráng bạc, lên men, thuỷ phân saccharose/tinh bột; thử iodine. Khối lượng mol dùng số của sách (H 1, C 12, O 16, Na 23, Ag 108).
+     CÁCH THÊM: chất béo mới → thêm gốc vào FA; phản ứng mới → thêm vào RX (hệ số do balance() tính) + một dòng selfTest; mẫu thử iodine/Tollens → thêm vào SAMPLES. */
+  const CHO = (function () {
+    const MB = { H: 1, C: 12, N: 14, O: 16, Na: 23, K: 39, Ag: 108 };
+    const mm = (f) => { const m = parseFormula(f); let s = 0; for (const k in m) s += MB[k] * m[k]; return s; };
+    const mk = ORG.mk;
+    const FA = { C15H31: { n: 15, h: 31, vi: 'palmitic', en: 'palmitic' }, C17H35: { n: 17, h: 35, vi: 'stearic', en: 'stearic' }, C17H33: { n: 17, h: 33, vi: 'oleic (1 liên kết C=C)', en: 'oleic (one C=C)' }, C17H31: { n: 17, h: 31, vi: 'linoleic (2 liên kết C=C)', en: 'linoleic (two C=C)' } };
+    const fatF = (r) => { let C = 3 + 3, H = 5; r.forEach((k) => { C += FA[k].n; H += FA[k].h; }); return 'C' + C + 'H' + H + 'O6'; };           // (RCOO)₃C₃H₅
+    const fatM = (r) => mm(fatF(r));
+    const soapF = (k) => k + 'COONa' ; const soapFormula = (k) => 'C' + (FA[k].n + 1) + 'H' + FA[k].h + 'NaO2';
+    const soapM = (k) => mm(soapFormula(k));
+    const acidF = (k) => 'C' + (FA[k].n + 1) + 'H' + (FA[k].h + 1) + 'O2';
+    const unsat = (r) => r.reduce((a, k) => a + (k === 'C17H33' ? 1 : k === 'C17H31' ? 2 : 0), 0);   // tổng số liên kết C=C ở các gốc R
+    const RX = {
+      soapStear: { re: ['(C17H35COO)3C3H5', 'NaOH'], pr: ['C17H35COONa', 'C3H5(OH)3'], c: 't°', book: true },
+      soapOlein: { re: ['(C17H33COO)3C3H5', 'NaOH'], pr: ['C17H33COONa', 'C3H5(OH)3'], c: 't°', book: false },
+      soapKOH: { re: ['(C17H35COO)3C3H5', 'KOH'], pr: ['C17H35COOK', 'C3H5(OH)3'], c: 't°', book: true },
+      hydrol: { re: ['(C17H35COO)3C3H5', 'H2O'], pr: ['C3H5(OH)3', 'C17H35COOH'], c: 'acid hoặc enzyme lipase, t°', book: true },
+      ester3: { re: ['C3H5(OH)3', 'C17H35COOH'], pr: ['(C17H35COO)3C3H5', 'H2O'], c: 'H₂SO₄ đặc, t°', book: false, rev: true },
+      silver: { re: ['C6H12O6', 'Ag2O'], pr: ['C6H12O7', 'Ag'], c: 'dd NH₃, t°', book: true },
+      silverFull: { re: ['C6H12O6', 'AgNO3', 'NH3', 'H2O'], pr: ['C6H15NO7', 'Ag', 'NH4NO3'], c: '', book: true },       // C₆H₁₂O₆ = C₅H₁₁O₅CHO; C₆H₁₅NO₇ = C₅H₁₁O₅COONH₄ (gluconate amoni) — chú thích chân trang sách
+      ferment: { re: ['C6H12O6'], pr: ['C2H5OH', 'CO2'], c: 'enzyme', book: true },
+      sucHyd: { re: ['C12H22O11', 'H2O'], pr: ['C6H12O6'], c: 'enzyme hoặc acid, t°', book: true },         // 1 glucose + 1 fructose (cùng C₆H₁₂O₆): hệ số 2 = glucose + fructose
+      starchHyd: { re: ['C6H10O5', 'H2O'], pr: ['C6H12O6'], c: 'enzyme hoặc acid, t°', book: true },       // 1 mắt xích C₆H₁₀O₅ (n lần)
+      photo: { re: ['CO2', 'H2O'], pr: ['C6H12O6', 'O2'], c: 'ánh sáng, chất diệp lục', book: false }      // Hình 30.1 chỉ có sơ đồ; phương trình là bổ sung
+    };
+    const R = {}; Object.keys(RX).forEach((k) => { const x = RX[k]; R[k] = mk(x.re, x.pr, x.c, { rev: !!x.rev, book: x.book, id: k }); });
+    /* phương trình đầy đủ ở chú thích: hệ nghiệm không duy nhất (2 tham số) nên balance() từ chối; dùng hệ số của sách và để check() xác minh. */
+    { const f = RX.silverFull, cf = [1, 2, 3, 1, 1, 2, 2], re = f.re.map((x, i) => ({ f: x, n: cf[i] })), pr_ = f.pr.map((x, i) => ({ f: x, n: cf[f.re.length + i] })); R.silverFull = { re, pr: pr_, cond: f.c, eq: { re, pr: pr_ }, rev: false, book: true, id: 'silverFull' }; }
+    const fmtEq = (r) => ALC.fmtEq(r);
+    const soap = (r, gFat, gNaOH) => {                                // xà phòng hoá theo mol; r = 3 gốc R; trả về lí thuyết
+      const M = fatM(r), nF = gFat / M, nB = gNaOH / 40, use = Math.min(nF, nB / 3), lim = Math.abs(nF - nB / 3) < 1e-9 ? 'cả hai' : nF < nB / 3 ? 'chất béo' : 'NaOH';
+      const soapG = r.reduce((a, k) => a + use * soapM(k), 0), glyG = use * 92, fatLeft = Math.max(0, (nF - use) * M), baseLeft = Math.max(0, (nB - 3 * use) * 40);
+      return { M, nF, nB, use, limiting: lim, soapG, glyG, fatUsed: use * M, fatLeft, baseLeft, check: use * M + 3 * use * 40 - soapG - glyG };
+    };
+    const agG = (gGluc) => gGluc / 180 * 2 * 108;
+    const fermentG = (g) => g * 2 * 46 / 180, fermentCO2 = (g) => g * 2 * 44 / 180;
+    const sucHydG = (g) => ({ glucose: g * 180 / 342, fructose: g * 180 / 342, water: g * 18 / 342 });
+    const starchGluc = (g) => g * 180 / 162;                          // lí thuyết, hiệu suất 100%
+    const polyM = (n) => 162 * n;
+    const cnh2om = (f) => { const m = parseFormula(f), C = m.C || 0, H = m.H || 0, O = m.O || 0, ok = C > 0 && O > 0 && H === 2 * O && Object.keys(m).every((e) => 'CHO'.indexOf(e) >= 0); return { C, H, O, n: C, m: O, fits: ok, str: ok ? 'C' + C + '(H₂O)' + O : null }; };
+    const SAMPLES = {                                                  // mẫu thử iodine / Tollens
+      paste: { vi: 'hồ tinh bột', en: 'starch paste', starch: true, red: false, book: true },
+      cellu: { vi: 'bột cellulose (giấy lọc)', en: 'cellulose (filter paper)', starch: false, red: false, book: true },
+      gluc: { vi: 'dung dịch glucose', en: 'glucose solution', starch: false, red: true, book: true },
+      sucr: { vi: 'dung dịch saccharose', en: 'sucrose solution', starch: false, red: false, book: true },
+      water: { vi: 'nước', en: 'water', starch: false, red: false, book: true },
+      rice: { vi: 'cơm', en: 'cooked rice', starch: true, red: false, book: false },
+      potato: { vi: 'lát khoai', en: 'potato slice', starch: true, red: false, book: false },
+      cassava: { vi: 'sắn luộc', en: 'boiled cassava', starch: true, red: false, book: false }
+    };
+    const iodine = (k, remain) => { const s = SAMPLES[k]; const f = s.starch ? (remain == null ? 1 : remain) : 0; return f > 0.25 ? 'xanh tím' : f > 0.08 ? 'xanh tím nhạt' : 'không đổi màu'; };
+    const tollensNH3 = (drops, need) => drops <= 0 ? 'trống' : drops < need ? 'kết tủa' : drops === need ? 'trong' : 'thừa';   // thêm từ từ NH₃ đến khi kết tủa tan hết
+    const mirror = (k, T, t) => { const s = SAMPLES[k]; if (!s || !s.red) return 0; return Math.max(0, Math.min(1, (T - 60) / 20)) * Math.max(0, Math.min(1, t / 5)); };   // gương bạc: từ ~70–80 °C, ~5 phút
+    const starchRemain = (acidMl, boil, min) => (acidMl > 0 && boil) ? Math.exp(-min / 3) : 1;      // mô hình định tính: còn lại theo thời gian (min)
+    function selfTest() {
+      const T = [], add = (n, ok, got) => T.push({ name: n, ok: !!ok, got }), near = (a, b, e) => Math.abs(a - b) <= e, same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+      const co = (r) => r.re.concat(r.pr).map((s) => s.n);
+      add('mọi phương trình Bài 28–30 cân bằng được (' + Object.keys(RX).length + ') và bảo toàn nguyên tử, khối lượng', Object.keys(R).every((k) => { const r = R[k]; if (!r) return false; const c = check({ re: r.re, pr: r.pr }); return c === true || (c && c.ok !== false); }), Object.keys(R).filter((k) => !R[k]).join());
+      add('xà phòng hoá tristearin: 1·3·3·1; tripalmitin/triolein tương tự', same(co(R.soapStear), [1, 3, 3, 1]) && same(co(R.soapOlein), [1, 3, 3, 1]) && same(co(R.soapKOH), [1, 3, 3, 1]), co(R.soapStear).join());
+      add('thuỷ phân tristearin trong acid 1·3·1·3; ester hoá glycerol 1·3·1·3', same(co(R.hydrol), [1, 3, 1, 3]) && same(co(R.ester3), [1, 3, 1, 3]) && R.ester3.rev, co(R.hydrol).join());
+      add('tráng bạc: C₆H₁₂O₆ + Ag₂O → C₆H₁₂O₇ + 2Ag (1·1·1·2); phương trình đầy đủ trong chú thích sách 1·2·3·1·1·2·2', same(co(R.silver), [1, 1, 1, 2]) && same(co(R.silverFull), [1, 2, 3, 1, 1, 2, 2]), co(R.silverFull).join());
+      add('lên men 1·2·2; thuỷ phân saccharose 1·1·2 (glucose + fructose); tinh bột 1·1·1 (mỗi mắt xích); quang hợp 6·6·1·6 (bổ sung)', same(co(R.ferment), [1, 2, 2]) && same(co(R.sucHyd), [1, 1, 2]) && same(co(R.starchHyd), [1, 1, 1]) && same(co(R.photo), [6, 6, 1, 6]), co(R.photo).join());
+      add('M tristearin C₅₇H₁₁₀O₆ = 890; glycerol 92; C₁₇H₃₅COONa 306; NaOH 40', fatF(['C17H35', 'C17H35', 'C17H35']) === 'C57H110O6' && fatM(['C17H35', 'C17H35', 'C17H35']) === 890 && mm('C3H5(OH)3') === 92 && soapM('C17H35') === 306, fatF(['C17H35', 'C17H35', 'C17H35']));
+      add('bảo toàn khối lượng: 890 + 120 = 1010 = 918 + 92; từ 890 g chất béo và NaOH đủ thu 918 g xà phòng và 92 g glycerol', (() => { const s = soap(['C17H35', 'C17H35', 'C17H35'], 890, 120); return near(s.soapG, 918, 1e-6) && near(s.glyG, 92, 1e-6) && near(s.check, 0, 1e-6) && s.limiting === 'cả hai'; })(), '');
+      add('thiếu/dư NaOH: 890 g chất béo + 60 g NaOH ⇒ NaOH hết (chất béo dư 445 g); 890 g + 200 g ⇒ chất béo hết, dư 80 g NaOH', (() => { const a = soap(['C17H35', 'C17H35', 'C17H35'], 890, 60), b = soap(['C17H35', 'C17H35', 'C17H35'], 890, 200); return a.limiting === 'NaOH' && near(a.fatLeft, 445, 1e-6) && b.limiting === 'chất béo' && near(b.baseLeft, 80, 1e-6); })(), '');
+      add('gốc R khác nhau: C₁₇H₃₅, C₁₇H₃₃, C₁₅H₃₁ ⇒ C₅₅H₁₀₄O₆, M 860; số liên kết C=C = 1', fatF(['C17H35', 'C17H33', 'C15H31']) === 'C55H104O6' && fatM(['C17H35', 'C17H33', 'C15H31']) === 860 && unsat(['C17H35', 'C17H33', 'C15H31']) === 1 && unsat(['C17H31', 'C17H33', 'C17H35']) === 3, fatF(['C17H35', 'C17H33', 'C15H31']));
+      add('M: glucose 180, saccharose 342, mắt xích 162; 342 + 18 = 180 + 180', mm('C6H12O6') === 180 && mm('C12H22O11') === 342 && mm('C6H10O5') === 162 && mm('C12H22O11') + mm('H2O') === 2 * mm('C6H12O6'), '');
+      add('180 g glucose tráng bạc → 216 g Ag; 90 g → 108 g', near(agG(180), 216, 1e-9) && near(agG(90), 108, 1e-9), agG(180));
+      add('lên men 180 g glucose → 92 g C₂H₅OH + 88 g CO₂ (180 = 92 + 88)', near(fermentG(180), 92, 1e-9) && near(fermentCO2(180), 88, 1e-9), '');
+      add('thuỷ phân 342 g saccharose + 18 g nước → 180 g glucose + 180 g fructose', near(sucHydG(342).glucose, 180, 1e-9) && near(sucHydG(342).fructose, 180, 1e-9) && near(sucHydG(342).water, 18, 1e-9), '');
+      add('tinh bột: 162 g → 180 g glucose; 1 kg → 1,111 kg; (C₆H₁₀O₅)ₙ với n = 1000 ⇒ M = 162 000', near(starchGluc(162), 180, 1e-9) && near(starchGluc(1000), 1111.111, 1e-3) && polyM(1000) === 162000 && polyM(1) === 162, '');
+      add('Cₙ(H₂O)ₘ: glucose C₆(H₂O)₆, saccharose C₁₂(H₂O)₁₁, mắt xích C₆(H₂O)₅; C₂H₅OH không thoả; CH₃COOH thoả công thức nhưng không phải carbohydrate (chỉ là kiểm tra điều kiện)', cnh2om('C6H12O6').str === 'C6(H₂O)6' && cnh2om('C12H22O11').str === 'C12(H₂O)11' && cnh2om('C6H10O5').str === 'C6(H₂O)5' && !cnh2om('C2H5OH').fits && cnh2om('CH3COOH').fits, cnh2om('CH3COOH').str);
+      add('iodine: hồ tinh bột xanh tím; cellulose, glucose, saccharose, nước không đổi; sau thuỷ phân hết thì mất màu', iodine('paste') === 'xanh tím' && ['cellu', 'gluc', 'sucr', 'water'].every((k) => iodine(k) === 'không đổi màu') && iodine('paste', starchRemain(1, true, 10)) === 'không đổi màu' && iodine('paste', starchRemain(0, true, 10)) === 'xanh tím' && iodine('paste', starchRemain(1, false, 10)) === 'xanh tím', starchRemain(1, true, 10));
+      add('Tollens: chỉ glucose có gương bạc, cần ≥ 70–80 °C và ~5 phút; saccharose không; NH₃ vừa đủ thì kết tủa tan', mirror('gluc', 80, 5) === 1 && mirror('gluc', 60, 5) === 0 && mirror('gluc', 80, 0) === 0 && mirror('sucr', 90, 5) === 0 && tollensNH3(2, 4) === 'kết tủa' && tollensNH3(4, 4) === 'trong' && tollensNH3(6, 4) === 'thừa', mirror('gluc', 70, 5));
+      add('không NaN/∞: khối lượng 0, thời gian 0', [soap(['C17H35', 'C17H35', 'C17H35'], 0, 0)].every((s) => isFinite(s.soapG) && isFinite(s.check)) && isFinite(starchRemain(1, true, 0)) && agG(0) === 0 && isFinite(sucHydG(0).water), '');
+      return T;
+    }
+    return { FA, RX, R, SAMPLES, fatF, fatM, soapM, soapFormula, acidF, unsat, soap, agG, fermentG, fermentCO2, sucHydG, starchGluc, polyM, cnh2om, iodine, tollensNH3, mirror, starchRemain, mm, fmtEq, selfTest };
+  })();
+  E.CHO = CHO; { const st2 = E.selfTest; E.selfTest = function () { return st2().concat(CHO.selfTest()); }; }
   L.engine.chem = E;
   const prev = L.engine.selfTest; L.engine.selfTest = function () { return prev().concat(E.selfTest()); };
 
