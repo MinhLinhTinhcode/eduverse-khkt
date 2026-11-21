@@ -271,7 +271,10 @@ window.TEXTBOOK.grades = [
         lessons: [
           { slug: 'bai-36', number: '36', vi: 'Khái quát về di truyền học', en: 'Introduction to genetics', content: 'khtn9-bai36' },
           { slug: 'bai-37', number: '37', vi: 'Các quy luật di truyền của Mendel', en: 'Mendel’s laws of inheritance', content: 'khtn9-bai37' },
-          { slug: 'bai-38', number: '38', vi: 'Nucleic acid và gene', en: 'Nucleic acids and genes', content: 'khtn9-bai38' }
+          { slug: 'bai-38', number: '38', vi: 'Nucleic acid và gene', en: 'Nucleic acids and genes', content: 'khtn9-bai38' },
+          { slug: 'bai-39', number: '39', vi: 'Tái bản DNA và phiên mã tạo RNA', en: 'DNA replication and transcription to RNA', content: 'khtn9-bai39' },
+          { slug: 'bai-40', number: '40', vi: 'Dịch mã và mối quan hệ từ gene đến tính trạng', en: 'Translation and the relation from gene to trait', content: 'khtn9-bai40' },
+          { slug: 'bai-41', number: '41', vi: 'Đột biến gene', en: 'Gene mutation', content: 'khtn9-bai41' }
         ]
       }
     ]
