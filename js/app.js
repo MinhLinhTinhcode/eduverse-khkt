@@ -847,7 +847,7 @@
       : '<button type="button" class="pill is-soon" data-soon="' + g.id + '" aria-disabled="true" title="Đang cập nhật">' + (g.label || 'Lớp ' + g.id) + '</button>').join('');
     return '<header class="bar bar--top">' +
       '<a class="brand" href="#/"><span class="brand__mark">' + ICON.logo + '</span>' +
-      '<span class="brand__name">Sách song ngữ<small class="en" lang="en">Bilingual textbook</small></span></a>' +
+      '<span class="brand__name">EduVerse<small class="en" lang="en">Bilingual digital textbook</small></span></a>' +
       '<nav class="gradenav" aria-label="Chọn khối lớp">' + pills + '</nav>' +
       (window.Roles ? window.Roles.switcher() : '') +
       '<button type="button" class="btn btn--ghost btn--sm" data-open-help>' + ICON.help + '<span>Cách dùng</span></button></header>';
@@ -856,7 +856,7 @@
   function setView(name, title) {
     document.body.classList.remove('is-home', 'is-lessons', 'is-reader');
     document.body.classList.add('is-' + name);
-    document.title = title ? title : 'Sách giáo khoa song ngữ tương tác';
+    document.title = title ? title : 'EduVerse – Học liệu số song ngữ Việt – Anh';
     if (name !== 'reader') state.reader = null;
     if (name !== 'reader') document.body.classList.remove('en-off');
     closeVocab();
@@ -873,7 +873,7 @@
   }
 
   function renderHome() {
-    setView('home', 'Sách giáo khoa song ngữ tương tác');
+    setView('home', 'EduVerse – Học liệu số song ngữ Việt – Anh');
 
     const covers = D.grades.map((g) => {
       const inner =
@@ -890,9 +890,9 @@
       '<main id="main" class="home">' +
       '<section class="hero">' +
       '<div class="hero__copy">' +
-      '<h1 class="hero__title"><span class="vi">Đọc Tin học bằng hai ngôn ngữ</span><span class="en" lang="en">Read Informatics in two languages</span></h1>' +
-      '<p class="hero__lead">Sách giáo khoa song ngữ tương tác: tiếng Việt ở trên, tiếng Anh ở dưới. Bấm vào từ gạch chân để xem phiên âm, nghĩa trong Tin học và nghe phát âm.</p>' +
-      '<div class="hero__cta"><a class="btn btn--primary btn--lg" href="#/lop-9"><span>Vào học Tin học 9</span>' + ICON.right + '</a> <a class="btn btn--lg btn--ghost" href="#/toan-9"><span>Vào học Toán 9</span></a>' +
+      '<h1 class="hero__title"><span class="vi">Học Tin học, Toán, KHTN bằng hai ngôn ngữ</span><span class="en" lang="en">Learn Informatics, Maths and Science in two languages</span></h1>' +
+      '<p class="hero__lead">EduVerse là học liệu số song ngữ Việt – Anh bám sát sách giáo khoa lớp 9: tiếng Việt ở trên, tiếng Anh ở dưới. Bấm vào từ gạch chân để xem phiên âm, nghĩa theo từng môn và nghe phát âm; làm thí nghiệm ảo và luyện tập ngay trong bài.</p>' +
+      '<div class="hero__cta"><a class="btn btn--primary btn--lg" href="#/lop-9"><span>Vào học Tin học 9</span>' + ICON.right + '</a> <a class="btn btn--lg btn--ghost" href="#/toan-9"><span>Vào học Toán 9</span></a> <a class="btn btn--lg btn--ghost" href="#/khtn-9"><span>Vào học KHTN 9</span></a>' +
       '<p class="hero__note">Lớp 9 hiện có Toán 9, Khoa học tự nhiên 9 và Tin học 9. Các bài, môn và khối lớp khác đang được cập nhật.</p></div></div>' +
       '<div class="demo"><article class="demo__page" aria-label="Một đoạn mẫu trong sách">' +
       '<p class="demo__head"><b>Bài 1</b> Thế giới kĩ thuật số</p>' +
@@ -901,7 +901,7 @@
       '</section>' +
       '<section class="shelf" aria-labelledby="shelf-h"><h2 id="shelf-h" class="shelf__h"><span class="vi">Chọn khối lớp</span><span class="en" lang="en">Choose a grade</span></h2>' +
       (window.Levels ? window.Levels.shelf(ICON) : '<ul class="shelf__books">' + covers + '</ul>') + '</section>' +
-      '<footer class="foot"><p>Sản phẩm mô phỏng sách giáo khoa song ngữ phục vụ học tập. Nội dung bài học được biên soạn lại theo mục tiêu của chương trình, không phải bản sao của sách in.</p></footer>' +
+      '<footer class="foot"><p>EduVerse là học liệu số song ngữ phục vụ học tập. Nội dung bài học được biên soạn lại theo mục tiêu của chương trình, không phải bản sao của sách in.</p></footer>' +
       '</main>';
 
     window.scrollTo(0, 0);
@@ -947,13 +947,13 @@
 
   /* Trang "Lớp 9": hai môn học và danh sách chương/bài của từng môn (levels.js). */
   function renderLevel(grp) {
-    setView('lessons', grp.label + ' | Sách song ngữ');
+    setView('lessons', grp.label + ' | EduVerse');
     $app.innerHTML = navHTML(grp.slug) + '<main id="main" class="lessons level">' + window.Levels.page(grp) + '</main>';
     window.scrollTo(0, 0);
   }
 
   function renderGrade(g) {
-    setView('lessons', g.subject + ' | Sách song ngữ');
+    setView('lessons', g.subject + ' | EduVerse');
     const all = g.topics.reduce((acc, t) => acc.concat(t.lessons), []);
     const ready = all.filter((l) => l.content && D.lessons[l.content]).length;
 
