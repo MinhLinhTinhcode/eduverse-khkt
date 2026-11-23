@@ -1,7 +1,7 @@
-# Sách giáo khoa song ngữ tương tác
+# EduVerse – Học liệu số song ngữ Việt – Anh
 
-Web app mô phỏng **sách giáo khoa Tin học song ngữ**: tiếng Việt ở trên, tiếng Anh ở dưới.
-Hiện có Tin học 9 (Bài 1–17, mục lục 17 bài đều có nội dung) và Toán 9. Các khối lớp khác hiện "Đang cập nhật".
+Web app **EduVerse**: học Tin học, Toán và Khoa học tự nhiên lớp 9 bằng hai ngôn ngữ, tiếng Việt ở trên, tiếng Anh ở dưới.
+Hiện có Tin học 9 (Bài 1–17), Toán 9 (Chương I–VI) và KHTN 9 (Bài 1–41). Các khối lớp khác hiện "Đang cập nhật".
 
 > Bài 12a, 13a, 14, 15, 16, 17 là **nội dung nguyên bản do nhóm dự án soạn** theo tên bài trong mục lục và yêu cầu cần đạt của Chương trình Tin học 2018, không phải bản chép sách giáo khoa; số trang là của bản này. Bài 16 dùng Python để minh hoạ. Cần đối chiếu với sách in trước khi dùng chính thức.
 
@@ -313,3 +313,18 @@ Bài 22 *Giới thiệu về hợp chất hữu cơ*, Bài 23 *Alkane*, Bài 24 
 - Số do máy tính: 100 g CaCO₃ → 56 g CaO + 44 g CO₂; 56 g CaO + 18 g H₂O → 74 g Ca(OH)₂; 1 tấn đá 90 % → 0,504 t CaO + 0,396 t CO₂; thuỷ tinh 100/106/120 g → 116 + 122 g + 88 g CO₂; CO₂ mỗi gam nhiên liệu: CH₄ 2,75, C 3,67, C₂H₅OH 1,91 g; Bảng 35.1 tăng 11,7 tỉ thùng (≈ 49 %), ≈ 0,42 tỉ thùng/năm; CO₂ 0,030 → 0,040 % (+33 %).
 - **Cần đối chiếu sách in:** số liệu BP 2020, sản lượng 2021, thứ hạng xuất khẩu dầu 2022, Bảng 35.1, mốc 2 °C và 1,5 °C (đọc từ bản scan).
 - **Phần mở rộng ngoài sách:** nước vôi trong, ngưỡng 800 °C, hang động/nhũ đá, làm nguội thuỷ tinh, cảnh báo thạch cao, nhiệt độ lò gốm, mô hình định tính khí hậu và chu trình carbon, CO₂ theo kJ, gợi ý đáp án.
+
+## Đợt 13 — KHTN 9 Bài 36–38 (Chương XI: Di truyền; mở đầu phần Sinh học)
+- Bài 36 Khái quát về di truyền học (tr. 159–161); Bài 37 Các quy luật di truyền của Mendel (tr. 162–165); Bài 38 Nucleic acid và gene (tr. 166–169).
+- Mới: `js/gen-lab.js` (engine `GenLab.engine`: kiểu gene, giao tử, bảng Punnett 2×2/4×4/…, tỉ lệ, lai phân tích, mô phỏng có hạt giống, số liệu Mendel), `js/nucleic-lab.js` (engine `NucleicLab.engine`: bổ sung, liên kết H, đột biến, gene hư cấu, hồ sơ gel GIẢ), `js/mol-w36.js`, `mol-w37.js`, `mol-w38.js`, `mol-w38b.js` (widget + Phòng thí nghiệm DNA & RNA S1–S9), 3 file bài `lesson-khtn9-bai36/37/38.js`, 6 hình mới trong `illustrations-khtn.js`.
+- Thứ tự nạp: `gen-lab.js`, `nucleic-lab.js` sau `earth-carbon.js`; `mol-w36/37/38/38b.js` sau `mol-w35b.js`. selfTest: 316/316.
+- Cách thêm: allele/gene hư cấu → `GENES` trong nucleic-lab.js (trình tự, allele, `rule`); tính trạng mới → `TRAITS` trong gen-lab.js; ca pháp y/gel mới → đổi seed hoặc sửa `family()`.
+- Số do máy tính: F₂ 3 : 1; AaBb × AaBb → 9 : 3 : 3 : 1, 16 tổ hợp, 4 loại giao tử; k cặp dị hợp → 2ᵏ giao tử, 4ᵏ tổ hợp; Mendel 556 hạt: 315 : 108 : 101 : 32 (lí thuyết 312,75 : 104,25 : 104,25 : 34,75); 3,4 Å × n cặp; A–T 2, G–C 3 liên kết H (bổ sung).
+- **Cần đối chiếu sách in:** Bảng 37.1 và số liệu 556 hạt, 600–1 500 cặp nucleotide, số gene 4 400 / 14 000 / 21 300 (đọc từ bản scan); sách không nêu số liên kết hydrogen.
+- **Phần mở rộng ngoài sách:** khử nhị, mô hình hoà trộn, mô phỏng ngẫu nhiên, lai ≥ 3 cặp gene, 2ᵏ/4ᵏ với k lớn, gel điện di (dữ liệu giả), mốc thời gian gene, RNA tự bắt cặp, toàn bộ Phòng thí nghiệm S1–S9 (gene hư cấu, không chỉnh sửa gene người).
+- Móc cho Bài 39–40: `NucleicLab.engine.transcribePreview`, thẻ S10 (nhân đôi DNA, phiên mã) để trống trong phòng thí nghiệm.
+
+## Đợt 14 — Bài 39–41 (Chương XI, tiếp)
+- Bài 39 Tái bản DNA & phiên mã; Bài 40 Mã di truyền, dịch mã; Bài 41 Đột biến gene.
+- File mới: `js/gene-code.js` (bảng mã, dịch mã, đột biến), `js/mol-w39.js` (12 mô phỏng). Cập nhật: catalog, illustrations-khtn, interactive, index.html, 3 file bài.
+- Cần tải lên GitHub: `index.html`, `js/*.js`, `js/data/*`.
